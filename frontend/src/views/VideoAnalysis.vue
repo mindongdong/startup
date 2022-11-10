@@ -4,7 +4,7 @@
     <div id="modal-wrapper">
       <div class="info-header">
         <router-link to="/">
-          <span>X</span>
+          <div class="exit-button"></div>
         </router-link>
       </div>
       <div class="modal-content"></div>
@@ -149,6 +149,11 @@ div {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+#layout > div {
+  max-width: 100vw;
+  max-height: 100vh;
 }
 #modal-wrapper {
   position: absolute;
@@ -156,8 +161,23 @@ div {
   top: 0;
 }
 .info-header {
+  position: relative;
   width: 100%;
   height: 20%;
+}
+.exit-button {
+  position: absolute;
+  left: 10px;
+  top: 25px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.6);
+}
+.exit-button:after {
+  content: "\00d7";
+  font-size: 20px;
+  margin-left: 5px;
 }
 .modal-content {
   width: 100%;
