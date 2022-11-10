@@ -124,6 +124,9 @@ export default {
     const video = document.querySelector("Video");
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
+    video.addEventListener("ended", (ev) => {
+      console.log(ev);
+    });
     this.stageResize();
     video.addEventListener("resize", this.stageResize);
     window.addEventListener("resize", this.stageResize);
@@ -178,12 +181,14 @@ export default {
 </script>
 
 <style scoped>
+/* 기본 설정 */
 img {
   object-fit: cover;
 }
 div {
   box-sizing: border-box;
 }
+/* 컨테이너 크기 설정 */
 #layout {
   position: relative;
   width: 100%;
@@ -203,11 +208,13 @@ div {
   left: 0;
   top: 0;
 }
+/* 상단 모달 설정 */
 .info-header {
   position: relative;
   width: 100%;
   height: 20%;
 }
+/* 메인으로 나가는 버튼 */
 .exit-button {
   position: absolute;
   display: flex;
@@ -229,6 +236,7 @@ div {
   font-weight: 100;
   color: white;
 }
+/* 승률 모달 */
 .match-winrate {
   width: 400px;
   height: 81px;
@@ -268,6 +276,7 @@ div {
   will-change: transform;
   box-shadow: 0 0 5px hsla(0, 0%, 100%, 0.615);
   position: relative;
+  margin-top: 10px;
 }
 .progress-bar {
   position: absolute;
@@ -290,11 +299,13 @@ div {
   background-color: #496adf;
   right: 0;
 }
+/* 중앙 모달 설정 */
 .modal-content {
   width: 100%;
   height: 60%;
   position: relative;
 }
+/* 팀 정보 모달 */
 .teaminfo-modal {
   position: absolute;
   top: 50%;
@@ -320,6 +331,7 @@ div {
 }
 .team-icon {
 }
+/* 하단 비디오 컨트롤러 설정 */
 .video-control {
   width: 100%;
   height: 20%;
@@ -328,6 +340,7 @@ div {
   width: 100%;
   height: 50%;
 }
+/* 비디오 컨트롤 아이콘 */
 .video-tools {
   width: 100%;
   height: 50%;
