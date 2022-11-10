@@ -1,6 +1,6 @@
 <template>
   <div>
-    <video
+    <!-- <video
       id="my-player"
       class="video-js"
       controls
@@ -17,7 +17,7 @@
           supports HTML5 video
         </a>
       </p>
-    </video>
+    </video> -->
     <div class="progress">
       <span class="bar"></span>
     </div>
@@ -39,8 +39,10 @@ let contentBoxGroup = new THREE.Object3D();
 export default {
   data() {
     return {
-      depthNum: 100, //박스 사이 z값, 깊이
-      totalNum: 0, //총 박스 갯수
+      imgDepthNum: 100, //이미지 박스 사이 z값, 깊이
+      imgTotalNum: 0, //총 이미지 박스 갯수
+      contentDepthNum: 40, //이미지 박스 사이 z값, 깊이
+      contentTotalNum: 0, //총 이미지 박스 갯수
       targetZNum: 0,
       distance: 100,
       mouseX: 0,
@@ -58,15 +60,16 @@ export default {
         { img: require("@/assets/soccer_3.png") },
       ],
       contentArr: [
-        {
-          contentImg: require("@/assets/content_1.jpeg"),
-          link: "/analysis",
-        },
+        { contentImg: require("@/assets/content_1.jpeg") },
+        { contentImg: require("@/assets/content_2.jpeg") },
+        { contentImg: require("@/assets/content_3.jpeg") },
+        { contentImg: require("@/assets/content_4.jpeg") },
       ],
     };
   },
   created() {
-    this.totalNum = this.imgArr.length; //전체 박스 갯수
+    this.imgTotalNum = this.imgArr.length; //전체 이미지 박스 갯수
+    this.contentTotalNum = this.contentArr.length; //전체 콘텐츠 박스 갯수
 
     scene = new THREE.Scene();
     // scene.background = new THREE.Color("#000000"); //배경 컬러
@@ -101,12 +104,14 @@ export default {
     raycaster = new THREE.Raycaster();
     pointer = new THREE.Vector2();
 
-    for (let i = 0; i < this.totalNum; i++) {
+    //이미지, 콘텐츠 박스 추가
+    for (let i = 0; i < this.imgTotalNum; i++) {
       this.addImgBox(i);
     }
     for (let r = 0; r < this.contentArr.length; r++) {
       this.addContentBox(r);
     }
+
     scene.add(imgBoxGroup);
     scene.add(contentBoxGroup);
     this.addLight(15, 15, 20);
@@ -115,8 +120,11 @@ export default {
     // document.body.appendChild(renderer.domElement);
     this.$refs.canvas.appendChild(renderer.domElement);
     document.body.style.height = `${
-      HEIGHT + this.totalNum * this.depthNum * 10
+      HEIGHT +
+      this.imgTotalNum * this.imgDepthNum * 10 +
+      this.contentTotalNum * this.contentDepthNum * 10
     }px`;
+    document.body.style.background = "white";
 
     this.animate();
     window.addEventListener("resize", this.stageResize);
@@ -144,24 +152,37 @@ export default {
       const boxMesh = new THREE.Sprite(material);
       boxMesh.scale.set(80, 80, 1);
 
-      let z = -i * this.depthNum;
+      let z = -i * this.imgDepthNum;
       boxMesh.position.set(0, 0, z);
       boxMesh.name = `imageBox_${i}`;
       imgBoxGroup.add(boxMesh);
     },
     addContentBox(i) {
       const texture = new THREE.TextureLoader().load(
-        this.contentArr[0].contentImg
+        this.contentArr[i].contentImg
       );
+      console.log(WIDTH, HEIGHT);
 
       const material = new THREE.SpriteMaterial({ map: texture });
       const boxMesh = new THREE.Sprite(material);
-      boxMesh.scale.set(140, 70, 1);
+      boxMesh.scale.set(48, 27, 1);
 
-      let z = -(this.totalNum + i) * this.depthNum;
-      boxMesh.position.set(0, 0, z);
+      // let z = -(this.imgDepthNum * this.imgTotalNum + this.contentDepthNum * i);
+      // const posX = Math.floor(Math.random() * 120);
+      // const posY = Math.floor(Math.random() * 120);
+      // boxMesh.position.set(-60 + posX, -60 + posY, z);
+
+      if (i == 0) {
+        boxMesh.position.set(30, 20, -this.imgDepthNum * this.imgTotalNum);
+      } else if (i == 1) {
+        boxMesh.position.set(-30, 20, -this.imgDepthNum * this.imgTotalNum);
+      } else if (i == 2) {
+        boxMesh.position.set(30, -20, -this.imgDepthNum * this.imgTotalNum);
+      } else if (i == 3) {
+        boxMesh.position.set(-30, -20, -this.imgDepthNum * this.imgTotalNum);
+      }
       boxMesh.name = `contentBox_${i}`;
-      boxMesh.link = this.contentArr[i].link;
+      boxMesh.link = "/analysis";
       contentBoxGroup.add(boxMesh);
     },
     addLight(...pos) {
@@ -195,7 +216,7 @@ export default {
     //     }
     //   } else {
     //     // console.log("우");
-    //     if (this.pageNum < this.totalNum - 1) {
+    //     if (this.pageNum < this.imgTotalNum - 1) {
     //       this.pageNum += 1;
     //     }
     //   }
@@ -206,7 +227,7 @@ export default {
       const progressBar = document.querySelector(".bar");
       this.scrolly = window.scrollY; //현재 스크롤 위치
       this.pageNum = Math.ceil(this.scrolly / 100); //스크롤 한번에 100 이동
-      this.targetZNum = (this.depthNum * this.pageNum) / 10;
+      this.targetZNum = (this.imgDepthNum * this.pageNum) / 10;
 
       this.perNum = Math.ceil(
         (this.scrolly / (document.body.offsetHeight - window.innerHeight)) * 100
