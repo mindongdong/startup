@@ -6,8 +6,47 @@
         <router-link to="/">
           <div class="exit-button"></div>
         </router-link>
+        <div class="match-winrate">
+          <div class="match-info">
+            <span>승리확률</span>
+            <span>{{ this.team1 }}</span>
+            <span>{{ this.team2 }}</span>
+          </div>
+          <div class="progress-bar__container">
+            <div class="progress-bar">
+              <span class="progress-bar__text">{{ this.team1_winrate }}</span>
+            </div>
+            <div class="progress-bar">
+              <span class="progress-bar__text">{{ this.team2_winrate }}</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="modal-content"></div>
+      <div class="modal-content">
+        <div class="teaminfo-modal">
+          <div class="open-button">
+            <div class="team-icon">
+              <img class="flag" src="@/assets/flags/arg-flag.png" />
+            </div>
+            <div class="open-icon">
+              <img class="icon" src="@/assets/icons/right-double-arrow.png" />
+            </div>
+          </div>
+        </div>
+        <div class="teaminfo-modal">
+          <div class="open-button">
+            <div class="open-icon">
+              <img
+                class="icon rotate180"
+                src="@/assets/icons/right-double-arrow.png"
+              />
+            </div>
+            <div class="team-icon">
+              <img class="flag" src="@/assets/flags/fra-flag.png" />
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="video-control">
         <div class="video-progress"></div>
         <div class="video-tools">
@@ -75,6 +114,10 @@ export default {
       playToggle: false,
       muteToggle: false,
       videoTimestamp: "00:00 / 00:18",
+      team1: "아르헨티나",
+      team2: "프랑스",
+      team1_winrate: 38,
+      team2_winrate: 62,
     };
   },
   mounted() {
@@ -167,21 +210,115 @@ div {
 }
 .exit-button {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   left: 10px;
   top: 25px;
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
   background: rgba(0, 0, 0, 0.6);
 }
 .exit-button:after {
+  position: relative;
+  top: 2px;
   content: "\00d7";
-  font-size: 20px;
-  margin-left: 5px;
+  font-size: 30px;
+  font-weight: 100;
+  color: white;
+}
+.match-winrate {
+  width: 400px;
+  height: 81px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+  border-radius: 1rem;
+}
+.match-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.match-info span {
+  color: white;
+  font-size: 1rem;
+}
+.match-info span:nth-child(2) {
+  position: absolute;
+  left: 5px;
+  font-size: 0.8rem;
+}
+.match-info span:nth-child(3) {
+  position: absolute;
+  right: 5px;
+  font-size: 0.8rem;
+}
+.progress-bar__container {
+  width: 100%;
+  height: 2rem;
+  border-radius: 2rem;
+  overflow: hidden;
+  transition: all 0.5s;
+  will-change: transform;
+  box-shadow: 0 0 5px hsla(0, 0%, 100%, 0.615);
+  position: relative;
+}
+.progress-bar {
+  position: absolute;
+  height: 100%;
+  content: "";
+  border-radius: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: sans-serif;
+}
+.progress-bar:first-child {
+  width: 38%;
+  background-color: #e76f51;
+  left: 0;
+}
+.progress-bar:nth-child(2) {
+  width: 62%;
+  background-color: #496adf;
+  right: 0;
 }
 .modal-content {
   width: 100%;
   height: 60%;
+  position: relative;
+}
+.teaminfo-modal {
+  position: absolute;
+  top: 50%;
+  width: 80px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.teaminfo-modal:first-child {
+  left: 0;
+}
+.teaminfo-modal:nth-child(2) {
+  right: 0;
+}
+.open-button {
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background: rgba(0, 0, 0, 0.5);
+}
+.team-icon {
 }
 .video-control {
   width: 100%;
@@ -226,6 +363,12 @@ div {
 .button-wrapper {
   position: relative;
   margin-right: 20px;
+}
+.flag {
+  cursor: pointer;
+  width: 30px;
+  height: 20px;
+  object-fit: cover;
 }
 .icon {
   cursor: pointer;
