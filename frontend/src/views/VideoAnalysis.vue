@@ -75,7 +75,19 @@
               <div class="teaminfo__name">{{ player.name }}</div>
               <div class="teaminfo__position">{{ player.position }}</div>
               <div class="teaminfo__icon">
-                <img class="teaminfo__iconImg" :src="player.icon1" />
+                <img
+                  class="teaminfo__iconImg"
+                  @mouseover="openDesc"
+                  @mouseleave="closeDesc"
+                  :src="
+                    require('@/assets/playerIcons/' +
+                      `${player.icon1}` +
+                      '.png')
+                  "
+                />
+                <div class="teaminfo__iconDesc">
+                  {{ player.icon1 | matchingDesc(icon_description) }}
+                </div>
               </div>
             </li>
           </ul>
@@ -98,7 +110,19 @@
               <div class="teaminfo__name">{{ player.name }}</div>
               <div class="teaminfo__position">{{ player.position }}</div>
               <div class="teaminfo__icon">
-                <img class="teaminfo__iconImg" :src="player.icon1" />
+                <img
+                  class="teaminfo__iconImg"
+                  @mouseover="openDesc"
+                  @mouseleave="closeDesc"
+                  :src="
+                    require('@/assets/playerIcons/' +
+                      `${player.icon1}` +
+                      '.png')
+                  "
+                />
+                <div class="teaminfo__iconDesc">
+                  {{ player.icon1 | matchingDesc(icon_description) }}
+                </div>
               </div>
             </li>
           </ul>
@@ -196,9 +220,36 @@ export default {
       team2: [],
       team1_open: false,
       team2_open: false,
+      icon_description: {
+        "주발 선호": "약한 발을 잘 사용하지 않습니다",
+        "예리한 감아차기": "감아차기에 능숙합니다",
+        "중거리 슛 선호": "중거리 슛을 자주 합니다",
+        "얼리 크로스 선호": "얼리 크로스를 자주 합니다",
+        "화려한 개인기": "다양한 개인기를 사용할 수 있습니다",
+        "테크니컬 드리블러": "1:1 드리블 돌파에 능숙합니다",
+        "아웃사이드 슈팅/크로스": "아웃사이드 슈팅과 크로스에 능숙합니다",
+        "플레이 메이커": "팀의 중심이 되어 경기를 조율합니다",
+        "칩슛 선호": "칩슛을 자주 사용합니다",
+        강철몸: "부상을 잘 당하지 않습니다",
+        "스피드 드리블러": "치고 달리기에 능숙합니다",
+        "긴 패스 선호": "긴 패스를 자주 합니다",
+        "슬라이딩 태클 선호": "슬라이딩 태클을 자주 합니다",
+        "패스 마스터": "패스 스킬이 뛰어납니다",
+        "파워 헤더": "강력한 헤더 슛을 할 수 있습니다",
+        "팀 플레이어": "팀을 위해 희생하는 플레이를 합니다",
+        리더십: "팀을 잘 이끄는 플레이어",
+        "장거리 스로인": "장거리 스로인을 할 수 있습니다",
+        "GK 적극적 크로스 수비": "크로스 수비시에 뛰어나가는 경향이 있습니다",
+        "GK 능숙한 펀칭": "펀칭을 잘합니다",
+        "스위퍼 키퍼": "수비 범위가 넓습니다",
+        유리몸: "부상을 잘 당합니다",
+        승부욕: "경기의 마지막까지 강한 투지를 발휘합니다",
+      },
+      iconDesc_open: false,
     };
   },
   async mounted() {
+    console.log(this.icon_description["승부욕"]);
     const video = document.querySelector("Video");
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
@@ -243,48 +294,13 @@ export default {
         weight: MatchInfo.data[0]["weight"][i],
         club: MatchInfo.data[0]["club"][i],
         foot: MatchInfo.data[0]["foot"][i],
-        icon1:
-          MatchInfo.data[0]["특성1"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[0]["특성1"][i]}` +
-                ".png"),
-        icon2:
-          MatchInfo.data[0]["특성2"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[0]["특성2"][i]}` +
-                ".png"),
-        icon3:
-          MatchInfo.data[0]["특성3"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[0]["특성3"][i]}` +
-                ".png"),
-        icon4:
-          MatchInfo.data[0]["특성4"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[0]["특성4"][i]}` +
-                ".png"),
-        icon5:
-          MatchInfo.data[0]["특성5"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[0]["특성5"][i]}` +
-                ".png"),
-        icon6:
-          MatchInfo.data[0]["특성6"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[0]["특성6"][i]}` +
-                ".png"),
-        icon7:
-          MatchInfo.data[0]["특성7"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[0]["특성7"][i]}` +
-                ".png"),
+        icon1: MatchInfo.data[0]["특성1"][i],
+        icon2: MatchInfo.data[0]["특성2"][i],
+        icon3: MatchInfo.data[0]["특성3"][i],
+        icon4: MatchInfo.data[0]["특성4"][i],
+        icon5: MatchInfo.data[0]["특성5"][i],
+        icon6: MatchInfo.data[0]["특성6"][i],
+        icon7: MatchInfo.data[0]["특성7"][i],
       });
     }
     for (let i = 0; i < Object.keys(MatchInfo.data[1]["number"]).length; i++) {
@@ -296,48 +312,13 @@ export default {
         weight: MatchInfo.data[1]["weight"][i],
         club: MatchInfo.data[1]["club"][i],
         foot: MatchInfo.data[1]["foot"][i],
-        icon1:
-          MatchInfo.data[1]["특성1"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[1]["특성1"][i]}` +
-                ".png"),
-        icon2:
-          MatchInfo.data[1]["특성2"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[1]["특성2"][i]}` +
-                ".png"),
-        icon3:
-          MatchInfo.data[1]["특성3"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[1]["특성3"][i]}` +
-                ".png"),
-        icon4:
-          MatchInfo.data[1]["특성4"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[1]["특성4"][i]}` +
-                ".png"),
-        icon5:
-          MatchInfo.data[1]["특성5"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[1]["특성5"][i]}` +
-                ".png"),
-        icon6:
-          MatchInfo.data[1]["특성6"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[1]["특성6"][i]}` +
-                ".png"),
-        icon7:
-          MatchInfo.data[1]["특성7"][i] == ""
-            ? ""
-            : require("@/assets/playerIcons/" +
-                `${MatchInfo.data[1]["특성7"][i]}` +
-                ".png"),
+        icon1: MatchInfo.data[1]["특성1"][i],
+        icon2: MatchInfo.data[1]["특성2"][i],
+        icon3: MatchInfo.data[1]["특성3"][i],
+        icon4: MatchInfo.data[1]["특성4"][i],
+        icon5: MatchInfo.data[1]["특성5"][i],
+        icon6: MatchInfo.data[1]["특성6"][i],
+        icon7: MatchInfo.data[1]["특성7"][i],
       });
     }
   },
@@ -388,6 +369,13 @@ export default {
     openTeam2Modal() {
       this.team2_open = !this.team2_open;
     },
+    openDesc(ev) {
+      console.dir(ev.target.nextElementSibling);
+      ev.target.nextElementSibling.style.display = "flex";
+    },
+    closeDesc(ev) {
+      ev.target.nextElementSibling.style.display = "none";
+    },
     videoData(ev) {
       console.log(ev);
     },
@@ -403,6 +391,13 @@ export default {
 
       const profile = document.getElementsByClassName("profile__row");
       console.dir(profile[1].childNodes);
+    },
+  },
+  filters: {
+    matchingDesc(iconName, description) {
+      console.log(iconName);
+      const desc = description[iconName];
+      return desc;
     },
   },
 };
@@ -577,15 +572,6 @@ div {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 5%;
 }
-.open {
-  width: 25%;
-}
-.openBtn__left {
-  left: 25%;
-}
-.openBtn__right {
-  right: 25%;
-}
 .teaminfo__player {
   display: none;
   width: 100%;
@@ -594,9 +580,6 @@ div {
   align-items: center;
   justify-content: space-evenly;
 }
-.open__show {
-  display: flex;
-}
 .teaminfo__column {
   width: 90%;
   height: 6%;
@@ -604,6 +587,7 @@ div {
   align-items: center;
   justify-content: space-evenly;
   border-bottom: 0.5px solid rgba(125, 125, 125, 0.2);
+  position: relative;
 }
 
 .teaminfo__column:hover {
@@ -646,6 +630,22 @@ div {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+.teaminfo__iconDesc {
+  background: rgba(255, 255, 255, 0.616);
+  color: black;
+  box-shadow: 0 0 5px hsla(0, 0%, 41%, 0.615);
+  font-size: 80%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+  height: 70%;
+  border-radius: 10px;
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  display: none;
 }
 .playerinfo__modal {
   display: none;
@@ -763,5 +763,17 @@ div {
 }
 .rotate360 {
   transform: rotate(360deg);
+}
+.open {
+  width: 25%;
+}
+.openBtn__left {
+  left: 25%;
+}
+.openBtn__right {
+  right: 25%;
+}
+.open__show {
+  display: flex;
 }
 </style>
