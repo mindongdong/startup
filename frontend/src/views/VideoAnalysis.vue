@@ -25,7 +25,7 @@
       <div class="modal-content">
         <div
           class="teaminfo-modal left"
-          v-bind:class="{ openBtn__left: team1_open }"
+          v-bind:class="{openBtn__left: team1_open}"
         >
           <div class="open-button" @click="openTeam1Modal">
             <div class="team-icon">
@@ -34,7 +34,7 @@
             <div class="open-icon">
               <img
                 class="icon"
-                v-bind:class="{ rotate180: team1_open }"
+                v-bind:class="{rotate180: team1_open}"
                 src="@/assets/icons/right-double-arrow.png"
               />
             </div>
@@ -42,13 +42,13 @@
         </div>
         <div
           class="teaminfo-modal right"
-          v-bind:class="{ openBtn__right: team2_open }"
+          v-bind:class="{openBtn__right: team2_open}"
         >
           <div class="open-button" @click="openTeam2Modal">
             <div class="open-icon">
               <img
                 class="icon rotate180"
-                v-bind:class="{ rotate360: team2_open }"
+                v-bind:class="{rotate360: team2_open}"
                 src="@/assets/icons/right-double-arrow.png"
               />
             </div>
@@ -57,12 +57,13 @@
             </div>
           </div>
         </div>
-        <div class="teaminfo__lineup left" v-bind:class="{ open: team1_open }">
-          <ul class="teaminfo__player">
+        <div class="teaminfo__lineup left" v-bind:class="{open: team1_open}">
+          <ul class="teaminfo__player" v-bind:class="{open__show: team1_open}">
             <li class="teaminfo__column">
               <div class="teaminfo__number">번호</div>
               <div class="teaminfo__name">선수</div>
               <div class="teaminfo__position">포지션</div>
+              <div class="teaminfo__icon">특성</div>
             </li>
             <li
               class="teaminfo__column"
@@ -73,15 +74,19 @@
               <div class="teaminfo__number">{{ player.number }}</div>
               <div class="teaminfo__name">{{ player.name }}</div>
               <div class="teaminfo__position">{{ player.position }}</div>
+              <div class="teaminfo__icon">
+                <img class="teaminfo__iconImg" :src="player.icon1" />
+              </div>
             </li>
           </ul>
         </div>
-        <div class="teaminfo__lineup right" v-bind:class="{ open: team2_open }">
-          <ul class="teaminfo__player">
+        <div class="teaminfo__lineup right" v-bind:class="{open: team2_open}">
+          <ul class="teaminfo__player" v-bind:class="{open__show: team2_open}">
             <li class="teaminfo__column">
               <div class="teaminfo__number">번호</div>
               <div class="teaminfo__name">선수</div>
               <div class="teaminfo__position">포지션</div>
+              <div class="teaminfo__icon">특성</div>
             </li>
             <li
               class="teaminfo__column"
@@ -92,6 +97,9 @@
               <div class="teaminfo__number">{{ player.number }}</div>
               <div class="teaminfo__name">{{ player.name }}</div>
               <div class="teaminfo__position">{{ player.position }}</div>
+              <div class="teaminfo__icon">
+                <img class="teaminfo__iconImg" :src="player.icon1" />
+              </div>
             </li>
           </ul>
         </div>
@@ -167,6 +175,7 @@
 
 <script>
 import Video from "@/components/Video.vue";
+import {getMatchInfo} from "@/api/index";
 
 export default {
   components: {
@@ -183,181 +192,33 @@ export default {
       team2_name: "프랑스",
       team1_winrate: 38,
       team2_winrate: 62,
-      team1: [
-        {
-          number: 12,
-          name: "프랑코 아르마니",
-          position: "GK",
-        },
-        {
-          number: 2,
-          name: "가브리엘 메르카도",
-          position: "RB",
-        },
-        {
-          number: 17,
-          name: "니콜라스 오타멘디",
-          position: "CB",
-        },
-        {
-          number: 6,
-          name: "페데리코 파지오",
-          position: "CB",
-        },
-        {
-          number: 16,
-          name: "마르코스 로호",
-          position: "CB",
-        },
-        {
-          number: 3,
-          name: "니콜라스 탈리아피코",
-          position: "LB",
-        },
-        {
-          number: 19,
-          name: "세르히오 아궤로",
-          position: "RM",
-        },
-        {
-          number: 15,
-          name: "엔소 페레스",
-          position: "RM",
-        },
-        {
-          number: 14,
-          name: "하비에르 마스체라노",
-          position: "CM",
-        },
-        {
-          number: 7,
-          name: "에베르 바네가",
-          position: "LM",
-        },
-        {
-          number: 13,
-          name: "막시밀리아노 메사",
-          position: "RW",
-        },
-        {
-          number: 22,
-          name: "크리스티안 파본",
-          position: "RW",
-        },
-        {
-          number: 10,
-          name: "리오넬 메시",
-          position: "CF",
-          team: "파리 생제르망",
-          national: "아르헨티나",
-          img: require("@/assets/player/messi.jpeg"),
-        },
-        {
-          number: 11,
-          name: "앙헬 디 마리아",
-          position: "LW",
-        },
-      ],
-      team2: [
-        {
-          number: 1,
-          name: "위고 요리스",
-          position: "GK",
-        },
-        {
-          number: 2,
-          name: "뱅자맹 파바르",
-          position: "RB",
-        },
-        {
-          number: 4,
-          name: "라파엘 바란",
-          position: "CB",
-        },
-        {
-          number: 5,
-          name: "사무엘 움티티",
-          position: "CB",
-        },
-        {
-          number: 21,
-          name: "뤼카 에르난데스",
-          position: "LB",
-        },
-        {
-          number: 13,
-          name: "은골로 캉테",
-          position: "CM",
-        },
-        {
-          number: 6,
-          name: "폴 포그바",
-          position: "CM",
-        },
-        {
-          number: 10,
-          name: "킬리앙 음바페",
-          position: "RW",
-        },
-        {
-          number: 20,
-          name: "플로리앙 토뱅",
-          position: "RW",
-        },
-        {
-          number: 7,
-          name: "앙투앙 그리즈만",
-          position: "AM",
-        },
-        {
-          number: 18,
-          name: "나빌 페키르",
-          position: "AM",
-        },
-        {
-          number: 14,
-          name: "블레즈 마튀이디",
-          position: "LW",
-        },
-        {
-          number: 12,
-          name: "코랑탱 톨리소",
-          position: "LW",
-          team: "올랭피크 리옹",
-          national: "프랑스",
-          img: require("@/assets/player/tolisso.jpeg"),
-        },
-        {
-          number: 9,
-          name: "올리비에 지루",
-          position: "CF",
-        },
-      ],
+      team1: [],
+      team2: [],
       team1_open: false,
       team2_open: false,
     };
   },
-  mounted() {
+  async mounted() {
     const video = document.querySelector("Video");
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
-    video.addEventListener("ended", (ev) => {
+    video.addEventListener("ended", ev => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", (ev) => {
+    video.addEventListener("timeupdate", ev => {
       // console.log(video.duration, video.currentTime);
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       }
     });
-    console.log(video.duration);
+    // console.log(video.duration);
     this.stageResize();
     video.addEventListener("resize", this.stageResize);
     window.addEventListener("resize", this.stageResize);
@@ -368,6 +229,117 @@ export default {
     document.body.style.background = "black";
     document.body.style.margin = "0";
     document.body.style.padding = "0";
+
+    const match = {match_name: "ARG.FRA"};
+    const MatchInfo = await getMatchInfo(match);
+    console.log(MatchInfo.data[0]);
+
+    for (let i = 0; i < Object.keys(MatchInfo.data[0]["number"]).length; i++) {
+      this.team1.push({
+        number: MatchInfo.data[0]["number"][i],
+        name: MatchInfo.data[0]["name"][i],
+        position: MatchInfo.data[0]["position"][i],
+        height: MatchInfo.data[0]["height"][i],
+        weight: MatchInfo.data[0]["weight"][i],
+        club: MatchInfo.data[0]["club"][i],
+        foot: MatchInfo.data[0]["foot"][i],
+        icon1:
+          MatchInfo.data[0]["특성1"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[0]["특성1"][i]}` +
+                ".png"),
+        icon2:
+          MatchInfo.data[0]["특성2"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[0]["특성2"][i]}` +
+                ".png"),
+        icon3:
+          MatchInfo.data[0]["특성3"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[0]["특성3"][i]}` +
+                ".png"),
+        icon4:
+          MatchInfo.data[0]["특성4"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[0]["특성4"][i]}` +
+                ".png"),
+        icon5:
+          MatchInfo.data[0]["특성5"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[0]["특성5"][i]}` +
+                ".png"),
+        icon6:
+          MatchInfo.data[0]["특성6"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[0]["특성6"][i]}` +
+                ".png"),
+        icon7:
+          MatchInfo.data[0]["특성7"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[0]["특성7"][i]}` +
+                ".png"),
+      });
+    }
+    for (let i = 0; i < Object.keys(MatchInfo.data[1]["number"]).length; i++) {
+      this.team2.push({
+        number: MatchInfo.data[1]["number"][i],
+        name: MatchInfo.data[1]["name"][i],
+        position: MatchInfo.data[1]["position"][i],
+        height: MatchInfo.data[1]["height"][i],
+        weight: MatchInfo.data[1]["weight"][i],
+        club: MatchInfo.data[1]["club"][i],
+        foot: MatchInfo.data[1]["foot"][i],
+        icon1:
+          MatchInfo.data[1]["특성1"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[1]["특성1"][i]}` +
+                ".png"),
+        icon2:
+          MatchInfo.data[1]["특성2"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[1]["특성2"][i]}` +
+                ".png"),
+        icon3:
+          MatchInfo.data[1]["특성3"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[1]["특성3"][i]}` +
+                ".png"),
+        icon4:
+          MatchInfo.data[1]["특성4"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[1]["특성4"][i]}` +
+                ".png"),
+        icon5:
+          MatchInfo.data[1]["특성5"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[1]["특성5"][i]}` +
+                ".png"),
+        icon6:
+          MatchInfo.data[1]["특성6"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[1]["특성6"][i]}` +
+                ".png"),
+        icon7:
+          MatchInfo.data[1]["특성7"][i] == ""
+            ? ""
+            : require("@/assets/playerIcons/" +
+                `${MatchInfo.data[1]["특성7"][i]}` +
+                ".png"),
+      });
+    }
   },
   methods: {
     stageResize() {
@@ -386,7 +358,7 @@ export default {
       const posX = (layout.clientWidth - video.clientWidth) / 2;
       modal.style.top = `${posY}px`;
       modal.style.left = `${posX}px`;
-      console.log(posY, posX);
+      // console.log(posY, posX);
     },
     videoPlay() {
       const video = document.querySelector("Video");
@@ -444,7 +416,7 @@ img {
 }
 div {
   box-sizing: border-box;
-} 
+}
 /* * {
   font-family: "Noto Sans KR", sans-serif;
 } */
@@ -615,12 +587,15 @@ div {
   right: 25%;
 }
 .teaminfo__player {
+  display: none;
   width: 100%;
   height: 100%;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+}
+.open__show {
+  display: flex;
 }
 .teaminfo__column {
   width: 90%;
@@ -645,26 +620,33 @@ div {
 
 .teaminfo__number,
 .teaminfo__name,
-.teaminfo__position {
+.teaminfo__position,
+.teaminfo__icon {
   color: white;
   display: flex;
   align-items: center;
   font-size: 90%;
   padding: 1%;
+  height: 100%;
 }
 .teaminfo__number {
-  width: 25%;
-  height: 100%;
+  width: 20%;
 }
 .teaminfo__name {
-  width: 50%;
-  height: 100%;
+  width: 40%;
 }
 .teaminfo__position {
-  width: 25%;
-  height: 100%;
+  width: 20%;
 }
-
+.teaminfo__icon {
+  width: 20%;
+  justify-content: center;
+}
+.teaminfo__iconImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .playerinfo__modal {
   display: none;
   width: 35%;
