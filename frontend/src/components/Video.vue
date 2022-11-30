@@ -8,7 +8,7 @@
       height="100%"
       data-setup="{}"
     >
-      <source src="@/assets/video1.mp4" type="video/mp4" />
+      <source src="@/assets/video3.mp4" type="video/mp4" />
     </video>
     <!-- <div style="margin-top: 30px">
       <p>재생속도: <span id="playback-speed">1</span></p>
