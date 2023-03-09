@@ -8,16 +8,26 @@
         </router-link>
         <div class="match-winrate">
           <div class="match-info">
-            <span>승리확률</span>
-            <span>{{ this.team1_name }}</span>
-            <span>{{ this.team2_name }}</span>
+            <img
+              class="icon"
+              @click="leftArrowClick"
+              src="@/assets/icons/left-arrow.png"
+            />
+            <span>{{ data_name }}</span>
+            <span>{{ team1_name }}</span>
+            <span>{{ team2_name }}</span>
+            <img
+              class="icon"
+              @click="rightArrowClick"
+              src="@/assets/icons/right-arrow.png"
+            />
           </div>
           <div class="progress-bar__container">
             <div class="progress-bar">
-              <span class="progress-bar__text">{{ this.team1_winrate }}</span>
+              <span class="progress-bar__text">{{ team1_winrate }}</span>
             </div>
             <div class="progress-bar">
-              <span class="progress-bar__text">{{ this.team2_winrate }}</span>
+              <span class="progress-bar__text">{{ team2_winrate }}</span>
             </div>
           </div>
         </div>
@@ -61,7 +71,7 @@
           <ul class="teaminfo__player" v-bind:class="{open__show: team1_open}">
             <li class="teaminfo__column">
               <div class="teaminfo__number">번호</div>
-              <div class="teaminfo__name">선수</div>
+              <div class="teaminfo__name">이름</div>
               <div class="teaminfo__position">포지션</div>
               <div class="teaminfo__icon">특성</div>
             </li>
@@ -96,7 +106,7 @@
           <ul class="teaminfo__player" v-bind:class="{open__show: team2_open}">
             <li class="teaminfo__column">
               <div class="teaminfo__number">번호</div>
-              <div class="teaminfo__name">선수</div>
+              <div class="teaminfo__name">이름</div>
               <div class="teaminfo__position">포지션</div>
               <div class="teaminfo__icon">특성</div>
             </li>
@@ -127,16 +137,40 @@
             </li>
           </ul>
         </div>
-        <div class="playerinfo__modal">
+        <div
+          class="playerinfo__modal"
+          v-bind:class="{open__show: playerInfo_open}"
+        >
+          <div class="exit-button" @click="playerInfo__toggle"></div>
           <div class="playerinfo__profile">
-            <div class="profile__row">
-              <img class="profile__img" src="" />
+            <div class="profile__column">
+              <div class="profile__row">
+                <img class="profile__img" src="" />
+              </div>
+              <div class="profile__row">
+                <div class="profile__name"></div>
+                <div class="profile__position"></div>
+                <div class="profile__group"></div>
+                <div class="profile__icon">
+                  <img src="" />
+                  <img src="" />
+                </div>
+                <div class="profile__birth"></div>
+                <div class="profile__body"></div>
+                <div class="profile__foot"></div>
+              </div>
             </div>
-            <div class="profile__row">
-              <div class="profile__name"></div>
-              <div class="profile__team"></div>
-              <div class="profile__national"></div>
-              <div class="profile__position"></div>
+            <div class="profile__column">
+              <div class="profile__icons">
+                <img src="" />
+                <img src="" />
+                <img src="" />
+              </div>
+              <div class="profile__icons">
+                <img src="" />
+                <img src="" />
+                <img src="" />
+              </div>
             </div>
           </div>
         </div>
@@ -211,15 +245,18 @@ export default {
       muteToggle: false,
       team1OpenToggle: false,
       team2OpenToggle: true,
+      team1_open: false,
+      team2_open: false,
+      iconDesc_open: false,
+      playerInfo_open: false,
       videoTimestamp: "00:00 / 00:00",
+      data_name: "승리확률",
       team1_name: "아르헨티나",
       team2_name: "프랑스",
       team1_winrate: 38,
       team2_winrate: 62,
       team1: [],
       team2: [],
-      team1_open: false,
-      team2_open: false,
       icon_description: {
         "주발 선호": "약한 발을 잘 사용하지 않습니다",
         "예리한 감아차기": "감아차기에 능숙합니다",
@@ -245,20 +282,108 @@ export default {
         유리몸: "부상을 잘 당합니다",
         승부욕: "경기의 마지막까지 강한 투지를 발휘합니다",
       },
-      iconDesc_open: false,
+      position_description: {
+        GK: "골키퍼",
+        LB: "좌측 수비수",
+        CB: "중앙 수비수",
+        RB: "우측 수비수",
+        CM: "중앙 미드필더",
+        CDM: "수비형 미드필더",
+        LM: "좌측 미드필더",
+        RM: "우측 미드필더",
+        AM: "공격형 미드필더",
+        LW: "좌측 윙어",
+        RW: "우측 윙어",
+        ST: "스트라이커",
+        CF: "중앙 공격수",
+      },
+      class_color: {
+        0: "font__white",
+        1: "font__skyBlue",
+        2: "font__purple",
+        3: "font__yellow",
+      },
+      markingPlayer: [
+        ["L. 메시", "H. 요리스"],
+        ["S. 아궤로", "N. 캉테"],
+        ["S. 아궤로", "N. 캉테"],
+        ["S. 아궤로", "N. 캉테"],
+        ["S. 아궤로", "N. 캉테"],
+        ["S. 아궤로", "N. 캉테"],
+        ["N. 오타멘디", "A. 그리즈만"],
+        ["E. 바네가", "B. 마튀이디"],
+        ["E. 바네가", "B. 마튀이디"],
+        ["E. 바네가", "B. 마튀이디"],
+        ["N. 탈리아피코", "O. 지루"],
+        ["N. 탈리아피코", "O. 지루"],
+        ["F. 파지오", "K. 음바페"],
+        ["F. 파지오", "K. 음바페"],
+        [],
+      ],
+      dataList: [
+        {
+          name: "승리 확률",
+          team1__percent: 42,
+          team2__percent: 58,
+        },
+        {
+          name: "점유율",
+          team1__percent: 60,
+          team2__percent: 40,
+        },
+        {
+          name: "볼 경합 성공률",
+          team1__percent: 52,
+          team2__percent: 48,
+        },
+      ],
+      currentData: 0,
+      audioContext: null,
+      processor: null,
+      audioDataChannel: null,
     };
   },
   async mounted() {
-    console.log(this.icon_description["승부욕"]);
     const video = document.querySelector("Video");
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
+    this.audioContext = new AudioContext();
+
     video.addEventListener("ended", ev => {
       // console.log(ev);
       this.playToggle = false;
     });
     video.addEventListener("timeupdate", ev => {
-      // console.log(video.duration, video.currentTime);
+      // console.log(Math.round(video.currentTime));
+      // console.log(
+      //   this.markingPlayer[Math.round(video.currentTime)][0],
+      //   this.markingPlayer[Math.round(video.currentTime)][1],
+      // );
+      const teamInfo = document.getElementsByClassName("teaminfo__lineup");
+      this.team1.forEach((ele, i) => {
+        if (
+          ele["name"] == this.markingPlayer[Math.round(video.currentTime)][0]
+        ) {
+          console.log(ele["name"], i);
+          teamInfo[0].childNodes[0].childNodes.forEach(ele => {
+            ele.style.background = "";
+          });
+          teamInfo[0].childNodes[0].childNodes[i + 1].style.background =
+            "rgba(255, 255, 114, 0.450)";
+        }
+      });
+      this.team2.forEach((ele, i) => {
+        if (
+          ele["name"] == this.markingPlayer[Math.round(video.currentTime)][1]
+        ) {
+          console.log(ele["name"], i);
+          teamInfo[1].childNodes[0].childNodes.forEach(ele => {
+            ele.style.background = "";
+          });
+          teamInfo[1].childNodes[0].childNodes[i + 1].style.background =
+            "rgba(135, 207, 235, 0.494)";
+        }
+      });
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
           video.currentTime,
@@ -294,6 +419,8 @@ export default {
         weight: MatchInfo.data[0]["weight"][i],
         club: MatchInfo.data[0]["club"][i],
         foot: MatchInfo.data[0]["foot"][i],
+        birth: MatchInfo.data[0]["birth"][i],
+        class: MatchInfo.data[0]["class"][i],
         icon1: MatchInfo.data[0]["특성1"][i],
         icon2: MatchInfo.data[0]["특성2"][i],
         icon3: MatchInfo.data[0]["특성3"][i],
@@ -312,6 +439,8 @@ export default {
         weight: MatchInfo.data[1]["weight"][i],
         club: MatchInfo.data[1]["club"][i],
         foot: MatchInfo.data[1]["foot"][i],
+        birth: MatchInfo.data[1]["birth"][i],
+        class: MatchInfo.data[1]["class"][i],
         icon1: MatchInfo.data[1]["특성1"][i],
         icon2: MatchInfo.data[1]["특성2"][i],
         icon3: MatchInfo.data[1]["특성3"][i],
@@ -370,7 +499,6 @@ export default {
       this.team2_open = !this.team2_open;
     },
     openDesc(ev) {
-      console.dir(ev.target.nextElementSibling);
       ev.target.nextElementSibling.style.display = "flex";
     },
     closeDesc(ev) {
@@ -378,6 +506,9 @@ export default {
     },
     videoData(ev) {
       console.log(ev);
+    },
+    playerInfo__toggle() {
+      this.playerInfo_open = false;
     },
     clickPlayer(ev) {
       console.log(ev);
@@ -388,14 +519,128 @@ export default {
       console.log(number);
       const team = window.innerWidth / 2 >= ev.clientX ? "team1" : "team2";
       console.log(team);
-
+      console.log(this.team2);
       const profile = document.getElementsByClassName("profile__row");
-      console.dir(profile[1].childNodes);
+      const icons = document.getElementsByClassName("profile__column");
+      this.playerInfo_open = true;
+      if (team == "team1") {
+        profile[0].childNodes[0].src = require("@/assets/player/messi.png");
+        profile[1].childNodes[3].childNodes[0].src = require("@/assets/flags/arg-flag.png");
+        profile[1].childNodes[3].childNodes[1].src = require("@/assets/flags/바르셀로나.svg");
+        icons[1].childNodes[0].childNodes[2].classList.remove("hide");
+        icons[1].childNodes[1].childNodes[2].classList.remove("hide");
+        icons[1].childNodes[0].childNodes[0].src = require("@/assets/playerIcons/주발 선호.png");
+        icons[1].childNodes[0].childNodes[1].src = require("@/assets/playerIcons/중거리 슛 선호.png");
+        icons[1].childNodes[0].childNodes[2].src = require("@/assets/playerIcons/아웃사이드 슈팅.크로스.png");
+        icons[1].childNodes[1].childNodes[0].src = require("@/assets/playerIcons/테크니컬 드리블러.png");
+        icons[1].childNodes[1].childNodes[1].src = require("@/assets/playerIcons/예리한 감아차기.png");
+        icons[1].childNodes[1].childNodes[2].src = require("@/assets/playerIcons/플레이 메이커.png");
+        for (let info in this.team1) {
+          if (this.team1[info]["number"] == number) {
+            profile[1].childNodes[0].classList.remove(
+              "font__white",
+              "font__skyBlue",
+              "font__purple",
+              "font__yellow",
+            );
+            profile[1].childNodes[0].classList.add(
+              this.class_color[this.team1[info]["class"]],
+            );
+            profile[1].childNodes[0].innerText = this.team1[info]["name"];
+            profile[1].childNodes[1].innerText =
+              this.team1[info]["position"] +
+              "(" +
+              this.position_description[this.team1[info]["position"]] +
+              ")";
+            profile[1].childNodes[2].innerText =
+              this.team1_name + " | " + this.team1[info]["club"];
+            profile[1].childNodes[4].innerText =
+              this.team1[info]["height"] +
+              "cm" +
+              " | " +
+              this.team1[info]["weight"] +
+              "kg";
+            profile[1].childNodes[5].innerText =
+              this.team1[info]["foot"] == "right" ? "오른발잡이" : "왼발잡이";
+            profile[1].childNodes[6].innerText = this.team1[info]["birth"];
+          }
+        }
+      } else if (team == "team2") {
+        profile[0].childNodes[0].src = require("@/assets/player/tolisso.png");
+        profile[1].childNodes[3].childNodes[0].src = require("@/assets/flags/fra-flag.png");
+        profile[1].childNodes[3].childNodes[1].src = require("@/assets/flags/바이언.svg");
+        icons[1].childNodes[0].childNodes[0].src = require("@/assets/playerIcons/긴 패스 선호.png");
+        icons[1].childNodes[0].childNodes[1].src = require("@/assets/playerIcons/중거리 슛 선호.png");
+        icons[1].childNodes[0].childNodes[2].classList.add("hide");
+        icons[1].childNodes[1].childNodes[0].src = require("@/assets/playerIcons/파워 헤더.png");
+        icons[1].childNodes[1].childNodes[1].src = require("@/assets/playerIcons/팀 플레이어.png");
+        icons[1].childNodes[1].childNodes[2].classList.add("hide");
+        for (let info in this.team2) {
+          if (this.team2[info]["number"] == number) {
+            profile[1].childNodes[0].classList.remove(
+              "font__white",
+              "font__skyBlue",
+              "font__purple",
+              "font__yellow",
+            );
+            profile[1].childNodes[0].classList.add(
+              this.class_color[this.team2[info]["class"]],
+            );
+            profile[1].childNodes[0].innerText = this.team2[info]["name"];
+            profile[1].childNodes[1].innerText =
+              this.team2[info]["position"] +
+              "(" +
+              this.position_description[this.team2[info]["position"]] +
+              ")";
+            profile[1].childNodes[2].innerText =
+              this.team2_name + " | " + this.team2[info]["club"];
+            profile[1].childNodes[4].innerText =
+              this.team2[info]["height"] +
+              "cm" +
+              " | " +
+              this.team2[info]["weight"] +
+              "kg";
+            profile[1].childNodes[5].innerText =
+              this.team2[info]["foot"] == "right" ? "오른발잡이" : "왼발잡이";
+            profile[1].childNodes[6].innerText = this.team2[info]["birth"];
+          }
+        }
+      }
+    },
+    leftArrowClick() {
+      this.currentData -= 1;
+      if (this.currentData == -1) {
+        this.currentData = 2;
+      }
+      const progress = document.getElementsByClassName("progress-bar");
+
+      this.data_name = this.dataList[this.currentData]["name"];
+      this.team1_winrate = this.dataList[this.currentData]["team1__percent"];
+      this.team2_winrate = this.dataList[this.currentData]["team2__percent"];
+      progress[0].style.width =
+        this.dataList[this.currentData]["team1__percent"] + "%";
+      progress[1].style.width =
+        this.dataList[this.currentData]["team2__percent"] + "%";
+    },
+    rightArrowClick() {
+      this.currentData += 1;
+      if (this.currentData == 3) {
+        this.currentData = 0;
+      }
+      const progress = document.getElementsByClassName("progress-bar");
+
+      this.data_name = this.dataList[this.currentData]["name"];
+      this.team1_winrate = this.dataList[this.currentData]["team1__percent"];
+      this.team2_winrate = this.dataList[this.currentData]["team2__percent"];
+      progress[0].style.width =
+        this.dataList[this.currentData]["team1__percent"] + "%";
+      progress[1].style.width =
+        this.dataList[this.currentData]["team2__percent"] + "%";
     },
   },
   filters: {
     matchingDesc(iconName, description) {
-      console.log(iconName);
+      // console.log(iconName);
       const desc = description[iconName];
       return desc;
     },
@@ -407,10 +652,11 @@ export default {
 /* 기본 설정 */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap");
 img {
-  object-fit: cover;
+  object-fit: contain;
 }
 div {
   box-sizing: border-box;
+  color: white;
 }
 /* * {
   font-family: "Noto Sans KR", sans-serif;
@@ -449,6 +695,7 @@ div {
 }
 /* 메인으로 나가는 버튼 */
 .exit-button {
+  cursor: pointer;
   position: absolute;
   display: flex;
   align-items: center;
@@ -490,15 +737,21 @@ div {
   color: white;
   font-size: 1rem;
 }
-.match-info span:nth-child(2) {
+.match-info span:nth-child(3) {
   position: absolute;
   left: 5px;
   font-size: 0.8rem;
 }
-.match-info span:nth-child(3) {
+.match-info span:nth-child(4) {
   position: absolute;
   right: 5px;
   font-size: 0.8rem;
+}
+.match-info img {
+  width: 15px;
+  height: 15px;
+  margin: 0 10px;
+  object-fit: contain;
 }
 .progress-bar__container {
   width: 100%;
@@ -512,6 +765,7 @@ div {
   margin-top: 10px;
 }
 .progress-bar {
+  transition: all 0.5s;
   position: absolute;
   height: 100%;
   content: "";
@@ -523,12 +777,12 @@ div {
   font-family: sans-serif;
 }
 .progress-bar:first-child {
-  width: 38%;
+  width: 42%;
   background-color: #e76f51;
   left: 0;
 }
 .progress-bar:nth-child(2) {
-  width: 62%;
+  width: 58%;
   background-color: #496adf;
   right: 0;
 }
@@ -544,7 +798,7 @@ div {
 /* 팀 정보 모달 */
 .teaminfo-modal {
   position: absolute;
-  top: 40%;
+  top: 45%;
   width: 80px;
   height: 50px;
   display: flex;
@@ -654,40 +908,92 @@ div {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 30px;
   z-index: 9998;
+  position: relative;
+}
+
+.playerinfo__modal .exit-button {
+  top: 2%;
 }
 .playerinfo__profile {
   width: 100%;
-  height: 50%;
+  height: 100%;
 }
 .profile__row {
   width: 50%;
   height: 100%;
   display: flex;
+  margin-top: 5%;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 .profile__img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: contain;
 }
-.profile__name {
-  width: 100%;
-  height: 40%;
-}
-.profile__team {
-  width: 100%;
-  height: 20%;
-}
-.profile__national {
-  width: 100%;
-  height: 20%;
+.profile__name,
+.profile__position {
+  width: 90%;
+  height: 15%;
+  font-size: 2.1rem;
+  display: flex;
+  align-items: center;
 }
 .profile__position {
-  width: 100%;
+  font-size: 1.5rem;
+}
+.profile__icon,
+.profile__group,
+.profile__body,
+.profile__birth,
+.profile__foot {
+  width: 90%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+.profile__icon {
+  width: 90%;
   height: 20%;
 }
+
+.profile__icon img {
+  width: 40%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.profile__icon img:first-child {
+  width: 30%;
+  height: 60%;
+  margin-right: 5%;
+}
+
+.profile__column {
+  width: 100%;
+  height: 50%;
+  display: flex;
+}
+.profile__column:nth-child(2) {
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+.profile__icons {
+  width: 90%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile__icons img {
+  width: 30%;
+  height: 70%;
+  object-fit: contain;
+}
+
 /* 하단 비디오 컨트롤러 설정 */
 .video-control {
   width: 100%;
@@ -775,5 +1081,20 @@ div {
 }
 .open__show {
   display: flex;
+}
+.font__white {
+  color: white;
+}
+.font__skyBlue {
+  color: skyblue;
+}
+.font__purple {
+  color: rgb(200, 20, 255);
+}
+.font__yellow {
+  color: #f2ae00;
+}
+.hide {
+  display: none;
 }
 </style>

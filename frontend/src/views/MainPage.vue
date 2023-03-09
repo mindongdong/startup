@@ -53,17 +53,18 @@ export default {
       scrolly: 0,
       pageNum: 0,
       perNum: 0,
+      speed: 0,
       imgArr: [
-        { img: require("@/assets/soccer_0.png") },
-        { img: require("@/assets/soccer_1.png") },
-        { img: require("@/assets/soccer_2.png") },
-        { img: require("@/assets/soccer_3.png") },
+        {img: require("@/assets/soccer_0.png")},
+        {img: require("@/assets/soccer_1.png")},
+        {img: require("@/assets/soccer_2.png")},
+        {img: require("@/assets/soccer_3.png")},
       ],
       contentArr: [
-        { contentImg: require("@/assets/content_1.jpeg") },
-        { contentImg: require("@/assets/content_2.jpeg") },
-        { contentImg: require("@/assets/content_3.jpeg") },
-        { contentImg: require("@/assets/content_4.jpeg") },
+        {contentImg: require("@/assets/content_1.jpeg")},
+        {contentImg: require("@/assets/content_2.jpeg")},
+        {contentImg: require("@/assets/content_3.jpeg")},
+        {contentImg: require("@/assets/content_4.jpeg")},
       ],
     };
   },
@@ -78,7 +79,7 @@ export default {
     camera = new THREE.PerspectiveCamera(75, WIDTH / HEIGHT, 5, 1000);
     camera.position.set(0, 0, 50);
 
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
     renderer.setSize(WIDTH, HEIGHT);
     //그림자 활성화
     renderer.shadowMap.enabled = true;
@@ -132,7 +133,7 @@ export default {
     this.scrollFunc();
     // this.$refs.canvas.addEventListener("click", this.clickFunc);
     // this.$refs.canvas.addEventListener("wheel", this.scrollFunc);
-    window.addEventListener("mousemove", (e) => {
+    window.addEventListener("mousemove", e => {
       //console.log(e);
       this.mouseX = e.clientX;
       this.mouseY = e.clientY;
@@ -148,7 +149,7 @@ export default {
       // imageMap.mapping = THREE.CubeUVReflectionMapping;
       // imageMap.repeat.set(8, 8);
 
-      const material = new THREE.SpriteMaterial({ map: texture });
+      const material = new THREE.SpriteMaterial({map: texture});
       const boxMesh = new THREE.Sprite(material);
       boxMesh.scale.set(80, 80, 1);
 
@@ -159,11 +160,11 @@ export default {
     },
     addContentBox(i) {
       const texture = new THREE.TextureLoader().load(
-        this.contentArr[i].contentImg
+        this.contentArr[i].contentImg,
       );
       console.log(WIDTH, HEIGHT);
 
-      const material = new THREE.SpriteMaterial({ map: texture });
+      const material = new THREE.SpriteMaterial({map: texture});
       const boxMesh = new THREE.Sprite(material);
       boxMesh.scale.set(48, 27, 1);
 
@@ -230,15 +231,20 @@ export default {
       this.targetZNum = (this.imgDepthNum * this.pageNum) / 10;
 
       this.perNum = Math.ceil(
-        (this.scrolly / (document.body.offsetHeight - window.innerHeight)) * 100
+        (this.scrolly / (document.body.offsetHeight - window.innerHeight)) *
+          100,
       );
       progressBar.style.width = this.perNum + "%";
 
-      console.log(this.targetZNum, window.scrollY, this.pageNum);
+      // console.log(this.targetZNum, window.scrollY, this.pageNum);
     },
     animate() {
       // controls.update();
-      this.moveZ += (this.targetZNum - this.moveZ) * 0.1;
+      // this.moveZ += (this.targetZNum - this.moveZ) * 0.1;
+      if (this.moveZ < 390) {
+        this.speed += 0.01;
+        this.moveZ += this.speed;
+      }
       imgBoxGroup.position.z = this.moveZ;
       contentBoxGroup.position.z = this.moveZ;
 
