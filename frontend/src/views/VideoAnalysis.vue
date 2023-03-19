@@ -347,7 +347,6 @@ export default {
     const video = document.querySelector("Video");
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
-    this.audioContext = new AudioContext();
 
     video.addEventListener("ended", ev => {
       // console.log(ev);
