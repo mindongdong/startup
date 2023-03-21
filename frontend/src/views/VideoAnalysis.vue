@@ -1,39 +1,41 @@
 <template>
-  <div id="layout">
-    <Video @loadedmetadata="videoData"></Video>
-    <div id="modal-wrapper">
-      <div class="info-header">
-        <router-link to="/">
-          <div class="exit-button"></div>
-        </router-link>
-        <div class="match-winrate">
-          <div class="match-info">
-            <img
-              class="icon"
-              @click="leftArrowClick"
-              src="@/assets/icons/left-arrow.png"
-            />
-            <span>{{ data_name }}</span>
-            <span>{{ team1_name }}</span>
-            <span>{{ team2_name }}</span>
-            <img
-              class="icon"
-              @click="rightArrowClick"
-              src="@/assets/icons/right-arrow.png"
-            />
-          </div>
-          <div class="progress-bar__container">
-            <div class="progress-bar">
-              <span class="progress-bar__text">{{ team1_winrate }}</span>
+  <div id="layout" ref="fullLayout">
+    <img class="background-image" src="@/assets/background.png" />
+    <div class="contents-container">
+      <Video @loadedmetadata="videoData"></Video>
+      <div class="modal-wrapper">
+        <div class="info-header">
+          <router-link to="/">
+            <div class="exit-button"></div>
+          </router-link>
+          <div class="match-winrate">
+            <div class="match-info">
+              <img
+                class="icon"
+                @click="leftArrowClick"
+                src="@/assets/icons/left-arrow.png"
+              />
+              <span>{{ data_name }}</span>
+              <span>{{ team1_name }}</span>
+              <span>{{ team2_name }}</span>
+              <img
+                class="icon"
+                @click="rightArrowClick"
+                src="@/assets/icons/right-arrow.png"
+              />
             </div>
-            <div class="progress-bar">
-              <span class="progress-bar__text">{{ team2_winrate }}</span>
+            <div class="progress-bar__container">
+              <div class="progress-bar">
+                <span class="progress-bar__text">{{ team1_winrate }}</span>
+              </div>
+              <div class="progress-bar">
+                <span class="progress-bar__text">{{ team2_winrate }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-content">
-        <div
+        <div class="modal-content">
+          <!-- <div
           class="teaminfo-modal left"
           v-bind:class="{openBtn__left: team1_open}"
         >
@@ -173,58 +175,107 @@
               </div>
             </div>
           </div>
+        </div> -->
+        </div>
+        <div class="video-control">
+          <div class="video-progress"></div>
+          <div class="video-tools">
+            <div class="video-tools__column">
+              <div class="button-wrapper">
+                <div class="play-button" @click="videoPlay">
+                  <img
+                    class="icon"
+                    v-if="this.playToggle"
+                    src="@/assets/icons/pause.png"
+                  />
+                  <img class="icon" v-else src="@/assets/icons/play.png" />
+                </div>
+              </div>
+              <div class="button-wrapper">
+                <div class="playrate-button">
+                  <img
+                    class="icon rotate180"
+                    src="@/assets/icons/playrate.png"
+                  />
+                </div>
+              </div>
+              <div class="button-wrapper">
+                <div class="sound-button" @click="soundMute">
+                  <img
+                    class="icon"
+                    v-if="muteToggle"
+                    src="@/assets/icons/mute.png"
+                  />
+                  <img class="icon" v-else src="@/assets/icons/sound.png" />
+                </div>
+              </div>
+            </div>
+            <div class="video-tools__column">
+              <div class="timestamp">
+                {{ videoTimestamp }}
+              </div>
+            </div>
+            <div class="video-tools__column">
+              <div class="button-wrapper">
+                <div class="fullscreen-button">
+                  <img
+                    class="icon icon-large2"
+                    src="@/assets/icons/full-screen.png"
+                  />
+                </div>
+              </div>
+              <div class="button-wrapper">
+                <div class="setting-button">
+                  <img
+                    class="icon icon-large"
+                    src="@/assets/icons/setting.png"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="video-control">
-        <div class="video-progress"></div>
-        <div class="video-tools">
-          <div class="video-tools__column">
-            <div class="button-wrapper">
-              <div class="play-button" @click="videoPlay">
-                <img
-                  class="icon"
-                  v-if="this.playToggle"
-                  src="@/assets/icons/pause.png"
-                />
-                <img class="icon" v-else src="@/assets/icons/play.png" />
-              </div>
-            </div>
-            <div class="button-wrapper">
-              <div class="playrate-button">
-                <img class="icon rotate180" src="@/assets/icons/playrate.png" />
-              </div>
-            </div>
-            <div class="button-wrapper">
-              <div class="sound-button" @click="soundMute">
-                <img
-                  class="icon"
-                  v-if="muteToggle"
-                  src="@/assets/icons/mute.png"
-                />
-                <img class="icon" v-else src="@/assets/icons/sound.png" />
-              </div>
+      <div class="team-info">
+        <div class="team__container">
+          <div class="team__card">
+            <div class="team__playerInfo">
+              <p class="playerInfo__team"></p>
+              <p class="playerInfo__name"></p>
+              <div class="playerInfo__detail"></div>
+              <img class="playerInfo__img" src="" />
             </div>
           </div>
-          <div class="video-tools__column">
-            <div class="timestamp">
-              {{ videoTimestamp }}
-            </div>
+          <div class="team__icon">
+            <p class="team__icon--name"></p>
+            <img class="team__icon--img" src="" />
           </div>
-          <div class="video-tools__column">
-            <div class="button-wrapper">
-              <div class="fullscreen-button">
-                <img
-                  class="icon icon-large2"
-                  src="@/assets/icons/full-screen.png"
-                />
-              </div>
-            </div>
-            <div class="button-wrapper">
-              <div class="setting-button">
-                <img class="icon icon-large" src="@/assets/icons/setting.png" />
-              </div>
-            </div>
+        </div>
+        <div class="team__container">
+          <div class="team__card">
+            <ul class="team__playerList">
+              <li class="playerList__player"></li>
+            </ul>
           </div>
+          <div class="team__icon">
+            <p class="team__icon--name"></p>
+            <img class="team__icon--img" src="" />
+          </div>
+        </div>
+      </div>
+      <div class="chat">
+        <div class="chat__header">
+          <p class="chat__userInfo"></p>
+          <div class="chat__invite"></div>
+        </div>
+        <div class="chat__content">
+          <div class="chat__userChat"></div>
+          <div class="chat__myChat"></div>
+        </div>
+        <div class="chat__box">
+          <div class="chat__target"></div>
+          <div class="chat__input"></div>
+          <div class="chat__send"></div>
         </div>
       </div>
     </div>
@@ -233,7 +284,7 @@
 
 <script>
 import Video from "@/components/Video.vue";
-import {getMatchInfo} from "@/api/index";
+import { getMatchInfo } from "@/api/index";
 
 export default {
   components: {
@@ -348,11 +399,11 @@ export default {
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", ev => {
+    video.addEventListener("timeupdate", (ev) => {
       // console.log(Math.round(video.currentTime));
       // console.log(
       //   this.markingPlayer[Math.round(video.currentTime)][0],
@@ -364,7 +415,7 @@ export default {
           ele["name"] == this.markingPlayer[Math.round(video.currentTime)][0]
         ) {
           console.log(ele["name"], i);
-          teamInfo[0].childNodes[0].childNodes.forEach(ele => {
+          teamInfo[0].childNodes[0].childNodes.forEach((ele) => {
             ele.style.background = "";
           });
           teamInfo[0].childNodes[0].childNodes[i + 1].style.background =
@@ -376,7 +427,7 @@ export default {
           ele["name"] == this.markingPlayer[Math.round(video.currentTime)][1]
         ) {
           console.log(ele["name"], i);
-          teamInfo[1].childNodes[0].childNodes.forEach(ele => {
+          teamInfo[1].childNodes[0].childNodes.forEach((ele) => {
             ele.style.background = "";
           });
           teamInfo[1].childNodes[0].childNodes[i + 1].style.background =
@@ -385,18 +436,17 @@ export default {
       });
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       }
     });
     // console.log(video.duration);
-    this.stageResize();
-    video.addEventListener("resize", this.stageResize);
     window.addEventListener("resize", this.stageResize);
+    this.stageResize();
     document.addEventListener("keydown", this.keydownEvent);
     document.body.style.width = "100vw";
     document.body.style.height = "100vh";
@@ -405,7 +455,7 @@ export default {
     document.body.style.margin = "0";
     document.body.style.padding = "0";
 
-    const match = {match_name: "ARG.FRA"};
+    const match = { match_name: "ARG.FRA" };
     const MatchInfo = await getMatchInfo(match);
     console.log(MatchInfo.data[0]);
 
@@ -453,21 +503,11 @@ export default {
   methods: {
     stageResize() {
       const video = document.querySelector("Video");
-      // console.log(video.clientWidth, video.clientHeight);
-      // console.dir(video);
 
-      const modal = document.getElementById("modal-wrapper");
-      // console.log(modal);
+      const modal = document.querySelector(".modal-wrapper");
 
       modal.style.width = `${video.clientWidth}px`;
       modal.style.height = `${video.clientHeight}px`;
-
-      const layout = document.getElementById("layout");
-      const posY = (layout.clientHeight - video.clientHeight) / 2;
-      const posX = (layout.clientWidth - video.clientWidth) / 2;
-      modal.style.top = `${posY}px`;
-      modal.style.left = `${posX}px`;
-      // console.log(posY, posX);
     },
     videoPlay() {
       const video = document.querySelector("Video");
@@ -540,10 +580,10 @@ export default {
               "font__white",
               "font__skyBlue",
               "font__purple",
-              "font__yellow",
+              "font__yellow"
             );
             profile[1].childNodes[0].classList.add(
-              this.class_color[this.team1[info]["class"]],
+              this.class_color[this.team1[info]["class"]]
             );
             profile[1].childNodes[0].innerText = this.team1[info]["name"];
             profile[1].childNodes[1].innerText =
@@ -580,10 +620,10 @@ export default {
               "font__white",
               "font__skyBlue",
               "font__purple",
-              "font__yellow",
+              "font__yellow"
             );
             profile[1].childNodes[0].classList.add(
-              this.class_color[this.team2[info]["class"]],
+              this.class_color[this.team2[info]["class"]]
             );
             profile[1].childNodes[0].innerText = this.team2[info]["name"];
             profile[1].childNodes[1].innerText =
@@ -662,23 +702,32 @@ div {
 } */
 /* 컨테이너 크기 설정 */
 #layout {
-  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  position: relative;
 }
-#layout > div {
-  max-width: 100vw;
-  max-height: 100vh;
-}
-#modal-wrapper {
+.background-image {
   position: absolute;
-  left: 0;
-  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modal-wrapper {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+}
+.contents-container {
+  position: relative;
+  /* width: calc(100% - 4rem);
+  height: calc(100% - 4rem); */
+  width: 1448px;
+  height: 881px;
+  background: rgba(255, 255, 255, 0.224);
+  border-radius: 1rem;
 }
 .left {
   left: 0;
@@ -700,8 +749,8 @@ div {
   align-items: center;
   justify-content: center;
   text-align: center;
-  left: 10px;
-  top: 25px;
+  left: 1rem;
+  top: 2rem;
   width: 30px;
   height: 30px;
   border-radius: 15px;
@@ -1038,6 +1087,28 @@ div {
 .button-wrapper {
   position: relative;
   margin-right: 20px;
+}
+.team-info {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  width: 72rem;
+  height: calc(881px - 43.5rem);
+  border-radius: 1rem;
+  background: #08133ac4;
+}
+.team__container {
+  width: 50%;
+  height: 100%;
+}
+.chat {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: calc(1448px - 75rem);
+  height: calc(881px - 2rem);
+  border-radius: 1rem;
+  background: #08133ac4;
 }
 .flag {
   cursor: pointer;
