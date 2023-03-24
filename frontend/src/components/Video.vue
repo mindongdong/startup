@@ -1,13 +1,11 @@
 <template>
-  <div>
+  <div class="layout" ref="videoLayout">
     <video
       id="my-player"
-      class="video-js"
       preload="auto"
       width="100%"
       height="100%"
       data-setup="{}"
-      @play="onPlay"
     >
       <source src="@/assets/video.mp4" type="video/mp4" />
     </video>
@@ -17,16 +15,11 @@
 <script>
 export default {
   data() {
-    return {
-      audioContext: null,
-      processor: null,
-      audioDataChannel: null,
-    };
+    return {};
   },
   mounted() {
     const video = document.getElementById("my-player");
     // console.dir(video);
-    this.audioContext = new AudioContext();
     video.addEventListener("pause", (ev) => {
       console.log(ev);
     });
@@ -39,7 +32,15 @@ export default {
 </script>
 
 <style scoped>
-.video-js .vjs-control-bar {
-  display: none;
+.layout {
+  width: 72rem;
+  height: 40.5rem;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  border-radius: 1rem;
+}
+#my-player {
+  border-radius: 1rem;
 }
 </style>

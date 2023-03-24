@@ -15,7 +15,7 @@ export default new Router({
       component: () => import("@/views/MainPage.vue"),
     },
     {
-      path: "/analysis",
+      path: "/viewer",
       component: () => import("@/views/VideoAnalysis"),
     },
   ],

@@ -1,39 +1,41 @@
 <template>
-  <div id="layout">
-    <Video @loadedmetadata="videoData"></Video>
-    <div id="modal-wrapper">
-      <div class="info-header">
-        <router-link to="/">
-          <div class="exit-button"></div>
-        </router-link>
-        <div class="match-winrate">
-          <div class="match-info">
-            <img
-              class="icon"
-              @click="leftArrowClick"
-              src="@/assets/icons/left-arrow.png"
-            />
-            <span>{{ data_name }}</span>
-            <span>{{ team1_name }}</span>
-            <span>{{ team2_name }}</span>
-            <img
-              class="icon"
-              @click="rightArrowClick"
-              src="@/assets/icons/right-arrow.png"
-            />
-          </div>
-          <div class="progress-bar__container">
-            <div class="progress-bar">
-              <span class="progress-bar__text">{{ team1_winrate }}</span>
+  <div id="layout" ref="fullLayout">
+    <img class="background-image" src="@/assets/background.png" />
+    <div class="contents-container">
+      <Video @loadedmetadata="videoData"></Video>
+      <div class="modal-wrapper">
+        <div class="info-header">
+          <router-link to="/">
+            <div class="exit-button"></div>
+          </router-link>
+          <div class="match-winrate">
+            <div class="match-info">
+              <img
+                class="icon"
+                @click="leftArrowClick"
+                src="@/assets/icons/left-arrow.png"
+              />
+              <span>{{ data_name }}</span>
+              <span>{{ team1_name }}</span>
+              <span>{{ team2_name }}</span>
+              <img
+                class="icon"
+                @click="rightArrowClick"
+                src="@/assets/icons/right-arrow.png"
+              />
             </div>
-            <div class="progress-bar">
-              <span class="progress-bar__text">{{ team2_winrate }}</span>
+            <div class="progress-bar__container">
+              <div class="progress-bar">
+                <span class="progress-bar__text">{{ team1_winrate }}</span>
+              </div>
+              <div class="progress-bar">
+                <span class="progress-bar__text">{{ team2_winrate }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-content">
-        <div
+        <div class="modal-content">
+          <!-- <div
           class="teaminfo-modal left"
           v-bind:class="{openBtn__left: team1_open}"
         >
@@ -173,57 +175,180 @@
               </div>
             </div>
           </div>
+        </div> -->
+        </div>
+        <div class="video-control">
+          <div class="video-progress"></div>
+          <div class="video-tools">
+            <div class="video-tools__column">
+              <div class="button-wrapper">
+                <div class="play-button" @click="videoPlay">
+                  <img
+                    class="icon"
+                    v-if="this.playToggle"
+                    src="@/assets/icons/pause.png"
+                  />
+                  <img class="icon" v-else src="@/assets/icons/play.png" />
+                </div>
+              </div>
+              <div class="button-wrapper">
+                <div class="playrate-button">
+                  <img
+                    class="icon rotate180"
+                    src="@/assets/icons/playrate.png"
+                  />
+                </div>
+              </div>
+              <div class="button-wrapper">
+                <div class="sound-button" @click="soundMute">
+                  <img
+                    class="icon"
+                    v-if="muteToggle"
+                    src="@/assets/icons/mute.png"
+                  />
+                  <img class="icon" v-else src="@/assets/icons/sound.png" />
+                </div>
+              </div>
+            </div>
+            <div class="video-tools__column">
+              <div class="timestamp">
+                {{ videoTimestamp }}
+              </div>
+            </div>
+            <div class="video-tools__column">
+              <div class="button-wrapper">
+                <div class="fullscreen-button">
+                  <img
+                    class="icon icon-large2"
+                    src="@/assets/icons/full-screen.png"
+                  />
+                </div>
+              </div>
+              <div class="button-wrapper">
+                <div class="setting-button">
+                  <img
+                    class="icon icon-large"
+                    src="@/assets/icons/setting.png"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="video-control">
-        <div class="video-progress"></div>
-        <div class="video-tools">
-          <div class="video-tools__column">
-            <div class="button-wrapper">
-              <div class="play-button" @click="videoPlay">
+      <div class="team-info">
+        <div class="team__container">
+          <div class="team__card">
+            <div class="team__playerInfo">
+              <p class="playerInfo__name">킬리안 음바페(Kylian Mbappe)</p>
+              <div class="playerInfo__detail">
+                <div class="playerInfo__detail--col">
+                  <p class="playerInfo__detailInfo">파리 생제르망(PSG)</p>
+                  <p class="playerInfo__detailInfo">프랑스</p>
+                  <p class="playerInfo__detailInfo">1998년 12월 20일</p>
+                  <p class="playerInfo__detailInfo">스트라이커(ST)</p>
+                </div>
                 <img
-                  class="icon"
-                  v-if="this.playToggle"
-                  src="@/assets/icons/pause.png"
+                  class="playerInfo__icon"
+                  src="@/assets/playerIcons/스피드 드리블러.png"
                 />
-                <img class="icon" v-else src="@/assets/icons/play.png" />
               </div>
-            </div>
-            <div class="button-wrapper">
-              <div class="playrate-button">
-                <img class="icon rotate180" src="@/assets/icons/playrate.png" />
-              </div>
-            </div>
-            <div class="button-wrapper">
-              <div class="sound-button" @click="soundMute">
-                <img
-                  class="icon"
-                  v-if="muteToggle"
-                  src="@/assets/icons/mute.png"
-                />
-                <img class="icon" v-else src="@/assets/icons/sound.png" />
-              </div>
+              <img class="playerInfo__img" src="@/assets/player/mbappe.png" />
             </div>
           </div>
-          <div class="video-tools__column">
-            <div class="timestamp">
-              {{ videoTimestamp }}
-            </div>
+          <div class="team__icon">
+            <p class="team__icon--name">프랑스</p>
+            <img class="team__icon--img" src="@/assets/flags/fra-flag.png" />
           </div>
-          <div class="video-tools__column">
-            <div class="button-wrapper">
-              <div class="fullscreen-button">
-                <img
-                  class="icon icon-large2"
-                  src="@/assets/icons/full-screen.png"
-                />
-              </div>
+        </div>
+        <div class="team__container">
+          <div class="team__icon">
+            <p class="team__icon--name">아르헨티나</p>
+            <img class="team__icon--img" src="@/assets/flags/arg-flag.png" />
+          </div>
+          <div class="team__card">
+            <ul class="team__playerList">
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="chat">
+        <div class="chat__header">
+          <p class="chat__userInfo">채팅방 참여자 : 2/5 명</p>
+          <div class="chat__invite">초대</div>
+          <div class="header__underLine"></div>
+        </div>
+        <div class="chat__content">
+          <div class="chat__userChat"></div>
+          <div class="chat__myChat"></div>
+        </div>
+        <div class="chat__box">
+          <div class="chat__target">
+            <div
+              class="chat__targetText"
+              v-bind:class="{ select: !targetToggle }"
+              @click="targetChange"
+            >
+              모두
             </div>
-            <div class="button-wrapper">
-              <div class="setting-button">
-                <img class="icon icon-large" src="@/assets/icons/setting.png" />
-              </div>
+            <div
+              class="chat__targetText"
+              v-bind:class="{ select: targetToggle }"
+              @click="targetChange(ai)"
+            >
+              AI
             </div>
+            에게
+          </div>
+          <div class="chat__input">
+            <input class="chat__text" type="text" />
+          </div>
+          <div class="chat__send">
+            <div class="chat__submit">전송</div>
           </div>
         </div>
       </div>
@@ -233,7 +358,7 @@
 
 <script>
 import Video from "@/components/Video.vue";
-import {getMatchInfo} from "@/api/index";
+import { getMatchInfo } from "@/api/index";
 
 export default {
   components: {
@@ -338,9 +463,7 @@ export default {
         },
       ],
       currentData: 0,
-      audioContext: null,
-      processor: null,
-      audioDataChannel: null,
+      targetToggle: false,
     };
   },
   async mounted() {
@@ -348,11 +471,11 @@ export default {
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", ev => {
+    video.addEventListener("timeupdate", (ev) => {
       // console.log(Math.round(video.currentTime));
       // console.log(
       //   this.markingPlayer[Math.round(video.currentTime)][0],
@@ -364,7 +487,7 @@ export default {
           ele["name"] == this.markingPlayer[Math.round(video.currentTime)][0]
         ) {
           console.log(ele["name"], i);
-          teamInfo[0].childNodes[0].childNodes.forEach(ele => {
+          teamInfo[0].childNodes[0].childNodes.forEach((ele) => {
             ele.style.background = "";
           });
           teamInfo[0].childNodes[0].childNodes[i + 1].style.background =
@@ -376,7 +499,7 @@ export default {
           ele["name"] == this.markingPlayer[Math.round(video.currentTime)][1]
         ) {
           console.log(ele["name"], i);
-          teamInfo[1].childNodes[0].childNodes.forEach(ele => {
+          teamInfo[1].childNodes[0].childNodes.forEach((ele) => {
             ele.style.background = "";
           });
           teamInfo[1].childNodes[0].childNodes[i + 1].style.background =
@@ -385,27 +508,26 @@ export default {
       });
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       }
     });
     // console.log(video.duration);
-    this.stageResize();
-    video.addEventListener("resize", this.stageResize);
     window.addEventListener("resize", this.stageResize);
+    this.stageResize();
     document.addEventListener("keydown", this.keydownEvent);
-    document.body.style.width = "100vw";
-    document.body.style.height = "100vh";
-    document.body.style.cursor = "auto";
-    document.body.style.background = "black";
-    document.body.style.margin = "0";
-    document.body.style.padding = "0";
+    // document.body.style.width = "100vw";
+    // document.body.style.height = "100vh";
+    // document.body.style.cursor = "auto";
+    // document.body.style.background = "black";
+    // document.body.style.margin = "0";
+    // document.body.style.padding = "0";
 
-    const match = {match_name: "ARG.FRA"};
+    const match = { match_name: "ARG.FRA" };
     const MatchInfo = await getMatchInfo(match);
     console.log(MatchInfo.data[0]);
 
@@ -453,21 +575,11 @@ export default {
   methods: {
     stageResize() {
       const video = document.querySelector("Video");
-      // console.log(video.clientWidth, video.clientHeight);
-      // console.dir(video);
 
-      const modal = document.getElementById("modal-wrapper");
-      // console.log(modal);
+      const modal = document.querySelector(".modal-wrapper");
 
       modal.style.width = `${video.clientWidth}px`;
       modal.style.height = `${video.clientHeight}px`;
-
-      const layout = document.getElementById("layout");
-      const posY = (layout.clientHeight - video.clientHeight) / 2;
-      const posX = (layout.clientWidth - video.clientWidth) / 2;
-      modal.style.top = `${posY}px`;
-      modal.style.left = `${posX}px`;
-      // console.log(posY, posX);
     },
     videoPlay() {
       const video = document.querySelector("Video");
@@ -540,10 +652,10 @@ export default {
               "font__white",
               "font__skyBlue",
               "font__purple",
-              "font__yellow",
+              "font__yellow"
             );
             profile[1].childNodes[0].classList.add(
-              this.class_color[this.team1[info]["class"]],
+              this.class_color[this.team1[info]["class"]]
             );
             profile[1].childNodes[0].innerText = this.team1[info]["name"];
             profile[1].childNodes[1].innerText =
@@ -580,10 +692,10 @@ export default {
               "font__white",
               "font__skyBlue",
               "font__purple",
-              "font__yellow",
+              "font__yellow"
             );
             profile[1].childNodes[0].classList.add(
-              this.class_color[this.team2[info]["class"]],
+              this.class_color[this.team2[info]["class"]]
             );
             profile[1].childNodes[0].innerText = this.team2[info]["name"];
             profile[1].childNodes[1].innerText =
@@ -636,6 +748,13 @@ export default {
       progress[1].style.width =
         this.dataList[this.currentData]["team2__percent"] + "%";
     },
+    targetChange(target) {
+      if (target) {
+        this.targetToggle = false;
+      } else {
+        this.targetToggle = true;
+      }
+    },
   },
   filters: {
     matchingDesc(iconName, description) {
@@ -652,6 +771,12 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap");
 img {
   object-fit: contain;
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 div {
   box-sizing: border-box;
@@ -662,23 +787,33 @@ div {
 } */
 /* 컨테이너 크기 설정 */
 #layout {
-  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
   overflow: hidden;
 }
-#layout > div {
-  max-width: 100vw;
-  max-height: 100vh;
-}
-#modal-wrapper {
+.background-image {
   position: absolute;
-  left: 0;
-  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modal-wrapper {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+}
+.contents-container {
+  position: relative;
+  /* width: calc(100% - 4rem);
+  height: calc(100% - 4rem); */
+  width: 1448px;
+  height: 881px;
+  background: rgba(255, 255, 255, 0.224);
+  border-radius: 1rem;
 }
 .left {
   left: 0;
@@ -700,8 +835,8 @@ div {
   align-items: center;
   justify-content: center;
   text-align: center;
-  left: 10px;
-  top: 25px;
+  left: 1rem;
+  top: 2rem;
   width: 30px;
   height: 30px;
   border-radius: 15px;
@@ -794,205 +929,6 @@ div {
   justify-content: center;
   align-items: center;
 }
-/* 팀 정보 모달 */
-.teaminfo-modal {
-  position: absolute;
-  top: 45%;
-  width: 80px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  transition: all 0.5s ease;
-}
-.open-button {
-  width: 100%;
-  height: 100%;
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  background: rgba(0, 0, 0, 0.5);
-}
-.teaminfo__lineup {
-  transition: all 0.5s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: absolute;
-  overflow-x: hidden;
-  width: 0;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 5%;
-}
-.teaminfo__player {
-  display: none;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-}
-.teaminfo__column {
-  width: 90%;
-  height: 6%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  border-bottom: 0.5px solid rgba(125, 125, 125, 0.2);
-  position: relative;
-}
-
-.teaminfo__column:hover {
-  background: rgba(181, 181, 181, 0.5);
-}
-
-.teaminfo__column:first-child:hover {
-  background: rgba(0, 0, 0, 0);
-}
-
-.teaminfo__column:first-child {
-  opacity: 0.6;
-}
-
-.teaminfo__number,
-.teaminfo__name,
-.teaminfo__position,
-.teaminfo__icon {
-  color: white;
-  display: flex;
-  align-items: center;
-  font-size: 90%;
-  padding: 1%;
-  height: 100%;
-}
-.teaminfo__number {
-  width: 20%;
-}
-.teaminfo__name {
-  width: 40%;
-}
-.teaminfo__position {
-  width: 20%;
-}
-.teaminfo__icon {
-  width: 20%;
-  justify-content: center;
-}
-.teaminfo__iconImg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.teaminfo__iconDesc {
-  background: rgba(255, 255, 255, 0.616);
-  color: black;
-  box-shadow: 0 0 5px hsla(0, 0%, 41%, 0.615);
-  font-size: 80%;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  width: 70%;
-  height: 70%;
-  border-radius: 10px;
-  position: absolute;
-  right: 0;
-  bottom: 100%;
-  display: none;
-}
-.playerinfo__modal {
-  display: none;
-  width: 35%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 30px;
-  z-index: 9998;
-  position: relative;
-}
-
-.playerinfo__modal .exit-button {
-  top: 2%;
-}
-.playerinfo__profile {
-  width: 100%;
-  height: 100%;
-}
-.profile__row {
-  width: 50%;
-  height: 100%;
-  display: flex;
-  margin-top: 5%;
-  flex-direction: column;
-  align-items: center;
-}
-.profile__img {
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
-}
-.profile__name,
-.profile__position {
-  width: 90%;
-  height: 15%;
-  font-size: 2.1rem;
-  display: flex;
-  align-items: center;
-}
-.profile__position {
-  font-size: 1.5rem;
-}
-.profile__icon,
-.profile__group,
-.profile__body,
-.profile__birth,
-.profile__foot {
-  width: 90%;
-  height: 10%;
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-}
-.profile__icon {
-  width: 90%;
-  height: 20%;
-}
-
-.profile__icon img {
-  width: 40%;
-  height: 80%;
-  object-fit: contain;
-}
-
-.profile__icon img:first-child {
-  width: 30%;
-  height: 60%;
-  margin-right: 5%;
-}
-
-.profile__column {
-  width: 100%;
-  height: 50%;
-  display: flex;
-}
-.profile__column:nth-child(2) {
-  flex-direction: column;
-  justify-items: center;
-  align-items: center;
-}
-.profile__icons {
-  width: 90%;
-  height: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.profile__icons img {
-  width: 30%;
-  height: 70%;
-  object-fit: contain;
-}
-
 /* 하단 비디오 컨트롤러 설정 */
 .video-control {
   width: 100%;
@@ -1038,6 +974,260 @@ div {
 .button-wrapper {
   position: relative;
   margin-right: 20px;
+}
+.team-info {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  width: 72rem;
+  height: calc(881px - 43.5rem);
+  border-radius: 1rem;
+  background: #08133ac4;
+  display: flex;
+}
+.team__container {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.team__card {
+  width: 75%;
+  height: calc(100% - 2rem);
+  background: rgba(56, 56, 79, 0.365);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(62, 133, 188, 0.8) 0px 1px 1px,
+    rgba(62, 133, 188, 0.8) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px,
+    rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
+}
+.team__playerInfo {
+  width: 90%;
+  height: 90%;
+  background: rgba(17, 17, 33, 0.55);
+  border-radius: 1rem;
+  position: relative;
+}
+.playerInfo__name {
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0.8rem;
+}
+.playerInfo__detail {
+  width: calc(100% - 11.5rem);
+  height: calc(100% - 3.5rem);
+  margin-left: 0.8rem;
+  background: rgba(58, 65, 123, 0.378);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+}
+.playerInfo__detail--col {
+  width: 60%;
+  height: 90%;
+}
+.playerInfo__detailInfo {
+  font-size: 0.9rem;
+}
+.playerInfo__icon {
+  width: 4rem;
+  height: 4rem;
+}
+.playerInfo__img {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 10rem;
+  height: 10rem;
+}
+.team__icon {
+  width: 15%;
+  height: 5rem;
+  border-radius: 1rem;
+  background: rgba(17, 17, 33, 0.55);
+  margin: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.team__icon--img {
+  width: 2rem;
+  height: 2rem;
+}
+.team__playerList {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+.playerList__player {
+  width: 5.5rem;
+  height: 8rem;
+  background: rgba(17, 17, 33, 0.55);
+  margin-left: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0; /* add this property to keep the width fixed */
+}
+.playerList__name {
+  width: 100%;
+  height: 10%;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 4px;
+}
+.playerList__img {
+  width: 100%;
+  height: 90%;
+  position: absolute;
+  bottom: 0;
+}
+/* Customize the scrollbar background and thickness */
+.team__playerList::-webkit-scrollbar {
+  height: 8px; /* Adjust the thickness of the scrollbar */
+}
+
+.team__playerList::-webkit-scrollbar-track {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Set the background color of the scrollbar track */
+}
+
+.team__playerList::-webkit-scrollbar-thumb {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ); /* Set the background color of the scrollbar thumb */
+  border-radius: 8px; /* Set the border radius of the scrollbar thumb */
+}
+.chat {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: calc(1448px - 75rem);
+  height: calc(881px - 2rem);
+  border-radius: 1rem;
+  background: #08133ac4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.chat__header {
+  width: 100%;
+  margin-top: 0.5rem;
+  height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.chat__userInfo {
+  width: 65%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chat__invite {
+  width: 3rem;
+  height: 1.5rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #496adf;
+}
+.header__underLine {
+  position: absolute;
+  bottom: 0;
+  width: 60%;
+  height: 1.5px;
+  background: #496adf;
+}
+.chat__content {
+  width: 100%;
+  height: calc(100% - 17rem);
+}
+.chat__box {
+  width: 90%;
+  height: 12rem;
+  background: rgba(56, 56, 79, 0.365);
+  border-radius: 1rem;
+  box-shadow: rgba(149, 149, 149, 0.24) 0px 3px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.chat__target {
+  width: 90%;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+.chat__targetText {
+  cursor: pointer;
+  width: 3.5rem;
+  height: 70%;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(38, 38, 53, 0.365);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.select {
+  background: #496adf;
+}
+.chat__input {
+  width: 90%;
+  height: 7rem;
+}
+.chat__text {
+  width: 95%;
+  height: 90%;
+  border-radius: 6px;
+  border: none;
+  vertical-align: text-top;
+  background: rgba(255, 255, 255, 0.6);
+}
+.chat__text:focus {
+  outline: none;
+}
+.chat__send {
+  width: 90%;
+  height: 2.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.chat__submit {
+  width: 4rem;
+  height: 2rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #496adf;
 }
 .flag {
   cursor: pointer;
