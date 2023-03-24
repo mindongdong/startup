@@ -318,17 +318,38 @@
       </div>
       <div class="chat">
         <div class="chat__header">
-          <p class="chat__userInfo"></p>
-          <div class="chat__invite"></div>
+          <p class="chat__userInfo">채팅방 참여자 : 2/5 명</p>
+          <div class="chat__invite">초대</div>
+          <div class="header__underLine"></div>
         </div>
         <div class="chat__content">
           <div class="chat__userChat"></div>
           <div class="chat__myChat"></div>
         </div>
         <div class="chat__box">
-          <div class="chat__target"></div>
-          <div class="chat__input"></div>
-          <div class="chat__send"></div>
+          <div class="chat__target">
+            <div
+              class="chat__targetText"
+              v-bind:class="{ select: !targetToggle }"
+              @click="targetChange"
+            >
+              모두
+            </div>
+            <div
+              class="chat__targetText"
+              v-bind:class="{ select: targetToggle }"
+              @click="targetChange(ai)"
+            >
+              AI
+            </div>
+            에게
+          </div>
+          <div class="chat__input">
+            <input class="chat__text" type="text" />
+          </div>
+          <div class="chat__send">
+            <div class="chat__submit">전송</div>
+          </div>
         </div>
       </div>
     </div>
@@ -442,9 +463,7 @@ export default {
         },
       ],
       currentData: 0,
-      audioContext: null,
-      processor: null,
-      audioDataChannel: null,
+      targetToggle: false,
     };
   },
   async mounted() {
@@ -728,6 +747,13 @@ export default {
         this.dataList[this.currentData]["team1__percent"] + "%";
       progress[1].style.width =
         this.dataList[this.currentData]["team2__percent"] + "%";
+    },
+    targetChange(target) {
+      if (target) {
+        this.targetToggle = false;
+      } else {
+        this.targetToggle = true;
+      }
     },
   },
   filters: {
@@ -1046,6 +1072,7 @@ div {
   background: rgba(17, 17, 33, 0.55);
   margin-left: 1rem;
   border-radius: 0.5rem;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1100,6 +1127,107 @@ div {
   height: calc(881px - 2rem);
   border-radius: 1rem;
   background: #08133ac4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.chat__header {
+  width: 100%;
+  margin-top: 0.5rem;
+  height: 3.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.chat__userInfo {
+  width: 65%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chat__invite {
+  width: 3rem;
+  height: 1.5rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #496adf;
+}
+.header__underLine {
+  position: absolute;
+  bottom: 0;
+  width: 60%;
+  height: 1.5px;
+  background: #496adf;
+}
+.chat__content {
+  width: 100%;
+  height: calc(100% - 17rem);
+}
+.chat__box {
+  width: 90%;
+  height: 12rem;
+  background: rgba(56, 56, 79, 0.365);
+  border-radius: 1rem;
+  box-shadow: rgba(149, 149, 149, 0.24) 0px 3px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.chat__target {
+  width: 90%;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+.chat__targetText {
+  cursor: pointer;
+  width: 3.5rem;
+  height: 70%;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(38, 38, 53, 0.365);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.select {
+  background: #496adf;
+}
+.chat__input {
+  width: 90%;
+  height: 7rem;
+}
+.chat__text {
+  width: 95%;
+  height: 90%;
+  border-radius: 6px;
+  border: none;
+  vertical-align: text-top;
+  background: rgba(255, 255, 255, 0.6);
+}
+.chat__text:focus {
+  outline: none;
+}
+.chat__send {
+  width: 90%;
+  height: 2.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.chat__submit {
+  width: 4rem;
+  height: 2rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #496adf;
 }
 .flag {
   cursor: pointer;
