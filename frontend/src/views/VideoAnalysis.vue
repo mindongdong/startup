@@ -323,8 +323,14 @@
           <div class="header__underLine"></div>
         </div>
         <div class="chat__content">
-          <div class="chat__userChat"></div>
-          <div class="chat__myChat"></div>
+          <div class="chat__userChat">
+            <span class="chat__userName">[AI 해설]</span><br /><br />
+            마르티네즈가 1대1 찬스를 맞이합니다!
+          </div>
+          <div class="chat__myChat">
+            <span class="chat__sendTarget">[AI 에게]</span><br /><br />
+            1대1 찬스가 뭐야?
+          </div>
         </div>
         <div class="chat__box">
           <div class="chat__target">
@@ -345,7 +351,7 @@
             에게
           </div>
           <div class="chat__input">
-            <input class="chat__text" type="text" />
+            <textarea class="chat__text"></textarea>
           </div>
           <div class="chat__send">
             <div class="chat__submit">전송</div>
@@ -1167,6 +1173,44 @@ div {
 .chat__content {
   width: 100%;
   height: calc(100% - 17rem);
+  padding: 1rem;
+}
+.chat__userChat,
+.chat__myChat {
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px 0 6px 0;
+  position: relative;
+  background: rgba(100, 170, 0, 0.1);
+  border: 2px solid rgba(100, 170, 0, 0.1);
+  color: #fff;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+.chat__userChat:after {
+  content: "";
+  position: absolute;
+  border: 10px solid transparent;
+  border-top: 10px solid rgba(100, 170, 0, 0.2);
+  border-right: none;
+  bottom: -22px;
+  left: 10px;
+}
+.chat__myChat:after {
+  content: "";
+  position: absolute;
+  border: 10px solid transparent;
+  border-top: 10px solid rgba(100, 170, 0, 0.2);
+  border-right: none;
+  bottom: -22px;
+  right: 10px;
+}
+.chat__userName {
+  font-size: 1rem;
+  color: #e76f51;
+}
+.chat__sendTarget {
+  font-size: 1rem;
+  color: #6e8bf4;
 }
 .chat__box {
   width: 90%;
@@ -1201,14 +1245,20 @@ div {
 .chat__input {
   width: 90%;
   height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
 }
 .chat__text {
-  width: 95%;
+  resize: none;
+  overflow: auto;
+  min-height: 1rem;
+  width: 90%;
   height: 90%;
-  border-radius: 6px;
   border: none;
-  vertical-align: text-top;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0);
+  font-size: 1rem;
 }
 .chat__text:focus {
   outline: none;
