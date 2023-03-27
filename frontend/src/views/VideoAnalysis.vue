@@ -323,13 +323,20 @@
           <div class="header__underLine"></div>
         </div>
         <div class="chat__content">
-          <div class="chat__userChat">
-            <span class="chat__userName">[AI 해설]</span><br /><br />
-            마르티네즈가 1대1 찬스를 맞이합니다!
-          </div>
-          <div class="chat__myChat">
-            <span class="chat__sendTarget">[AI 에게]</span><br /><br />
-            1대1 찬스가 뭐야?
+          <div
+            class="chat__liveChat"
+            v-for="(message, idx) in messages"
+            :key="idx"
+          >
+            <div class="chat__userChat" v-if="message.user != 'Me'">
+              <span class="chat__userName">[AI 해설]</span><br /><br />
+              마르티네즈가 1대1 찬스를 맞이합니다!
+            </div>
+            <div class="chat__myChat" v-else>
+              <span class="chat__sendTarget">[{{ message.user }}]</span
+              ><br /><br />
+              {{ message.text }}
+            </div>
           </div>
         </div>
         <div class="chat__box">
@@ -351,10 +358,14 @@
             에게
           </div>
           <div class="chat__input">
-            <textarea class="chat__text"></textarea>
+            <textarea
+              class="chat__text"
+              v-model="newMessage"
+              @keydown.enter.prevent="sendMessage"
+            ></textarea>
           </div>
           <div class="chat__send">
-            <div class="chat__submit">전송</div>
+            <div class="chat__submit" @click="sendMessage">전송</div>
           </div>
         </div>
       </div>
@@ -365,6 +376,7 @@
 <script>
 import Video from "@/components/Video.vue";
 import { getMatchInfo } from "@/api/index";
+import { io } from "socket.io-client";
 
 export default {
   components: {
@@ -470,9 +482,20 @@ export default {
       ],
       currentData: 0,
       targetToggle: false,
+      messages: [], // Store messages
+      newMessage: "", // User input for new message
+      socket: null, // WebSocket connection
     };
   },
   async mounted() {
+    // Initialize WebSocket connection
+    this.socket = io("http://localhost:3000");
+
+    // Add received message to messages array
+    this.socket.on("message", (message) => {
+      this.messages.push(message);
+    });
+
     const video = document.querySelector("Video");
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
@@ -759,6 +782,19 @@ export default {
         this.targetToggle = false;
       } else {
         this.targetToggle = true;
+      }
+    },
+    sendMessage(ev) {
+      console.log(ev);
+      if (!ev.isComposing) {
+        // Check if message is not empty
+        if (this.newMessage.trim() !== "") {
+          this.socket.emit("message", {
+            user: "Me",
+            text: this.newMessage.trim(),
+          });
+          this.newMessage = "";
+        }
       }
     },
   },
@@ -1174,6 +1210,7 @@ div {
   width: 100%;
   height: calc(100% - 17rem);
   padding: 1rem;
+  overflow-y: scroll;
 }
 .chat__userChat,
 .chat__myChat {
@@ -1191,7 +1228,7 @@ div {
   position: absolute;
   border: 10px solid transparent;
   border-top: 10px solid rgba(100, 170, 0, 0.2);
-  border-right: none;
+  border-left: none;
   bottom: -22px;
   left: 10px;
 }
@@ -1249,6 +1286,7 @@ div {
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.6);
+  border-radius: 0.6rem;
 }
 .chat__text {
   resize: none;
@@ -1259,6 +1297,7 @@ div {
   border: none;
   background: rgba(0, 0, 0, 0);
   font-size: 1rem;
+  border-radius: 1rem;
 }
 .chat__text:focus {
   outline: none;
@@ -1268,10 +1307,11 @@ div {
   height: 2.5rem;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 .chat__submit {
-  width: 4rem;
-  height: 2rem;
+  width: 3.5rem;
+  height: 1.5rem;
   border-radius: 0.4rem;
   cursor: pointer;
   display: flex;
