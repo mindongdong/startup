@@ -357,7 +357,7 @@
 </template>
 
 <script>
-import Video from "@/components/Video.vue";
+import Video from "@/components/video.vue";
 import { getMatchInfo } from "@/api/index";
 
 export default {
