@@ -323,10 +323,6 @@
           <div class="header__underLine"></div>
         </div>
         <div class="chat__content">
-          <div class="chat__userChat">
-            <span class="chat__userName">[AI 해설]</span><br /><br />
-            <p>마르티네즈가 1대1 찬스를 맞이합니다!</p>
-          </div>
           <div
             class="chat__liveChat"
             v-for="(message, idx) in messages"
@@ -334,7 +330,7 @@
           >
             <div class="chat__userChat" v-if="message.user != 'Me'">
               <span class="chat__userName">[AI 해설]</span><br /><br />
-              <p>마르티네즈가 1대1 찬스를 맞이합니다!</p>
+              <p>{{ message.text }}</p>
             </div>
             <div class="chat__myChat" v-else>
               <span class="chat__sendTarget">[{{ message.user }}]</span
@@ -450,23 +446,6 @@ export default {
         2: "font__purple",
         3: "font__yellow",
       },
-      markingPlayer: [
-        ["L. 메시", "H. 요리스"],
-        ["S. 아궤로", "N. 캉테"],
-        ["S. 아궤로", "N. 캉테"],
-        ["S. 아궤로", "N. 캉테"],
-        ["S. 아궤로", "N. 캉테"],
-        ["S. 아궤로", "N. 캉테"],
-        ["N. 오타멘디", "A. 그리즈만"],
-        ["E. 바네가", "B. 마튀이디"],
-        ["E. 바네가", "B. 마튀이디"],
-        ["E. 바네가", "B. 마튀이디"],
-        ["N. 탈리아피코", "O. 지루"],
-        ["N. 탈리아피코", "O. 지루"],
-        ["F. 파지오", "K. 음바페"],
-        ["F. 파지오", "K. 음바페"],
-        [],
-      ],
       dataList: [
         {
           name: "승리 확률",
@@ -485,7 +464,7 @@ export default {
         },
       ],
       currentData: 0,
-      targetToggle: false,
+      targetToggle: true,
       messages: [], // Store messages
       newMessage: "", // User input for new message
       socket: null, // WebSocket connection
@@ -810,10 +789,15 @@ export default {
       if (!ev.isComposing) {
         // Check if message is not empty
         if (this.newMessage.trim() !== "") {
-          this.socket.emit("message", {
+          // this.socket.emit("message", {
+          //   user: "Me",
+          //   text: this.newMessage.trim(),
+          // });
+          this.messages.push({
             user: "Me",
             text: this.newMessage.trim(),
           });
+          this.socket.emit("message", this.messages);
           this.newMessage = "";
         }
       }
@@ -1237,6 +1221,7 @@ div {
   padding: 1rem;
   overflow-x: hidden;
   overflow-y: auto;
+  direction: ltr;
 }
 /* Customize the scrollbar background and thickness */
 .chat__content::-webkit-scrollbar {
@@ -1273,8 +1258,8 @@ div {
   background: rgba(100, 170, 0, 0.1);
   border: 2px solid rgba(100, 170, 0, 0.1);
   color: #fff;
-  font-size: 0.8rem;
-  line-height: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.1rem;
   margin-bottom: 1.5rem;
 }
 .chat__myChat {
@@ -1333,6 +1318,9 @@ div {
   align-items: center;
   background: rgba(38, 38, 53, 0.365);
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.chat__targetText:last-child {
+  margin-right: 0.5rem;
 }
 .select {
   background: #496adf;
