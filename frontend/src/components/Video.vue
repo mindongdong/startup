@@ -1,5 +1,6 @@
 <template>
-  <div class="layout" ref="videoLayout1">
+  <div class="layout" ref="videoLayout">
+    <input type="file" @change="onFileSelected" accept="video/*" />
     <br />
     <ul class="playerBox__list" ref="playerBox">
       <li class="playerBox__item"></li>
@@ -41,7 +42,9 @@ import axios from "axios";
 export default {
   data() {
     return {
-      videoURL: require("@/assets/1280720.mp4"),
+      selectedFile: null,
+      videoURL: null,
+      isVideoValid: false,
       intervalID: null,
       videoPlayer: null,
       videoPlayer2: null,
@@ -51,12 +54,17 @@ export default {
   mounted() {
     this.videoPlayer = this.$refs.videoPlayer;
     this.videoPlayer2 = this.$refs.videoPlayer2;
-
-    this.intervalID = setInterval(() => {
-      this.analyzeFrame();
-    }, 34);
   },
   methods: {
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0];
+      this.videoURL = URL.createObjectURL(this.selectedFile);
+      this.isVideoValid = true;
+
+      this.intervalID = setInterval(() => {
+        this.analyzeFrame();
+      }, 34);
+    },
     analyzeFrame() {
       if (!this.isVideoValid) {
         return;
@@ -131,7 +139,7 @@ export default {
                       }
                     }
                   } else {
-                    video2.currentTime = video.currentTime;
+                    video.currentTime = video2.currentTime;
                     video2.pause();
                   }
                 }
@@ -182,14 +190,12 @@ export default {
   opacity: 0;
   top: 0;
   left: 0;
-  z-index: 9996;
 }
 #video2 {
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 9997;
 }
 ul {
   list-style: none;
