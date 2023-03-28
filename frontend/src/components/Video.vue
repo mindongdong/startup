@@ -6,8 +6,10 @@
       width="100%"
       height="100%"
       data-setup="{}"
+      autoplay
     >
-      <source src="@/assets/video.mp4" type="video/mp4" />
+      <!-- <source src="@/assets/video.mp4" type="video/mp4" /> -->
+      <source src="http://localhost:3000/video" type="video/mp4" />
     </video>
   </div>
 </template>

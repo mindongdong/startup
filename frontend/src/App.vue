@@ -140,6 +140,20 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+html,
+body,
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre {
+  word-break: break-all;
+}
 #app {
   width: 100vw;
   height: 100vh;

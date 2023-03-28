@@ -323,6 +323,10 @@
           <div class="header__underLine"></div>
         </div>
         <div class="chat__content">
+          <div class="chat__userChat">
+            <span class="chat__userName">[AI 해설]</span><br /><br />
+            <p>마르티네즈가 1대1 찬스를 맞이합니다!</p>
+          </div>
           <div
             class="chat__liveChat"
             v-for="(message, idx) in messages"
@@ -330,12 +334,12 @@
           >
             <div class="chat__userChat" v-if="message.user != 'Me'">
               <span class="chat__userName">[AI 해설]</span><br /><br />
-              마르티네즈가 1대1 찬스를 맞이합니다!
+              <p>마르티네즈가 1대1 찬스를 맞이합니다!</p>
             </div>
             <div class="chat__myChat" v-else>
               <span class="chat__sendTarget">[{{ message.user }}]</span
               ><br /><br />
-              {{ message.text }}
+              <p>{{ message.text }}</p>
             </div>
           </div>
         </div>
@@ -384,7 +388,7 @@ export default {
   },
   data() {
     return {
-      playToggle: false,
+      playToggle: true,
       muteToggle: false,
       team1OpenToggle: false,
       team2OpenToggle: true,
@@ -499,6 +503,23 @@ export default {
     const video = document.querySelector("Video");
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
+
+    // this.socket.on("video-data", data => {
+    //   const mediaSource = new MediaSource();
+    //   video.src = URL.createObjectURL(mediaSource);
+
+    //   mediaSource.addEventListener("sourceopen", () => {
+    //     const sourceBuffer = mediaSource.addSourceBuffer(
+    //       'video/mp4; codecs="avc1.42E01E, mp4a.40.2"',
+    //     );
+
+    //     sourceBuffer.appendBuffer(data);
+
+    //     sourceBuffer.addEventListener("updateend", () => {
+    //       mediaSource.endOfStream();
+    //     });
+    //   });
+    // });
 
     video.addEventListener("ended", (ev) => {
       // console.log(ev);
@@ -1070,9 +1091,13 @@ div {
 .playerInfo__detail--col {
   width: 60%;
   height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .playerInfo__detailInfo {
-  font-size: 0.9rem;
+  margin-left: 0.4rem;
+  font-size: 0.8rem;
 }
 .playerInfo__icon {
   width: 4rem;
@@ -1210,17 +1235,50 @@ div {
   width: 100%;
   height: calc(100% - 17rem);
   padding: 1rem;
-  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+/* Customize the scrollbar background and thickness */
+.chat__content::-webkit-scrollbar {
+  width: 8px; /* Adjust the thickness of the scrollbar */
+}
+
+.chat__content::-webkit-scrollbar-track {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Set the background color of the scrollbar track */
+}
+
+.chat__content::-webkit-scrollbar-thumb {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ); /* Set the background color of the scrollbar thumb */
+  border-radius: 8px; /* Set the border radius of the scrollbar thumb */
 }
 .chat__userChat,
 .chat__myChat {
+  position: relative;
+  box-sizing: border-box;
+  min-height: 3rem;
+  width: fit-content;
+  max-width: 100%;
   padding: 0.5rem 0.8rem;
   border-radius: 6px 0 6px 0;
-  position: relative;
   background: rgba(100, 170, 0, 0.1);
   border: 2px solid rgba(100, 170, 0, 0.1);
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  line-height: 1rem;
+  margin-bottom: 1.5rem;
+}
+.chat__myChat {
+  margin: 0 0 0 auto;
   margin-bottom: 1.5rem;
 }
 .chat__userChat:after {

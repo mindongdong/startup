@@ -5,7 +5,7 @@
       <li class="playlist__item" @click="goToViewer">
         <div class="playlist__contentBox">
           <img class="playlist__thumnail" src="@/assets/content_1.jpeg" />
-          <p class="playlist__time">00:16:00</p>
+          <p class="playlist__time">00:00:14</p>
         </div>
         <div class="playlist__text">
           <p class="playlist__title">[2018 WC] FRANCE VS ARGENTINA</p>
@@ -14,7 +14,7 @@
       <li class="playlist__item" @click="goToViewer">
         <div class="playlist__contentBox">
           <img class="playlist__thumnail" src="@/assets/content_1.jpeg" />
-          <p class="playlist__time">00:16:00</p>
+          <p class="playlist__time">00:00:14</p>
         </div>
         <div class="playlist__text">
           <p class="playlist__title">[2018 WC] FRANCE VS ARGENTINA</p>
@@ -23,7 +23,7 @@
       <li class="playlist__item" @click="goToViewer">
         <div class="playlist__contentBox">
           <img class="playlist__thumnail" src="@/assets/content_1.jpeg" />
-          <p class="playlist__time">00:16:00</p>
+          <p class="playlist__time">00:00:14</p>
         </div>
         <div class="playlist__text">
           <p class="playlist__title">[2018 WC] FRANCE VS ARGENTINA</p>
