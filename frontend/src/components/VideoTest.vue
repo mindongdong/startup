@@ -1,6 +1,5 @@
 <template>
   <div class="layout" ref="videoLayout1">
-    <br />
     <ul class="playerBox__list" ref="playerBox">
       <li class="playerBox__item"></li>
       <li class="playerBox__item"></li>
@@ -25,11 +24,18 @@
       <li class="playerBox__item"></li>
       <li class="playerBox__item"></li>
     </ul>
-    <canvas id="canvas"> </canvas>
+    <canvas id="canvas"></canvas>
     <video id="video2" v-if="videoURL" ref="videoPlayer2">
       <source :src="videoURL" type="video/mp4" />
     </video>
-    <video muted id="video" v-if="videoURL" ref="videoPlayer" controls>
+    <video
+      muted
+      id="video"
+      v-if="videoURL"
+      ref="videoPlayer"
+      @loadedmetadata="analyzeStart"
+      controls
+    >
       <source :src="videoURL" type="video/mp4" />
     </video>
   </div>
@@ -51,30 +57,30 @@ export default {
   mounted() {
     this.videoPlayer = this.$refs.videoPlayer;
     this.videoPlayer2 = this.$refs.videoPlayer2;
-
-    this.intervalID = setInterval(() => {
-      this.analyzeFrame();
-    }, 34);
   },
   methods: {
+    analyzeStart() {
+      this.intervalID = setInterval(() => {
+        this.analyzeFrame();
+      }, 100);
+    },
     analyzeFrame() {
-      if (!this.isVideoValid) {
-        return;
-      }
-
+      // if (!this.isVideoValid) {
+      //   return;
+      // }
       const video = this.$refs.videoPlayer;
       const video2 = this.$refs.videoPlayer2;
       const canvas = document.getElementById("canvas");
+      const playerBox_list = document.querySelectorAll(".playerBox__item");
+      const playerBox = this.$refs.playerBox;
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       const startTime = new Date();
-      var predictions = {};
-      const playerBox = this.$refs.playerBox;
+      let predictions = {};
       playerBox.width = video.width;
       playerBox.height = video.height;
-      const playerBox_list = document.querySelectorAll(".playerBox__item");
       canvas.toBlob(
         (blob) => {
           const reader = new FileReader();
@@ -97,7 +103,7 @@ export default {
                 const endTime = new Date();
                 const elapsedTime = endTime - startTime;
                 console.log(`작업 시간: ${elapsedTime}ms`);
-                if (elapsedTime < 500) {
+                if (elapsedTime < 1000) {
                   console.log(response.data);
                   predictions = response.data["predictions"];
                   for (var i = 0; i < 22; i++) {
@@ -125,8 +131,8 @@ export default {
                   }
                   if (!video.paused) {
                     if (video2.paused) {
-                      if (video.currentTime >= 0.35) {
-                        video2.currentTime = video.currentTime - 0.35;
+                      if (video.currentTime >= 0.5) {
+                        video2.currentTime = video.currentTime - 0.5;
                         video2.play();
                       }
                     }
@@ -182,14 +188,14 @@ export default {
   opacity: 0;
   top: 0;
   left: 0;
-  z-index: 9996;
+  z-index: 9999;
 }
 #video2 {
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 9997;
+  z-index: 15;
 }
 ul {
   list-style: none;

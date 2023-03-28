@@ -2,7 +2,8 @@
   <div id="layout" ref="fullLayout">
     <img class="background-image" src="@/assets/background.png" />
     <div class="contents-container">
-      <Video @loadedmetadata="videoData"></Video>
+      <!-- <Video @loadedmetadata="videoData"></Video> -->
+      <VideoTest @loadedmetadata="videoData"></VideoTest>
       <div class="modal-wrapper">
         <div class="info-header">
           <router-link to="/">
@@ -330,14 +331,14 @@
           <div class="chat__target">
             <div
               class="chat__targetText"
-              v-bind:class="{ select: !targetToggle }"
+              v-bind:class="{select: !targetToggle}"
               @click="targetChange"
             >
               모두
             </div>
             <div
               class="chat__targetText"
-              v-bind:class="{ select: targetToggle }"
+              v-bind:class="{select: targetToggle}"
               @click="targetChange(ai)"
             >
               AI
@@ -357,12 +358,14 @@
 </template>
 
 <script>
-import Video from "@/components/video.vue";
-import { getMatchInfo } from "@/api/index";
+// import Video from "@/components/Video.vue";
+import VideoTest from "@/components/VideoTest.vue";
+import {getMatchInfo} from "@/api/index";
 
 export default {
   components: {
-    Video,
+    // Video,
+    VideoTest,
   },
   data() {
     return {
@@ -471,11 +474,11 @@ export default {
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
 
-    video.addEventListener("ended", (ev) => {
+    video.addEventListener("ended", ev => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", (ev) => {
+    video.addEventListener("timeupdate", ev => {
       // console.log(Math.round(video.currentTime));
       // console.log(
       //   this.markingPlayer[Math.round(video.currentTime)][0],
@@ -487,7 +490,7 @@ export default {
           ele["name"] == this.markingPlayer[Math.round(video.currentTime)][0]
         ) {
           console.log(ele["name"], i);
-          teamInfo[0].childNodes[0].childNodes.forEach((ele) => {
+          teamInfo[0].childNodes[0].childNodes.forEach(ele => {
             ele.style.background = "";
           });
           teamInfo[0].childNodes[0].childNodes[i + 1].style.background =
@@ -499,7 +502,7 @@ export default {
           ele["name"] == this.markingPlayer[Math.round(video.currentTime)][1]
         ) {
           console.log(ele["name"], i);
-          teamInfo[1].childNodes[0].childNodes.forEach((ele) => {
+          teamInfo[1].childNodes[0].childNodes.forEach(ele => {
             ele.style.background = "";
           });
           teamInfo[1].childNodes[0].childNodes[i + 1].style.background =
@@ -508,11 +511,11 @@ export default {
       });
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       }
     });
@@ -527,7 +530,7 @@ export default {
     // document.body.style.margin = "0";
     // document.body.style.padding = "0";
 
-    const match = { match_name: "ARG.FRA" };
+    const match = {match_name: "ARG.FRA"};
     const MatchInfo = await getMatchInfo(match);
     console.log(MatchInfo.data[0]);
 
@@ -652,10 +655,10 @@ export default {
               "font__white",
               "font__skyBlue",
               "font__purple",
-              "font__yellow"
+              "font__yellow",
             );
             profile[1].childNodes[0].classList.add(
-              this.class_color[this.team1[info]["class"]]
+              this.class_color[this.team1[info]["class"]],
             );
             profile[1].childNodes[0].innerText = this.team1[info]["name"];
             profile[1].childNodes[1].innerText =
@@ -692,10 +695,10 @@ export default {
               "font__white",
               "font__skyBlue",
               "font__purple",
-              "font__yellow"
+              "font__yellow",
             );
             profile[1].childNodes[0].classList.add(
-              this.class_color[this.team2[info]["class"]]
+              this.class_color[this.team2[info]["class"]],
             );
             profile[1].childNodes[0].innerText = this.team2[info]["name"];
             profile[1].childNodes[1].innerText =
