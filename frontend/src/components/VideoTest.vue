@@ -25,7 +25,7 @@
       <li class="playerBox__item"></li>
     </ul>
     <canvas id="canvas"></canvas>
-    <video id="video2" v-if="videoURL" ref="videoPlayer2">
+    <video muted id="video2" v-if="videoURL" ref="videoPlayer2">
       <source :src="videoURL" type="video/mp4" />
     </video>
     <video
@@ -62,7 +62,7 @@ export default {
     analyzeStart() {
       this.intervalID = setInterval(() => {
         this.analyzeFrame();
-      }, 100);
+      }, 150);
     },
     analyzeFrame() {
       // if (!this.isVideoValid) {
@@ -117,8 +117,7 @@ export default {
                         (prediction.x - (prediction.width * 1.1) / 2) * kx +
                         "px";
                       playerBox_list[i].style.top =
-                        (prediction.y - (prediction.height * 1.1) / 2) * ky -
-                        20 +
+                        (prediction.y - (prediction.height * 1.1) / 2) * ky +
                         "px";
                       playerBox_list[i].style.width =
                         prediction.width * 1.2 * kx + "px";
@@ -181,6 +180,7 @@ export default {
 }
 .playerBox__item:hover {
   border: 2px solid red;
+  z-index: 9999;
 }
 #video {
   width: 100%;
