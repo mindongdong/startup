@@ -1,35 +1,25 @@
 <template>
   <div class="layout" ref="videoLayout">
-    <video
-      id="my-player"
-      preload="auto"
-      width="100%"
-      height="100%"
-      data-setup="{}"
-      autoplay
-    >
-      <!-- <source src="@/assets/video.mp4" type="video/mp4" /> -->
-      <source src="http://localhost:3000/video" type="video/mp4" />
-    </video>
+    <Stream></Stream>
+    <Analyze></Analyze>
+    <Wrapper></Wrapper>
   </div>
 </template>
 
 <script>
+import Stream from "@/components/Stream.vue";
+import Analyze from "@/components/Analyze.vue";
+import Wrapper from "@/components/VideoWrapper.vue";
+
 export default {
+  components: {
+    Stream,
+    Analyze,
+    Wrapper,
+  },
   data() {
     return {};
   },
-  mounted() {
-    const video = document.getElementById("my-player");
-    // console.dir(video);
-    video.addEventListener("pause", (ev) => {
-      console.log(ev);
-    });
-    video.addEventListener("ended", (ev) => {
-      console.log(ev);
-    });
-  },
-  methods: {},
 };
 </script>
 
@@ -40,9 +30,6 @@ export default {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  border-radius: 1rem;
-}
-#my-player {
   border-radius: 1rem;
 }
 </style>
