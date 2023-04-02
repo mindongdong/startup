@@ -1,241 +1,8 @@
 <template>
-  <div id="layout" ref="fullLayout">
+  <div id="layout">
     <img class="background-image" src="@/assets/background.png" />
     <div class="contents-container">
-      <Video @loadedmetadata="videoData"></Video>
-      <div class="modal-wrapper">
-        <div class="info-header">
-          <router-link to="/">
-            <div class="exit-button"></div>
-          </router-link>
-          <div class="match-winrate">
-            <div class="match-info">
-              <img
-                class="icon"
-                @click="leftArrowClick"
-                src="@/assets/icons/left-arrow.png"
-              />
-              <span>{{ data_name }}</span>
-              <span>{{ team1_name }}</span>
-              <span>{{ team2_name }}</span>
-              <img
-                class="icon"
-                @click="rightArrowClick"
-                src="@/assets/icons/right-arrow.png"
-              />
-            </div>
-            <div class="progress-bar__container">
-              <div class="progress-bar">
-                <span class="progress-bar__text">{{ team1_winrate }}</span>
-              </div>
-              <div class="progress-bar">
-                <span class="progress-bar__text">{{ team2_winrate }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-content">
-          <!-- <div
-          class="teaminfo-modal left"
-          v-bind:class="{openBtn__left: team1_open}"
-        >
-          <div class="open-button" @click="openTeam1Modal">
-            <div class="team-icon">
-              <img class="flag" src="@/assets/flags/arg-flag.png" />
-            </div>
-            <div class="open-icon">
-              <img
-                class="icon"
-                v-bind:class="{rotate180: team1_open}"
-                src="@/assets/icons/right-double-arrow.png"
-              />
-            </div>
-          </div>
-        </div>
-        <div
-          class="teaminfo-modal right"
-          v-bind:class="{openBtn__right: team2_open}"
-        >
-          <div class="open-button" @click="openTeam2Modal">
-            <div class="open-icon">
-              <img
-                class="icon rotate180"
-                v-bind:class="{rotate360: team2_open}"
-                src="@/assets/icons/right-double-arrow.png"
-              />
-            </div>
-            <div class="team-icon">
-              <img class="flag" src="@/assets/flags/fra-flag.png" />
-            </div>
-          </div>
-        </div>
-        <div class="teaminfo__lineup left" v-bind:class="{open: team1_open}">
-          <ul class="teaminfo__player" v-bind:class="{open__show: team1_open}">
-            <li class="teaminfo__column">
-              <div class="teaminfo__number">번호</div>
-              <div class="teaminfo__name">이름</div>
-              <div class="teaminfo__position">포지션</div>
-              <div class="teaminfo__icon">특성</div>
-            </li>
-            <li
-              class="teaminfo__column"
-              v-for="(player, idx) in team1"
-              :key="idx"
-              @click="clickPlayer"
-            >
-              <div class="teaminfo__number">{{ player.number }}</div>
-              <div class="teaminfo__name">{{ player.name }}</div>
-              <div class="teaminfo__position">{{ player.position }}</div>
-              <div class="teaminfo__icon">
-                <img
-                  class="teaminfo__iconImg"
-                  @mouseover="openDesc"
-                  @mouseleave="closeDesc"
-                  :src="
-                    require('@/assets/playerIcons/' +
-                      `${player.icon1}` +
-                      '.png')
-                  "
-                />
-                <div class="teaminfo__iconDesc">
-                  {{ player.icon1 | matchingDesc(icon_description) }}
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="teaminfo__lineup right" v-bind:class="{open: team2_open}">
-          <ul class="teaminfo__player" v-bind:class="{open__show: team2_open}">
-            <li class="teaminfo__column">
-              <div class="teaminfo__number">번호</div>
-              <div class="teaminfo__name">이름</div>
-              <div class="teaminfo__position">포지션</div>
-              <div class="teaminfo__icon">특성</div>
-            </li>
-            <li
-              class="teaminfo__column"
-              v-for="(player, idx) in team2"
-              :key="idx"
-              @click="clickPlayer"
-            >
-              <div class="teaminfo__number">{{ player.number }}</div>
-              <div class="teaminfo__name">{{ player.name }}</div>
-              <div class="teaminfo__position">{{ player.position }}</div>
-              <div class="teaminfo__icon">
-                <img
-                  class="teaminfo__iconImg"
-                  @mouseover="openDesc"
-                  @mouseleave="closeDesc"
-                  :src="
-                    require('@/assets/playerIcons/' +
-                      `${player.icon1}` +
-                      '.png')
-                  "
-                />
-                <div class="teaminfo__iconDesc">
-                  {{ player.icon1 | matchingDesc(icon_description) }}
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div
-          class="playerinfo__modal"
-          v-bind:class="{open__show: playerInfo_open}"
-        >
-          <div class="exit-button" @click="playerInfo__toggle"></div>
-          <div class="playerinfo__profile">
-            <div class="profile__column">
-              <div class="profile__row">
-                <img class="profile__img" src="" />
-              </div>
-              <div class="profile__row">
-                <div class="profile__name"></div>
-                <div class="profile__position"></div>
-                <div class="profile__group"></div>
-                <div class="profile__icon">
-                  <img src="" />
-                  <img src="" />
-                </div>
-                <div class="profile__birth"></div>
-                <div class="profile__body"></div>
-                <div class="profile__foot"></div>
-              </div>
-            </div>
-            <div class="profile__column">
-              <div class="profile__icons">
-                <img src="" />
-                <img src="" />
-                <img src="" />
-              </div>
-              <div class="profile__icons">
-                <img src="" />
-                <img src="" />
-                <img src="" />
-              </div>
-            </div>
-          </div>
-        </div> -->
-        </div>
-        <div class="video-control">
-          <div class="video-progress"></div>
-          <div class="video-tools">
-            <div class="video-tools__column">
-              <div class="button-wrapper">
-                <div class="play-button" @click="videoPlay">
-                  <img
-                    class="icon"
-                    v-if="this.playToggle"
-                    src="@/assets/icons/pause.png"
-                  />
-                  <img class="icon" v-else src="@/assets/icons/play.png" />
-                </div>
-              </div>
-              <div class="button-wrapper">
-                <div class="playrate-button">
-                  <img
-                    class="icon rotate180"
-                    src="@/assets/icons/playrate.png"
-                  />
-                </div>
-              </div>
-              <div class="button-wrapper">
-                <div class="sound-button" @click="soundMute">
-                  <img
-                    class="icon"
-                    v-if="muteToggle"
-                    src="@/assets/icons/mute.png"
-                  />
-                  <img class="icon" v-else src="@/assets/icons/sound.png" />
-                </div>
-              </div>
-            </div>
-            <div class="video-tools__column">
-              <div class="timestamp">
-                {{ videoTimestamp }}
-              </div>
-            </div>
-            <div class="video-tools__column">
-              <div class="button-wrapper">
-                <div class="fullscreen-button">
-                  <img
-                    class="icon icon-large2"
-                    src="@/assets/icons/full-screen.png"
-                  />
-                </div>
-              </div>
-              <div class="button-wrapper">
-                <div class="setting-button">
-                  <img
-                    class="icon icon-large"
-                    src="@/assets/icons/setting.png"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Video></Video>
       <div class="team-info">
         <div class="team__container">
           <div class="team__card">
@@ -343,14 +110,14 @@
           <div class="chat__target">
             <div
               class="chat__targetText"
-              v-bind:class="{ select: !targetToggle }"
+              v-bind:class="{select: !targetToggle}"
               @click="targetChange"
             >
               모두
             </div>
             <div
               class="chat__targetText"
-              v-bind:class="{ select: targetToggle }"
+              v-bind:class="{select: targetToggle}"
               @click="targetChange(ai)"
             >
               AI
@@ -375,8 +142,8 @@
 
 <script>
 import Video from "@/components/Video.vue";
-import { getMatchInfo } from "@/api/index";
-import { io } from "socket.io-client";
+import {getMatchInfo} from "@/api/index";
+import {io} from "socket.io-client";
 
 export default {
   components: {
@@ -384,22 +151,6 @@ export default {
   },
   data() {
     return {
-      playToggle: true,
-      muteToggle: false,
-      team1OpenToggle: false,
-      team2OpenToggle: true,
-      team1_open: false,
-      team2_open: false,
-      iconDesc_open: false,
-      playerInfo_open: false,
-      videoTimestamp: "00:00 / 00:00",
-      data_name: "승리확률",
-      team1_name: "아르헨티나",
-      team2_name: "프랑스",
-      team1_winrate: 38,
-      team2_winrate: 62,
-      team1: [],
-      team2: [],
       icon_description: {
         "주발 선호": "약한 발을 잘 사용하지 않습니다",
         "예리한 감아차기": "감아차기에 능숙합니다",
@@ -440,30 +191,6 @@ export default {
         ST: "스트라이커",
         CF: "중앙 공격수",
       },
-      class_color: {
-        0: "font__white",
-        1: "font__skyBlue",
-        2: "font__purple",
-        3: "font__yellow",
-      },
-      dataList: [
-        {
-          name: "승리 확률",
-          team1__percent: 42,
-          team2__percent: 58,
-        },
-        {
-          name: "점유율",
-          team1__percent: 60,
-          team2__percent: 40,
-        },
-        {
-          name: "볼 경합 성공률",
-          team1__percent: 52,
-          team2__percent: 48,
-        },
-      ],
-      currentData: 0,
       targetToggle: true,
       messages: [], // Store messages
       newMessage: "", // User input for new message
@@ -475,308 +202,37 @@ export default {
     this.socket = io("http://localhost:3000");
 
     // Add received message to messages array
-    this.socket.on("message", (message) => {
+    this.socket.on("message", message => {
       this.messages.push(message);
     });
 
     const video = document.querySelector("Video");
-    // console.dir(video);
-    // console.log(video.clientWidth, video.clientHeight);
 
-    // this.socket.on("video-data", data => {
-    //   const mediaSource = new MediaSource();
-    //   video.src = URL.createObjectURL(mediaSource);
-
-    //   mediaSource.addEventListener("sourceopen", () => {
-    //     const sourceBuffer = mediaSource.addSourceBuffer(
-    //       'video/mp4; codecs="avc1.42E01E, mp4a.40.2"',
-    //     );
-
-    //     sourceBuffer.appendBuffer(data);
-
-    //     sourceBuffer.addEventListener("updateend", () => {
-    //       mediaSource.endOfStream();
-    //     });
-    //   });
-    // });
-
-    video.addEventListener("ended", (ev) => {
+    video.addEventListener("ended", ev => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", (ev) => {
-      // console.log(Math.round(video.currentTime));
-      // console.log(
-      //   this.markingPlayer[Math.round(video.currentTime)][0],
-      //   this.markingPlayer[Math.round(video.currentTime)][1],
-      // );
-      const teamInfo = document.getElementsByClassName("teaminfo__lineup");
-      this.team1.forEach((ele, i) => {
-        if (
-          ele["name"] == this.markingPlayer[Math.round(video.currentTime)][0]
-        ) {
-          console.log(ele["name"], i);
-          teamInfo[0].childNodes[0].childNodes.forEach((ele) => {
-            ele.style.background = "";
-          });
-          teamInfo[0].childNodes[0].childNodes[i + 1].style.background =
-            "rgba(255, 255, 114, 0.450)";
-        }
-      });
-      this.team2.forEach((ele, i) => {
-        if (
-          ele["name"] == this.markingPlayer[Math.round(video.currentTime)][1]
-        ) {
-          console.log(ele["name"], i);
-          teamInfo[1].childNodes[0].childNodes.forEach((ele) => {
-            ele.style.background = "";
-          });
-          teamInfo[1].childNodes[0].childNodes[i + 1].style.background =
-            "rgba(135, 207, 235, 0.494)";
-        }
-      });
+    video.addEventListener("timeupdate", ev => {
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       }
     });
     // console.log(video.duration);
-    window.addEventListener("resize", this.stageResize);
-    this.stageResize();
-    document.addEventListener("keydown", this.keydownEvent);
-    // document.body.style.width = "100vw";
-    // document.body.style.height = "100vh";
-    // document.body.style.cursor = "auto";
-    // document.body.style.background = "black";
-    // document.body.style.margin = "0";
-    // document.body.style.padding = "0";
-
-    const match = { match_name: "ARG.FRA" };
-    const MatchInfo = await getMatchInfo(match);
-    console.log(MatchInfo.data[0]);
-
-    for (let i = 0; i < Object.keys(MatchInfo.data[0]["number"]).length; i++) {
-      this.team1.push({
-        number: MatchInfo.data[0]["number"][i],
-        name: MatchInfo.data[0]["name"][i],
-        position: MatchInfo.data[0]["position"][i],
-        height: MatchInfo.data[0]["height"][i],
-        weight: MatchInfo.data[0]["weight"][i],
-        club: MatchInfo.data[0]["club"][i],
-        foot: MatchInfo.data[0]["foot"][i],
-        birth: MatchInfo.data[0]["birth"][i],
-        class: MatchInfo.data[0]["class"][i],
-        icon1: MatchInfo.data[0]["특성1"][i],
-        icon2: MatchInfo.data[0]["특성2"][i],
-        icon3: MatchInfo.data[0]["특성3"][i],
-        icon4: MatchInfo.data[0]["특성4"][i],
-        icon5: MatchInfo.data[0]["특성5"][i],
-        icon6: MatchInfo.data[0]["특성6"][i],
-        icon7: MatchInfo.data[0]["특성7"][i],
-      });
-    }
-    for (let i = 0; i < Object.keys(MatchInfo.data[1]["number"]).length; i++) {
-      this.team2.push({
-        number: MatchInfo.data[1]["number"][i],
-        name: MatchInfo.data[1]["name"][i],
-        position: MatchInfo.data[1]["position"][i],
-        height: MatchInfo.data[1]["height"][i],
-        weight: MatchInfo.data[1]["weight"][i],
-        club: MatchInfo.data[1]["club"][i],
-        foot: MatchInfo.data[1]["foot"][i],
-        birth: MatchInfo.data[1]["birth"][i],
-        class: MatchInfo.data[1]["class"][i],
-        icon1: MatchInfo.data[1]["특성1"][i],
-        icon2: MatchInfo.data[1]["특성2"][i],
-        icon3: MatchInfo.data[1]["특성3"][i],
-        icon4: MatchInfo.data[1]["특성4"][i],
-        icon5: MatchInfo.data[1]["특성5"][i],
-        icon6: MatchInfo.data[1]["특성6"][i],
-        icon7: MatchInfo.data[1]["특성7"][i],
-      });
-    }
   },
   methods: {
-    stageResize() {
-      const video = document.querySelector("Video");
+    // stageResize() {
+    //   const video = document.querySelector("Video");
+    //   const modal = document.querySelector(".modal-wrapper");
 
-      const modal = document.querySelector(".modal-wrapper");
-
-      modal.style.width = `${video.clientWidth}px`;
-      modal.style.height = `${video.clientHeight}px`;
-    },
-    videoPlay() {
-      const video = document.querySelector("Video");
-      this.playToggle = !this.playToggle;
-      // console.log(video.paused, this.playToggle);
-
-      if (video.paused) {
-        video.play();
-      } else {
-        video.pause();
-      }
-    },
-    soundMute() {
-      this.muteToggle = !this.muteToggle;
-      const video = document.querySelector("Video");
-      video.muted = this.muteToggle;
-    },
-    keydownEvent(ev) {
-      // console.log(ev.keyCode);
-      if (ev.keyCode === 32) {
-        this.videoPlay();
-      }
-    },
-    openTeam1Modal() {
-      this.team1_open = !this.team1_open;
-    },
-    openTeam2Modal() {
-      this.team2_open = !this.team2_open;
-    },
-    openDesc(ev) {
-      ev.target.nextElementSibling.style.display = "flex";
-    },
-    closeDesc(ev) {
-      ev.target.nextElementSibling.style.display = "none";
-    },
-    videoData(ev) {
-      console.log(ev);
-    },
-    playerInfo__toggle() {
-      this.playerInfo_open = false;
-    },
-    clickPlayer(ev) {
-      console.log(ev);
-      const str = ev.target.parentNode.innerText;
-      const regex = /[^0-9]/g;
-      const result = str.replace(regex, "");
-      const number = parseInt(result);
-      console.log(number);
-      const team = window.innerWidth / 2 >= ev.clientX ? "team1" : "team2";
-      console.log(team);
-      console.log(this.team2);
-      const profile = document.getElementsByClassName("profile__row");
-      const icons = document.getElementsByClassName("profile__column");
-      this.playerInfo_open = true;
-      if (team == "team1") {
-        profile[0].childNodes[0].src = require("@/assets/player/messi.png");
-        profile[1].childNodes[3].childNodes[0].src = require("@/assets/flags/arg-flag.png");
-        profile[1].childNodes[3].childNodes[1].src = require("@/assets/flags/바르셀로나.svg");
-        icons[1].childNodes[0].childNodes[2].classList.remove("hide");
-        icons[1].childNodes[1].childNodes[2].classList.remove("hide");
-        icons[1].childNodes[0].childNodes[0].src = require("@/assets/playerIcons/주발 선호.png");
-        icons[1].childNodes[0].childNodes[1].src = require("@/assets/playerIcons/중거리 슛 선호.png");
-        icons[1].childNodes[0].childNodes[2].src = require("@/assets/playerIcons/아웃사이드 슈팅.크로스.png");
-        icons[1].childNodes[1].childNodes[0].src = require("@/assets/playerIcons/테크니컬 드리블러.png");
-        icons[1].childNodes[1].childNodes[1].src = require("@/assets/playerIcons/예리한 감아차기.png");
-        icons[1].childNodes[1].childNodes[2].src = require("@/assets/playerIcons/플레이 메이커.png");
-        for (let info in this.team1) {
-          if (this.team1[info]["number"] == number) {
-            profile[1].childNodes[0].classList.remove(
-              "font__white",
-              "font__skyBlue",
-              "font__purple",
-              "font__yellow"
-            );
-            profile[1].childNodes[0].classList.add(
-              this.class_color[this.team1[info]["class"]]
-            );
-            profile[1].childNodes[0].innerText = this.team1[info]["name"];
-            profile[1].childNodes[1].innerText =
-              this.team1[info]["position"] +
-              "(" +
-              this.position_description[this.team1[info]["position"]] +
-              ")";
-            profile[1].childNodes[2].innerText =
-              this.team1_name + " | " + this.team1[info]["club"];
-            profile[1].childNodes[4].innerText =
-              this.team1[info]["height"] +
-              "cm" +
-              " | " +
-              this.team1[info]["weight"] +
-              "kg";
-            profile[1].childNodes[5].innerText =
-              this.team1[info]["foot"] == "right" ? "오른발잡이" : "왼발잡이";
-            profile[1].childNodes[6].innerText = this.team1[info]["birth"];
-          }
-        }
-      } else if (team == "team2") {
-        profile[0].childNodes[0].src = require("@/assets/player/tolisso.png");
-        profile[1].childNodes[3].childNodes[0].src = require("@/assets/flags/fra-flag.png");
-        profile[1].childNodes[3].childNodes[1].src = require("@/assets/flags/바이언.svg");
-        icons[1].childNodes[0].childNodes[0].src = require("@/assets/playerIcons/긴 패스 선호.png");
-        icons[1].childNodes[0].childNodes[1].src = require("@/assets/playerIcons/중거리 슛 선호.png");
-        icons[1].childNodes[0].childNodes[2].classList.add("hide");
-        icons[1].childNodes[1].childNodes[0].src = require("@/assets/playerIcons/파워 헤더.png");
-        icons[1].childNodes[1].childNodes[1].src = require("@/assets/playerIcons/팀 플레이어.png");
-        icons[1].childNodes[1].childNodes[2].classList.add("hide");
-        for (let info in this.team2) {
-          if (this.team2[info]["number"] == number) {
-            profile[1].childNodes[0].classList.remove(
-              "font__white",
-              "font__skyBlue",
-              "font__purple",
-              "font__yellow"
-            );
-            profile[1].childNodes[0].classList.add(
-              this.class_color[this.team2[info]["class"]]
-            );
-            profile[1].childNodes[0].innerText = this.team2[info]["name"];
-            profile[1].childNodes[1].innerText =
-              this.team2[info]["position"] +
-              "(" +
-              this.position_description[this.team2[info]["position"]] +
-              ")";
-            profile[1].childNodes[2].innerText =
-              this.team2_name + " | " + this.team2[info]["club"];
-            profile[1].childNodes[4].innerText =
-              this.team2[info]["height"] +
-              "cm" +
-              " | " +
-              this.team2[info]["weight"] +
-              "kg";
-            profile[1].childNodes[5].innerText =
-              this.team2[info]["foot"] == "right" ? "오른발잡이" : "왼발잡이";
-            profile[1].childNodes[6].innerText = this.team2[info]["birth"];
-          }
-        }
-      }
-    },
-    leftArrowClick() {
-      this.currentData -= 1;
-      if (this.currentData == -1) {
-        this.currentData = 2;
-      }
-      const progress = document.getElementsByClassName("progress-bar");
-
-      this.data_name = this.dataList[this.currentData]["name"];
-      this.team1_winrate = this.dataList[this.currentData]["team1__percent"];
-      this.team2_winrate = this.dataList[this.currentData]["team2__percent"];
-      progress[0].style.width =
-        this.dataList[this.currentData]["team1__percent"] + "%";
-      progress[1].style.width =
-        this.dataList[this.currentData]["team2__percent"] + "%";
-    },
-    rightArrowClick() {
-      this.currentData += 1;
-      if (this.currentData == 3) {
-        this.currentData = 0;
-      }
-      const progress = document.getElementsByClassName("progress-bar");
-
-      this.data_name = this.dataList[this.currentData]["name"];
-      this.team1_winrate = this.dataList[this.currentData]["team1__percent"];
-      this.team2_winrate = this.dataList[this.currentData]["team2__percent"];
-      progress[0].style.width =
-        this.dataList[this.currentData]["team1__percent"] + "%";
-      progress[1].style.width =
-        this.dataList[this.currentData]["team2__percent"] + "%";
-    },
+    //   modal.style.width = `${video.clientWidth}px`;
+    //   modal.style.height = `${video.clientHeight}px`;
+    // },
     targetChange(target) {
       if (target) {
         this.targetToggle = false;
@@ -801,13 +257,6 @@ export default {
           this.newMessage = "";
         }
       }
-    },
-  },
-  filters: {
-    matchingDesc(iconName, description) {
-      // console.log(iconName);
-      const desc = description[iconName];
-      return desc;
     },
   },
 };
@@ -848,11 +297,6 @@ div {
   height: 100%;
   object-fit: cover;
 }
-.modal-wrapper {
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
-}
 .contents-container {
   position: relative;
   /* width: calc(100% - 4rem);
@@ -861,166 +305,6 @@ div {
   height: 881px;
   background: rgba(255, 255, 255, 0.224);
   border-radius: 1rem;
-}
-.left {
-  left: 0;
-}
-.right {
-  right: 0;
-}
-/* 상단 모달 설정 */
-.info-header {
-  position: relative;
-  width: 100%;
-  height: 20%;
-}
-/* 메인으로 나가는 버튼 */
-.exit-button {
-  cursor: pointer;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  left: 1rem;
-  top: 2rem;
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  background: rgba(0, 0, 0, 0.6);
-}
-.exit-button:after {
-  position: relative;
-  top: 2px;
-  content: "\00d7";
-  font-size: 30px;
-  font-weight: 100;
-  color: white;
-}
-/* 승률 모달 */
-.match-winrate {
-  width: 400px;
-  height: 81px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 10px;
-  border-radius: 1rem;
-}
-.match-info {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-.match-info span {
-  color: white;
-  font-size: 1rem;
-}
-.match-info span:nth-child(3) {
-  position: absolute;
-  left: 5px;
-  font-size: 0.8rem;
-}
-.match-info span:nth-child(4) {
-  position: absolute;
-  right: 5px;
-  font-size: 0.8rem;
-}
-.match-info img {
-  width: 15px;
-  height: 15px;
-  margin: 0 10px;
-  object-fit: contain;
-}
-.progress-bar__container {
-  width: 100%;
-  height: 2rem;
-  border-radius: 2rem;
-  overflow: hidden;
-  transition: all 0.5s;
-  will-change: transform;
-  box-shadow: 0 0 5px hsla(0, 0%, 100%, 0.615);
-  position: relative;
-  margin-top: 10px;
-}
-.progress-bar {
-  transition: all 0.5s;
-  position: absolute;
-  height: 100%;
-  content: "";
-  border-radius: inherit;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-family: sans-serif;
-}
-.progress-bar:first-child {
-  width: 42%;
-  background-color: #e76f51;
-  left: 0;
-}
-.progress-bar:nth-child(2) {
-  width: 58%;
-  background-color: #496adf;
-  right: 0;
-}
-/* 중앙 모달 설정 */
-.modal-content {
-  width: 100%;
-  height: 60%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-/* 하단 비디오 컨트롤러 설정 */
-.video-control {
-  width: 100%;
-  height: 20%;
-}
-.video-progress {
-  width: 100%;
-  height: 50%;
-}
-/* 비디오 컨트롤 아이콘 */
-.video-tools {
-  width: 100%;
-  height: 50%;
-  position: relative;
-  padding: 10px 32px;
-  display: flex;
-  align-items: flex-end;
-}
-.video-tools__column {
-  width: 115px;
-  height: 27px;
-  display: flex;
-  align-items: center;
-  padding: 0 5px;
-}
-.video-tools__column:first-child {
-  box-sizing: initial;
-  padding-right: 10px;
-  border-right: 1px solid hsla(0, 0%, 100%, 0.5);
-}
-.video-tools__column:nth-child(2) {
-  margin-left: 20px;
-}
-.video-tools__column:nth-child(3) {
-  position: absolute;
-  right: 10px;
-}
-.timestamp {
-  color: white;
-  text-align: center;
-  font-size: 1rem;
-}
-.button-wrapper {
-  position: relative;
-  margin-right: 20px;
 }
 .team-info {
   position: absolute;
