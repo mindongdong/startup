@@ -1,17 +1,12 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-
 from app.routes.api import api_router
 from app.common.config import settings
+import json
 
 app = FastAPI(
     title=settings.PROJECT_NAME
 )
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 
 
 origins = [

@@ -323,8 +323,21 @@
           <div class="header__underLine"></div>
         </div>
         <div class="chat__content">
-          <div class="chat__userChat"></div>
-          <div class="chat__myChat"></div>
+          <div
+            class="chat__liveChat"
+            v-for="(message, idx) in messages"
+            :key="idx"
+          >
+            <div class="chat__userChat" v-if="message.user != 'Me'">
+              <span class="chat__userName">[AI 해설]</span><br /><br />
+              <p>{{ message.text }}</p>
+            </div>
+            <div class="chat__myChat" v-else>
+              <span class="chat__sendTarget">[{{ message.user }}]</span
+              ><br /><br />
+              <p>{{ message.text }}</p>
+            </div>
+          </div>
         </div>
         <div class="chat__box">
           <div class="chat__target">
@@ -345,10 +358,14 @@
             에게
           </div>
           <div class="chat__input">
-            <input class="chat__text" type="text" />
+            <textarea
+              class="chat__text"
+              v-model="newMessage"
+              @keydown.enter.prevent="sendMessage"
+            ></textarea>
           </div>
           <div class="chat__send">
-            <div class="chat__submit">전송</div>
+            <div class="chat__submit" @click="sendMessage">전송</div>
           </div>
         </div>
       </div>
@@ -359,6 +376,7 @@
 <script>
 import Video from "@/components/Video.vue";
 import { getMatchInfo } from "@/api/index";
+import { io } from "socket.io-client";
 
 export default {
   components: {
@@ -366,7 +384,7 @@ export default {
   },
   data() {
     return {
-      playToggle: false,
+      playToggle: true,
       muteToggle: false,
       team1OpenToggle: false,
       team2OpenToggle: true,
@@ -428,23 +446,6 @@ export default {
         2: "font__purple",
         3: "font__yellow",
       },
-      markingPlayer: [
-        ["L. 메시", "H. 요리스"],
-        ["S. 아궤로", "N. 캉테"],
-        ["S. 아궤로", "N. 캉테"],
-        ["S. 아궤로", "N. 캉테"],
-        ["S. 아궤로", "N. 캉테"],
-        ["S. 아궤로", "N. 캉테"],
-        ["N. 오타멘디", "A. 그리즈만"],
-        ["E. 바네가", "B. 마튀이디"],
-        ["E. 바네가", "B. 마튀이디"],
-        ["E. 바네가", "B. 마튀이디"],
-        ["N. 탈리아피코", "O. 지루"],
-        ["N. 탈리아피코", "O. 지루"],
-        ["F. 파지오", "K. 음바페"],
-        ["F. 파지오", "K. 음바페"],
-        [],
-      ],
       dataList: [
         {
           name: "승리 확률",
@@ -463,13 +464,41 @@ export default {
         },
       ],
       currentData: 0,
-      targetToggle: false,
+      targetToggle: true,
+      messages: [], // Store messages
+      newMessage: "", // User input for new message
+      socket: null, // WebSocket connection
     };
   },
   async mounted() {
+    // Initialize WebSocket connection
+    this.socket = io("http://localhost:3000");
+
+    // Add received message to messages array
+    this.socket.on("message", (message) => {
+      this.messages.push(message);
+    });
+
     const video = document.querySelector("Video");
     // console.dir(video);
     // console.log(video.clientWidth, video.clientHeight);
+
+    // this.socket.on("video-data", data => {
+    //   const mediaSource = new MediaSource();
+    //   video.src = URL.createObjectURL(mediaSource);
+
+    //   mediaSource.addEventListener("sourceopen", () => {
+    //     const sourceBuffer = mediaSource.addSourceBuffer(
+    //       'video/mp4; codecs="avc1.42E01E, mp4a.40.2"',
+    //     );
+
+    //     sourceBuffer.appendBuffer(data);
+
+    //     sourceBuffer.addEventListener("updateend", () => {
+    //       mediaSource.endOfStream();
+    //     });
+    //   });
+    // });
 
     video.addEventListener("ended", (ev) => {
       // console.log(ev);
@@ -755,6 +784,24 @@ export default {
         this.targetToggle = true;
       }
     },
+    sendMessage(ev) {
+      console.log(ev);
+      if (!ev.isComposing) {
+        // Check if message is not empty
+        if (this.newMessage.trim() !== "") {
+          // this.socket.emit("message", {
+          //   user: "Me",
+          //   text: this.newMessage.trim(),
+          // });
+          this.messages.push({
+            user: "Me",
+            text: this.newMessage.trim(),
+          });
+          this.socket.emit("message", this.messages);
+          this.newMessage = "";
+        }
+      }
+    },
   },
   filters: {
     matchingDesc(iconName, description) {
@@ -1028,9 +1075,13 @@ div {
 .playerInfo__detail--col {
   width: 60%;
   height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .playerInfo__detailInfo {
-  font-size: 0.9rem;
+  margin-left: 0.4rem;
+  font-size: 0.8rem;
 }
 .playerInfo__icon {
   width: 4rem;
@@ -1167,6 +1218,79 @@ div {
 .chat__content {
   width: 100%;
   height: calc(100% - 17rem);
+  padding: 1rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  direction: ltr;
+}
+/* Customize the scrollbar background and thickness */
+.chat__content::-webkit-scrollbar {
+  width: 8px; /* Adjust the thickness of the scrollbar */
+}
+
+.chat__content::-webkit-scrollbar-track {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Set the background color of the scrollbar track */
+}
+
+.chat__content::-webkit-scrollbar-thumb {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ); /* Set the background color of the scrollbar thumb */
+  border-radius: 8px; /* Set the border radius of the scrollbar thumb */
+}
+.chat__userChat,
+.chat__myChat {
+  position: relative;
+  box-sizing: border-box;
+  min-height: 3rem;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px 0 6px 0;
+  background: rgba(100, 170, 0, 0.1);
+  border: 2px solid rgba(100, 170, 0, 0.1);
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+.chat__myChat {
+  margin: 0 0 0 auto;
+  margin-bottom: 1.5rem;
+}
+.chat__userChat:after {
+  content: "";
+  position: absolute;
+  border: 10px solid transparent;
+  border-top: 10px solid rgba(100, 170, 0, 0.2);
+  border-left: none;
+  bottom: -22px;
+  left: 10px;
+}
+.chat__myChat:after {
+  content: "";
+  position: absolute;
+  border: 10px solid transparent;
+  border-top: 10px solid rgba(100, 170, 0, 0.2);
+  border-right: none;
+  bottom: -22px;
+  right: 10px;
+}
+.chat__userName {
+  font-size: 1rem;
+  color: #e76f51;
+}
+.chat__sendTarget {
+  font-size: 1rem;
+  color: #6e8bf4;
 }
 .chat__box {
   width: 90%;
@@ -1195,20 +1319,31 @@ div {
   background: rgba(38, 38, 53, 0.365);
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
+.chat__targetText:last-child {
+  margin-right: 0.5rem;
+}
 .select {
   background: #496adf;
 }
 .chat__input {
   width: 90%;
   height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 0.6rem;
 }
 .chat__text {
-  width: 95%;
+  resize: none;
+  overflow: auto;
+  min-height: 1rem;
+  width: 90%;
   height: 90%;
-  border-radius: 6px;
   border: none;
-  vertical-align: text-top;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0);
+  font-size: 1rem;
+  border-radius: 1rem;
 }
 .chat__text:focus {
   outline: none;
@@ -1218,10 +1353,11 @@ div {
   height: 2.5rem;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 .chat__submit {
-  width: 4rem;
-  height: 2rem;
+  width: 3.5rem;
+  height: 1.5rem;
   border-radius: 0.4rem;
   cursor: pointer;
   display: flex;
