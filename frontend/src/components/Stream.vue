@@ -15,12 +15,16 @@
 </template>
 
 <script>
+import {getAudioStream} from "@/api/index";
+
 export default {
   name: "Stream",
   methods: {
-    videoData(ev) {
+    async videoData(ev) {
       console.log(ev);
       this.$store.commit("setCurrentVideo", ev.target);
+      const response = await getAudioStream();
+      console.log(response);
     },
     timeUpdate() {
       this.$parent.timeUpdate();

@@ -142,7 +142,6 @@
 
 <script>
 import Video from "@/components/Video.vue";
-import {getMatchInfo} from "@/api/index";
 import {io} from "socket.io-client";
 
 export default {
@@ -205,25 +204,6 @@ export default {
     this.socket.on("message", message => {
       this.messages.push(message);
     });
-
-    const video = document.querySelector("Video");
-
-    video.addEventListener("ended", ev => {
-      // console.log(ev);
-      this.playToggle = false;
-    });
-    video.addEventListener("timeupdate", ev => {
-      if (Math.round(video.currentTime) < 10) {
-        this.videoTimestamp = `00:0${Math.round(
-          video.currentTime,
-        )} / 00:${Math.round(video.duration)}`;
-      } else {
-        this.videoTimestamp = `00:${Math.round(
-          video.currentTime,
-        )} / 00:${Math.round(video.duration)}`;
-      }
-    });
-    // console.log(video.duration);
   },
   methods: {
     // stageResize() {
@@ -245,10 +225,6 @@ export default {
       if (!ev.isComposing) {
         // Check if message is not empty
         if (this.newMessage.trim() !== "") {
-          // this.socket.emit("message", {
-          //   user: "Me",
-          //   text: this.newMessage.trim(),
-          // });
           this.messages.push({
             user: "Me",
             text: this.newMessage.trim(),
