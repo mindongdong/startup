@@ -63,7 +63,7 @@
         </div>
         <div class="video-tools__column">
           <div class="timestamp">
-            {{ videoTimestamp }}
+            {{ currentTime }}
           </div>
         </div>
         <div class="video-tools__column">
@@ -88,11 +88,21 @@
 
 <script>
 export default {
+  name: "VideoWrapper",
+  props: {
+    currentTime: {
+      type: String,
+      default: "00:00:00 / 00:00:00",
+    },
+    percent: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       playToggle: true,
       muteToggle: false,
-      videoTimestamp: "00:00 / 00:00",
       data_name: "승리확률",
       team1_name: "아르헨티나",
       team2_name: "프랑스",
@@ -323,7 +333,6 @@ div {
   align-items: flex-end;
 }
 .video-tools__column {
-  width: 115px;
   height: 27px;
   display: flex;
   align-items: center;

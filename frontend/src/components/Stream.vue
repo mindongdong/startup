@@ -7,6 +7,7 @@
     data-setup="{}"
     autoplay
     @loadeddata="videoData"
+    @timeupdate="timeUpdate"
   >
     <!-- <source src="@/assets/video.mp4" type="video/mp4" /> -->
     <source src="http://localhost:3000/video" type="video/mp4" />
@@ -15,10 +16,14 @@
 
 <script>
 export default {
+  name: "Stream",
   methods: {
     videoData(ev) {
       console.log(ev);
       this.$store.commit("setCurrentVideo", ev.target);
+    },
+    timeUpdate() {
+      this.$parent.timeUpdate();
     },
   },
 };
