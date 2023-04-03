@@ -5,7 +5,7 @@
       <li class="playlist__item" @click="goToViewer">
         <div class="playlist__contentBox">
           <img class="playlist__thumnail" src="@/assets/content_1.jpeg" />
-          <p class="playlist__time">00:00:14</p>
+          <p class="playlist__time">{{ duration }}</p>
         </div>
         <div class="playlist__text">
           <p class="playlist__title">[2018 WC] FRANCE VS ARGENTINA</p>
@@ -14,7 +14,7 @@
       <li class="playlist__item" @click="goToViewer">
         <div class="playlist__contentBox">
           <img class="playlist__thumnail" src="@/assets/content_1.jpeg" />
-          <p class="playlist__time">00:00:14</p>
+          <p class="playlist__time">{{ duration }}</p>
         </div>
         <div class="playlist__text">
           <p class="playlist__title">[2018 WC] FRANCE VS ARGENTINA</p>
@@ -23,7 +23,7 @@
       <li class="playlist__item" @click="goToViewer">
         <div class="playlist__contentBox">
           <img class="playlist__thumnail" src="@/assets/content_1.jpeg" />
-          <p class="playlist__time">00:00:14</p>
+          <p class="playlist__time">{{ duration }}</p>
         </div>
         <div class="playlist__text">
           <p class="playlist__title">[2018 WC] FRANCE VS ARGENTINA</p>
@@ -35,6 +35,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      duration: "00:06:39",
+    };
+  },
   methods: {
     goToViewer() {
       this.$router.push("/viewer");
