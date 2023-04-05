@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import html2canvas from "html2canvas";
 export default {
   props: {
     predictionList: {
@@ -35,6 +36,28 @@ export default {
     },
   },
   name: "Analyze",
+  methods: {
+    async captureDiv() {
+      const captureDiv = this.$refs.captureDiv;
+
+      try {
+        const canvas = await html2canvas(captureDiv);
+        const imgData = canvas.toDataURL("image/png");
+        this.downloadImage(imgData, "captured-image.png");
+        // Do something with the captured image data, e.g. download the image or send it to a server
+        console.log(imgData);
+      } catch (error) {
+        console.error("Error capturing div:", error);
+      }
+    },
+    downloadImage(dataUrl, filename) {
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = filename;
+      link.click();
+      link.remove();
+    },
+  },
   watch: {
     predictionList(newValue, oldValue) {
       // do something with the new value of predictionList
@@ -49,7 +72,7 @@ export default {
           const ky = 648 / 1080;
           // console.log(prediction);
           // console.log(playerBox_list[i]);
-          if (prediction.width < 300) {
+          if (prediction.width < 250 && prediction.height < 380) {
             playerBox_list[i].style.left =
               (prediction.x - (prediction.width * 1.4) / 2) * kx + "px";
             playerBox_list[i].style.top =
