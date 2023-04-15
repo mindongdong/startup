@@ -72,12 +72,8 @@ export default {
           const ky = 648 / 720;
           // console.log(prediction);
           // console.log(playerBox_list[i]);
-<<<<<<< Updated upstream
-          if (prediction.width < 250 && prediction.height < 380) {
-=======
 
           if (prediction.width < 150) {
->>>>>>> Stashed changes
             playerBox_list[i].style.left =
               (prediction.x - prediction.width / 2) * kx + "px";
             playerBox_list[i].style.top =
