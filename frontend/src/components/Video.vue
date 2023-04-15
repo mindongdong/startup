@@ -83,14 +83,14 @@ export default {
       );
 
       const frame = {
-        // frame: video.webkitDecodedFrameCount,
-        frame:
-          video.webkitDecodedFrameCount % 7 < 4
-            ? video.webkitDecodedFrameCount -
-              (video.webkitDecodedFrameCount % 7)
-            : video.webkitDecodedFrameCount +
-              7 -
-              (video.webkitDecodedFrameCount % 7),
+        frame: video.webkitDecodedFrameCount,
+        // frame:
+        //   video.webkitDecodedFrameCount % 7 < 4
+        //     ? video.webkitDecodedFrameCount -
+        //       (video.webkitDecodedFrameCount % 7)
+        //     : video.webkitDecodedFrameCount +
+        //       7 -
+        //       (video.webkitDecodedFrameCount % 7),
       };
       const response = await getTrackingInfo(frame);
       // console.log(response.data);
