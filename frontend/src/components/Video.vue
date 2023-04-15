@@ -74,10 +74,23 @@ export default {
         durationMinutes +
         ":" +
         durationSeconds;
-      console.dir(video.webkitDecodedFrameCount);
+      console.dir(
+        video.webkitDecodedFrameCount % 7 < 4
+          ? video.webkitDecodedFrameCount - (video.webkitDecodedFrameCount % 7)
+          : video.webkitDecodedFrameCount +
+              7 -
+              (video.webkitDecodedFrameCount % 7)
+      );
 
       const frame = {
-        frame: video.webkitDecodedFrameCount,
+        // frame: video.webkitDecodedFrameCount,
+        frame:
+          video.webkitDecodedFrameCount % 7 < 4
+            ? video.webkitDecodedFrameCount -
+              (video.webkitDecodedFrameCount % 7)
+            : video.webkitDecodedFrameCount +
+              7 -
+              (video.webkitDecodedFrameCount % 7),
       };
       const response = await getTrackingInfo(frame);
       // console.log(response.data);

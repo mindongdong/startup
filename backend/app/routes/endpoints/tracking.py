@@ -16,6 +16,6 @@ def trackingBtn(currentFrameNum: currentFrameNum):
     with open("./matches/predictions.json", 'r') as file:
 
         predictions = json.load(file)
-    return predictions[str(currentFrameNum.frame)]['predictions']
+    return predictions[str(currentFrameNum.frame-28)]
 
 # print(type(trackingBtn(0)))
