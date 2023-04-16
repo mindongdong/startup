@@ -75,11 +75,12 @@ export default {
 
           if (prediction.width < 150) {
             playerBox_list[i].style.left =
-              (prediction.x - prediction.width / 2) * kx + "px";
+              (prediction.x - (prediction.width * 1.3) / 2) * kx + "px";
             playerBox_list[i].style.top =
-              (prediction.y - prediction.height / 2) * ky + "px";
-            playerBox_list[i].style.width = prediction.width * kx + "px";
-            playerBox_list[i].style.height = prediction.height * ky + "px";
+              (prediction.y - (prediction.height * 1.3) / 2) * ky + "px";
+            playerBox_list[i].style.width = prediction.width * 1.3 * kx + "px";
+            playerBox_list[i].style.height =
+              prediction.height * 1.3 * ky + "px";
             playerBox_list[i].style.display = "flex";
           } else {
             playerBox_list[i].style.display = "none";
