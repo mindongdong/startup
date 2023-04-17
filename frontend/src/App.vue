@@ -8,6 +8,16 @@
 export default {
   name: "App",
   components: {},
+  watch: {
+    $route(to, from) {
+      console.log(to.path, from.path);
+      clearInterval(this.$store.getters.getCurrentInterval);
+      if (to.path === "/") {
+        this.$store.commit("clearCurrentVideo");
+        this.$store.commit("clearCurrentInterval");
+      }
+    },
+  },
 };
 </script>
 

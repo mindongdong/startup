@@ -8,4 +8,8 @@ function getMatchInfo(match) {
   return instance.post("/routes/matches/info", match);
 }
 
-export { getMatchInfo };
+function getTrackingInfo(frame) {
+  return instance.post("/routes/tracking/info", frame);
+}
+
+export { getMatchInfo, getTrackingInfo };

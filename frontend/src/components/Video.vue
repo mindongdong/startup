@@ -1,7 +1,7 @@
 <template>
   <div class="layout" ref="videoLayout">
     <Stream></Stream>
-    <Analyze></Analyze>
+    <Analyze :predictionList="predictionList"></Analyze>
     <Wrapper :currentTime="currentTime" :percent="percent"></Wrapper>
   </div>
 </template>
@@ -10,6 +10,7 @@
 import Stream from "@/components/Stream.vue";
 import Analyze from "@/components/Analyze.vue";
 import Wrapper from "@/components/VideoWrapper.vue";
+import { getTrackingInfo } from "@/api/index";
 
 export default {
   name: "Video",
@@ -22,10 +23,11 @@ export default {
     return {
       currentTime: "00:00:00 / 00:00:00",
       percent: 0,
+      predictionList: [],
     };
   },
   methods: {
-    timeUpdate() {
+    async timeUpdate() {
       const video = this.$store.getters.getCurrentVideo;
       const currentTime = video.currentTime;
       const duration = video.duration;
@@ -72,7 +74,36 @@ export default {
         durationMinutes +
         ":" +
         durationSeconds;
-      console.dir(video.webkitDecodedFrameCount);
+      // console.dir(
+      //   video.webkitDecodedFrameCount % 7 < 4
+      //     ? video.webkitDecodedFrameCount - (video.webkitDecodedFrameCount % 7)
+      //     : video.webkitDecodedFrameCount +
+      //         7 -
+      //         (video.webkitDecodedFrameCount % 7)
+      // );
+
+      // const frame = {
+      //   frame: video.webkitDecodedFrameCount,
+      //   // frame:
+      //   //   video.webkitDecodedFrameCount % 7 < 4
+      //   //     ? video.webkitDecodedFrameCount -
+      //   //       (video.webkitDecodedFrameCount % 7)
+      //   //     : video.webkitDecodedFrameCount +
+      //   //       7 -
+      //   //       (video.webkitDecodedFrameCount % 7),
+      // };
+      // const response = await getTrackingInfo(frame);
+      // // console.log(response.data);
+      // this.predictionList = response.data;
+    },
+    async getPrediction() {
+      const video = this.$store.getters.getCurrentVideo;
+      const frame = {
+        frame: video.webkitDecodedFrameCount,
+      };
+      const response = await getTrackingInfo(frame);
+      console.log(video.webkitDecodedFrameCount);
+      this.predictionList = response.data;
     },
   },
 };

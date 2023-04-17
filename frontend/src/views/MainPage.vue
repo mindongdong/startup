@@ -8,7 +8,7 @@
           <p class="playlist__time">{{ duration }}</p>
         </div>
         <div class="playlist__text">
-          <p class="playlist__title">[2018 WC] FRANCE VS ARGENTINA</p>
+          <p class="playlist__title">[2022 WC] FRANCE VS ARGENTINA</p>
         </div>
       </li>
       <li class="playlist__item" @click="goToViewer">
@@ -17,16 +17,7 @@
           <p class="playlist__time">{{ duration }}</p>
         </div>
         <div class="playlist__text">
-          <p class="playlist__title">[2018 WC] FRANCE VS ARGENTINA</p>
-        </div>
-      </li>
-      <li class="playlist__item" @click="goToViewer">
-        <div class="playlist__contentBox">
-          <img class="playlist__thumnail" src="@/assets/content_1.jpeg" />
-          <p class="playlist__time">{{ duration }}</p>
-        </div>
-        <div class="playlist__text">
-          <p class="playlist__title">[2018 WC] FRANCE VS ARGENTINA</p>
+          <p class="playlist__title">[2022 WC] FRANCE VS ARGENTINA</p>
         </div>
       </li>
     </ul>
@@ -37,7 +28,7 @@
 export default {
   data() {
     return {
-      duration: "00:06:39",
+      duration: "00:05:53",
     };
   },
   methods: {
