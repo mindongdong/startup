@@ -73,14 +73,14 @@ export default {
           // console.log(prediction);
           // console.log(playerBox_list[i]);
 
-          if (prediction.width < 150) {
+          if (prediction.width < 150 && prediction.height < 350) {
             playerBox_list[i].style.left =
-              (prediction.x - (prediction.width * 1.3) / 2) * kx + "px";
+              (prediction.x - (prediction.width * 1.4) / 2) * kx + "px";
             playerBox_list[i].style.top =
-              (prediction.y - (prediction.height * 1.3) / 2) * ky + "px";
-            playerBox_list[i].style.width = prediction.width * 1.3 * kx + "px";
+              (prediction.y - (prediction.height * 1.4) / 2) * ky + "px";
+            playerBox_list[i].style.width = prediction.width * 1.4 * kx + "px";
             playerBox_list[i].style.height =
-              prediction.height * 1.3 * ky + "px";
+              prediction.height * 1.4 * ky + "px";
             playerBox_list[i].style.display = "flex";
           } else {
             playerBox_list[i].style.display = "none";
@@ -100,12 +100,6 @@ export default {
       // console.log("new value", newValue);
     },
   },
-  // computed: {
-  //   predictionListWithLabels() {
-  //     console.log(this.predictionList);
-  //     return this.predictionList;
-  //   },
-  // },
 };
 </script>
 
@@ -121,11 +115,12 @@ export default {
   position: absolute;
   z-index: 9999;
   cursor: pointer;
-  border: 2px solid red;
-  /* transition: all 100ms; */
+  /* border: 2px solid red; */
+  border: none;
 }
 .playerBox__item:hover {
-  border: 3px solid rgba(0, 13, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.303);
+  background: rgba(255, 255, 255, 0.15);
   z-index: 9999;
 }
 </style>
