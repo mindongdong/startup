@@ -4,7 +4,68 @@
     <div class="contents-container">
       <Video></Video>
       <div class="team-info">
-        <div class="team__container">
+        <div class = "team-selector">
+          <div class="team__icon">
+            <p class="team__icon--name">아르헨티나</p>
+            <img class="team__icon--img" src="@/assets/flags/arg-flag.png" />
+          </div>
+          <div class="team__icon">
+            <p class="team__icon--name">프랑스</p>
+            <img class="team__icon--img" src="@/assets/flags/fra-flag.png" />
+          </div>
+
+          
+        </div>
+        <ul class="team__playerList">
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">10 L.메시</p>
+                <img class="playerList__img" src="@/assets/player/messi.png" />
+              </li>
+            </ul>
+        <div>
+
+        </div>
+        <!-- <div class="team__container">
           <div class="team__card">
             <div class="team__playerInfo">
               <p class="playerInfo__name">킬리안 음바페(Kylian Mbappe)</p>
@@ -79,8 +140,8 @@
                 <p class="playerList__name">10 L.메시</p>
                 <img class="playerList__img" src="@/assets/player/messi.png" />
               </li>
-            </ul>
-          </div>
+            </ul> -->
+          <!-- </div> -->
         </div>
       </div>
       <div class="chat">
@@ -110,14 +171,14 @@
           <div class="chat__target">
             <div
               class="chat__targetText"
-              v-bind:class="{select: !targetToggle}"
+              v-bind:class="{ select: !targetToggle }"
               @click="targetChange"
             >
               모두
             </div>
             <div
               class="chat__targetText"
-              v-bind:class="{select: targetToggle}"
+              v-bind:class="{ select: targetToggle }"
               @click="targetChange(ai)"
             >
               AI
@@ -142,8 +203,8 @@
 
 <script>
 import Video from "@/components/Video.vue";
-import {getMatchInfo} from "@/api/index";
-import {io} from "socket.io-client";
+import { getMatchInfo } from "@/api/index";
+import { io } from "socket.io-client";
 
 export default {
   components: {
@@ -151,46 +212,6 @@ export default {
   },
   data() {
     return {
-      icon_description: {
-        "주발 선호": "약한 발을 잘 사용하지 않습니다",
-        "예리한 감아차기": "감아차기에 능숙합니다",
-        "중거리 슛 선호": "중거리 슛을 자주 합니다",
-        "얼리 크로스 선호": "얼리 크로스를 자주 합니다",
-        "화려한 개인기": "다양한 개인기를 사용할 수 있습니다",
-        "테크니컬 드리블러": "1:1 드리블 돌파에 능숙합니다",
-        "아웃사이드 슈팅/크로스": "아웃사이드 슈팅과 크로스에 능숙합니다",
-        "플레이 메이커": "팀의 중심이 되어 경기를 조율합니다",
-        "칩슛 선호": "칩슛을 자주 사용합니다",
-        강철몸: "부상을 잘 당하지 않습니다",
-        "스피드 드리블러": "치고 달리기에 능숙합니다",
-        "긴 패스 선호": "긴 패스를 자주 합니다",
-        "슬라이딩 태클 선호": "슬라이딩 태클을 자주 합니다",
-        "패스 마스터": "패스 스킬이 뛰어납니다",
-        "파워 헤더": "강력한 헤더 슛을 할 수 있습니다",
-        "팀 플레이어": "팀을 위해 희생하는 플레이를 합니다",
-        리더십: "팀을 잘 이끄는 플레이어",
-        "장거리 스로인": "장거리 스로인을 할 수 있습니다",
-        "GK 적극적 크로스 수비": "크로스 수비시에 뛰어나가는 경향이 있습니다",
-        "GK 능숙한 펀칭": "펀칭을 잘합니다",
-        "스위퍼 키퍼": "수비 범위가 넓습니다",
-        유리몸: "부상을 잘 당합니다",
-        승부욕: "경기의 마지막까지 강한 투지를 발휘합니다",
-      },
-      position_description: {
-        GK: "골키퍼",
-        LB: "좌측 수비수",
-        CB: "중앙 수비수",
-        RB: "우측 수비수",
-        CM: "중앙 미드필더",
-        CDM: "수비형 미드필더",
-        LM: "좌측 미드필더",
-        RM: "우측 미드필더",
-        AM: "공격형 미드필더",
-        LW: "좌측 윙어",
-        RW: "우측 윙어",
-        ST: "스트라이커",
-        CF: "중앙 공격수",
-      },
       targetToggle: true,
       messages: [], // Store messages
       newMessage: "", // User input for new message
@@ -202,24 +223,24 @@ export default {
     this.socket = io("http://localhost:3000");
 
     // Add received message to messages array
-    this.socket.on("message", message => {
+    this.socket.on("message", (message) => {
       this.messages.push(message);
     });
 
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", ev => {
+    video.addEventListener("timeupdate", (ev) => {
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       }
     });
@@ -315,6 +336,14 @@ div {
   border-radius: 1rem;
   background: #08133ac4;
   display: flex;
+  flex-direction: row;
+}
+.team-selector {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-evenly;
+  /* align-items: center; */
 }
 .team__container {
   width: 50%;
@@ -379,7 +408,7 @@ div {
   height: 10rem;
 }
 .team__icon {
-  width: 15%;
+  width: 5rem;
   height: 5rem;
   border-radius: 1rem;
   background: rgba(17, 17, 33, 0.55);
@@ -394,8 +423,8 @@ div {
   height: 2rem;
 }
 .team__playerList {
-  width: 100%;
-  height: 100%;
+  width: 89%;
+  height: 95%;
   overflow-x: auto;
   white-space: nowrap;
   display: flex;

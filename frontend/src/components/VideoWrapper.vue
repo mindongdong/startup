@@ -35,7 +35,7 @@
       <div class="video-progress"></div>
       <div class="video-tools">
         <div class="video-tools__column">
-          <div class="button-wrapper">
+          <!-- <div class="button-wrapper">
             <div class="play-button" @click="videoPlay">
               <img
                 class="icon"
@@ -44,12 +44,12 @@
               />
               <img class="icon" v-else src="@/assets/icons/play.png" />
             </div>
-          </div>
-          <div class="button-wrapper">
+          </div> -->
+          <!-- <div class="button-wrapper">
             <div class="playrate-button">
               <img class="icon rotate180" src="@/assets/icons/playrate.png" />
             </div>
-          </div>
+          </div> -->
           <div class="button-wrapper">
             <div class="sound-button" @click="soundMute">
               <img
@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="video-tools__column">
-          <div class="timestamp">
+          <!-- <div class="timestamp">
             {{ currentTime }}
           </div>
         </div>
@@ -74,12 +74,12 @@
                 src="@/assets/icons/full-screen.png"
               />
             </div>
-          </div>
-          <div class="button-wrapper">
+          </div> -->
+          <!-- <div class="button-wrapper">
             <div class="setting-button">
               <img class="icon icon-large" src="@/assets/icons/setting.png" />
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

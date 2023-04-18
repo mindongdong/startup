@@ -64,39 +64,55 @@ export default {
       // console.log("New predictionList value:", newValue);
       // console.log(newValue["length"]);
       const playerBox_list = this.$refs.playerBox.childNodes;
-      // console.dir(playerBox_list);
-      for (var i = 0; i < 22; i++) {
-        if (i < newValue["length"]) {
-          const prediction = newValue[i];
-          const kx = 1152 / 1280;
-          const ky = 648 / 720;
-          // console.log(prediction);
-          // console.log(playerBox_list[i]);
-
-          if (prediction.width < 150 && prediction.height < 350) {
-            playerBox_list[i].style.left =
-              (prediction.x - (prediction.width * 1.4) / 2) * kx + "px";
-            playerBox_list[i].style.top =
-              (prediction.y - (prediction.height * 1.4) / 2) * ky + "px";
-            playerBox_list[i].style.width = prediction.width * 1.4 * kx + "px";
-            playerBox_list[i].style.height =
-              prediction.height * 1.4 * ky + "px";
-            playerBox_list[i].style.display = "flex";
-          } else {
-            playerBox_list[i].style.display = "none";
-          }
-
-          // playerBox_list[i].style.left =
-          //   (prediction.x - prediction.width / 2) * kx + "px";
-          // playerBox_list[i].style.top =
-          //   (prediction.y - prediction.height / 2) * ky + "px";
-          // playerBox_list[i].style.width = prediction.width * kx + "px";
-          // playerBox_list[i].style.height = prediction.height * ky + "px";
-          // playerBox_list[i].style.display = "flex";
+      for (var i = 0; i < newValue.length; i++) {
+        const prediction = newValue[i];
+        const kx = 1152 / 1280;
+        const ky = 648 / 720;
+        if (prediction != [0, 0, 0, 0]) {
+          playerBox_list[i].style.left =
+            (prediction[0] - prediction[2] / 100) * kx + "px";
+          playerBox_list[i].style.top =
+            (prediction[1] - prediction[3] / 100) * ky + "px";
+          playerBox_list[i].style.width = prediction[2] * kx + "px";
+          playerBox_list[i].style.height = prediction[3] * ky + "px";
+          playerBox_list[i].style.display = "flex";
         } else {
           playerBox_list[i].style.display = "none";
         }
       }
+      // console.dir(playerBox_list);
+      // for (var i = 0; i < 22; i++) {
+      //   if (i < newValue["length"]) {
+      //     const prediction = newValue[i];
+      //     const kx = 1152 / 1280;
+      //     const ky = 648 / 720;
+      //     // console.log(prediction);
+      //     // console.log(playerBox_list[i]);
+
+      //     if (prediction.width < 150 && prediction.height < 350) {
+      //       playerBox_list[i].style.left =
+      //         (prediction.x - (prediction.width * 1.4) / 2) * kx + "px";
+      //       playerBox_list[i].style.top =
+      //         (prediction.y - (prediction.height * 1.4) / 2) * ky + "px";
+      //       playerBox_list[i].style.width = prediction.width * 1.4 * kx + "px";
+      //       playerBox_list[i].style.height =
+      //         prediction.height * 1.4 * ky + "px";
+      //       playerBox_list[i].style.display = "flex";
+      //     } else {
+      //       playerBox_list[i].style.display = "none";
+      //     }
+
+      //     // playerBox_list[i].style.left =
+      //     //   (prediction.x - prediction.width / 2) * kx + "px";
+      //     // playerBox_list[i].style.top =
+      //     //   (prediction.y - prediction.height / 2) * ky + "px";
+      //     // playerBox_list[i].style.width = prediction.width * kx + "px";
+      //     // playerBox_list[i].style.height = prediction.height * ky + "px";
+      //     // playerBox_list[i].style.display = "flex";
+      //   } else {
+      //     playerBox_list[i].style.display = "none";
+      //   }
+      // }
       // console.log("new value", newValue);
     },
   },
@@ -115,8 +131,8 @@ export default {
   position: absolute;
   z-index: 9999;
   cursor: pointer;
-  /* border: 2px solid red; */
-  border: none;
+  border: 2px solid red;
+  /* border: none; */
 }
 .playerBox__item:hover {
   border: 1px solid rgba(255, 255, 255, 0.303);
