@@ -80,40 +80,6 @@ export default {
           playerBox_list[i].style.display = "none";
         }
       }
-      // console.dir(playerBox_list);
-      // for (var i = 0; i < 22; i++) {
-      //   if (i < newValue["length"]) {
-      //     const prediction = newValue[i];
-      //     const kx = 1152 / 1280;
-      //     const ky = 648 / 720;
-      //     // console.log(prediction);
-      //     // console.log(playerBox_list[i]);
-
-      //     if (prediction.width < 150 && prediction.height < 350) {
-      //       playerBox_list[i].style.left =
-      //         (prediction.x - (prediction.width * 1.4) / 2) * kx + "px";
-      //       playerBox_list[i].style.top =
-      //         (prediction.y - (prediction.height * 1.4) / 2) * ky + "px";
-      //       playerBox_list[i].style.width = prediction.width * 1.4 * kx + "px";
-      //       playerBox_list[i].style.height =
-      //         prediction.height * 1.4 * ky + "px";
-      //       playerBox_list[i].style.display = "flex";
-      //     } else {
-      //       playerBox_list[i].style.display = "none";
-      //     }
-
-      //     // playerBox_list[i].style.left =
-      //     //   (prediction.x - prediction.width / 2) * kx + "px";
-      //     // playerBox_list[i].style.top =
-      //     //   (prediction.y - prediction.height / 2) * ky + "px";
-      //     // playerBox_list[i].style.width = prediction.width * kx + "px";
-      //     // playerBox_list[i].style.height = prediction.height * ky + "px";
-      //     // playerBox_list[i].style.display = "flex";
-      //   } else {
-      //     playerBox_list[i].style.display = "none";
-      //   }
-      // }
-      // console.log("new value", newValue);
     },
   },
 };
@@ -131,7 +97,8 @@ export default {
   position: absolute;
   z-index: 9999;
   cursor: pointer;
-  border: 2px solid red;
+  /* border: 2px solid red; */
+  transition: 1ms;
   /* border: none; */
 }
 .playerBox__item:hover {

@@ -17,10 +17,5 @@ def trackingBtn(currentFrameNum: currentFrameNum):
         predictions = json.load(file)
         frameNum = currentFrameNum.frame - 20
     return list(predictions[str(i)][frameNum] for i in range(11))
-    # return [predictions[str(0)][frameNum], 
-    # predictions[str(1)][frameNum],
-    # predictions[str(2)][frameNum],
-    # predictions[str(3)][frameNum],
-    # predictions[str(4)][frameNum],]
 
 # print(type(trackingBtn(0)))

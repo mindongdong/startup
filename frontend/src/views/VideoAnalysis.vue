@@ -13,138 +13,55 @@
             <p class="team__icon--name">프랑스</p>
             <img class="team__icon--img" src="@/assets/flags/fra-flag.png" />
           </div>
-
-          
         </div>
         <ul class="team__playerList">
               <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
+                <p class="playerList__name">23 E.마르티네스</p>
+                <img class="playerList__img" src="@/assets/player/arg_0.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">3 N.타글리아피코</p>
+                <img class="playerList__img" src="@/assets/player/arg_1.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">19 N.오타멘디</p>
+                <img class="playerList__img" src="@/assets/player/arg_2.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">13 C.로메로</p>
+                <img class="playerList__img" src="@/assets/player/arg_3.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">26 N.몰리나</p>
+                <img class="playerList__img" src="@/assets/player/arg_4.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">20 A. 막알리스테르</p>
+                <img class="playerList__img" src="@/assets/player/arg_5.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">24 E.페르난데스</p>
+                <img class="playerList__img" src="@/assets/player/arg_6.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">7 R.데 파울</p>
+                <img class="playerList__img" src="@/assets/player/arg_7.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">11 A.디 마리아</p>
+                <img class="playerList__img" src="@/assets/player/arg_8.png" />
+              </li>
+              <li class="playerList__player">
+                <p class="playerList__name">9 J.알바레스</p>
+                <img class="playerList__img" src="@/assets/player/arg_9.png" />
               </li>
               <li class="playerList__player">
                 <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
+                <img class="playerList__img" src="@/assets/player/arg_10.png" />
               </li>
             </ul>
-        <div>
-
         </div>
-        <!-- <div class="team__container">
-          <div class="team__card">
-            <div class="team__playerInfo">
-              <p class="playerInfo__name">킬리안 음바페(Kylian Mbappe)</p>
-              <div class="playerInfo__detail">
-                <div class="playerInfo__detail--col">
-                  <p class="playerInfo__detailInfo">파리 생제르망(PSG)</p>
-                  <p class="playerInfo__detailInfo">프랑스</p>
-                  <p class="playerInfo__detailInfo">1998년 12월 20일</p>
-                  <p class="playerInfo__detailInfo">스트라이커(ST)</p>
-                </div>
-                <img
-                  class="playerInfo__icon"
-                  src="@/assets/playerIcons/스피드 드리블러.png"
-                />
-              </div>
-              <img class="playerInfo__img" src="@/assets/player/mbappe.png" />
-            </div>
-          </div>
-          <div class="team__icon">
-            <p class="team__icon--name">프랑스</p>
-            <img class="team__icon--img" src="@/assets/flags/fra-flag.png" />
-          </div>
-        </div>
-        <div class="team__container">
-          <div class="team__icon">
-            <p class="team__icon--name">아르헨티나</p>
-            <img class="team__icon--img" src="@/assets/flags/arg-flag.png" />
-          </div>
-          <div class="team__card">
-            <ul class="team__playerList">
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/messi.png" />
-              </li>
-            </ul> -->
-          <!-- </div> -->
-        </div>
-      </div>
-      <div class="chat">
+        <div class="chat">
         <div class="chat__header">
           <p class="chat__userInfo">채팅방 참여자 : 2/5 명</p>
           <div class="chat__invite">초대</div>
@@ -196,6 +113,7 @@
             <div class="chat__submit" @click="sendMessage">전송</div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -431,8 +349,8 @@ div {
   align-items: center;
 }
 .playerList__player {
-  width: 5.5rem;
-  height: 8rem;
+  width: 7rem;
+  height: 9rem;
   background: rgba(17, 17, 33, 0.55);
   margin-left: 1rem;
   border-radius: 0.5rem;
