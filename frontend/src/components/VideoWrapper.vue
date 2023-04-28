@@ -236,6 +236,7 @@ div {
   font-weight: 100;
   color: white;
 }
+
 /* 승률 모달 */
 .match-winrate {
   width: 400px;
