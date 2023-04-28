@@ -4,7 +4,7 @@
       <router-link to="/">
         <div class="exit-button"></div>
       </router-link>
-      <div class="match-winrate">
+      <!-- <div class="match-winrate">
         <div class="match-info">
           <img
             class="icon"
@@ -28,7 +28,7 @@
             <span class="progress-bar__text">{{ team2_winrate }}</span>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="modal-content"></div>
     <div class="video-control">
