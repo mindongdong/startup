@@ -172,8 +172,14 @@ export default {
     },
     soundMute() {
       this.muteToggle = !this.muteToggle;
-      const video = this.$store.getters.getCurrentVideo;
-      video.muted = this.muteToggle;
+      const audio = this.$store.getters.getCurrentAudio;
+      if (audio[0].muted) {
+        audio[0].muted = false;
+        audio[1].muted = true;
+      } else {
+        audio[0].muted = true;
+        audio[1].muted = false;
+      }
     },
   },
 };

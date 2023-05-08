@@ -7,10 +7,14 @@ export default new Vuex.Store({
   state: {
     currentVideo: null,
     currentInterval: null,
+    currentAudio: [],
   },
   getters: {
     getCurrentVideo(state) {
       return state.currentVideo;
+    },
+    getCurrentAudio(state) {
+      return state.currentAudio;
     },
     getCurrentInterval(state) {
       return state.currentInterval;
@@ -19,6 +23,9 @@ export default new Vuex.Store({
   mutations: {
     setCurrentVideo(state, videoData) {
       state.currentVideo = videoData;
+    },
+    setCurrentAudio(state, audioData) {
+      state.currentAudio.push(audioData);
     },
     setCurrentInterval(state, intervalData) {
       state.currentInterval = intervalData;
