@@ -202,10 +202,12 @@ div {
 .modal-wrapper {
   width: 72rem;
   height: 40.5rem;
+  width: calc(100% - 2rem);
+  height: calc(100% - 2rem);
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 9998;
+  z-index: 9997;
 }
 .left {
   left: 0;

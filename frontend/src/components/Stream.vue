@@ -67,4 +67,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#my-player {
+  border-radius: 1rem;
+}
+</style>
