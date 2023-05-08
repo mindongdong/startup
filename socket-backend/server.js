@@ -1,8 +1,8 @@
 const express = require("express");
 const http = require("http");
-const fs = require("fs");
+
 const { Server } = require("socket.io");
-const { soccerChat } = require("./soccer-chat");
+const { soccerChat } = require("./ai-chat");
 
 const app = express();
 const server = http.createServer(app);
@@ -11,6 +11,11 @@ const io = new Server(server, {
     origin: "*",
   },
 });
+
+const config = {
+  listenIp: "0.0.0.0",
+  listenPort: 3000,
+};
 
 const videoRouter = require("./router/video.js");
 const audioRouter = require("./router/audio.js");
@@ -28,11 +33,10 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
-    clearInterval(interval);
   });
 });
 
-server.listen(3000, () => {
+server.listen(config.listenPort, () => {
   console.log("Server is running on http://localhost:3000");
 });
 
