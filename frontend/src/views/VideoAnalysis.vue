@@ -305,8 +305,8 @@ div {
   position: absolute;
   bottom: 1rem;
   left: 1rem;
-  width: 72rem;
-  height: calc(881px - 43.5rem);
+  width: calc(100% - 3rem - 248px);
+  height: calc(881px - 42.5rem);
   border-radius: 1rem;
   display: flex;
   flex-direction: row;
@@ -465,8 +465,9 @@ div {
   position: absolute;
   right: 1rem;
   bottom: 1rem;
-  width: calc(1448px - 75rem);
+  width: 248px;
   height: calc(881px - 4rem);
+  height: calc(100% - 2rem);
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
