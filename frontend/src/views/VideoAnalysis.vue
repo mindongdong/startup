@@ -2,9 +2,31 @@
   <div id="layout">
     <img class="background-image" src="@/assets/background.png" />
     <div class="contents-container">
+      <div class="view-mode">
+        <div
+          class="view-mode__info"
+          @click="infoToggle = !infoToggle"
+          v-bind:class="{yellow: !infoToggle}"
+        ></div>
+        <div
+          class="view-mode__info"
+          @click="infoToggle = !infoToggle"
+          v-bind:class="{yellow: infoToggle}"
+        ></div>
+        <div
+          class="view-mode__chat"
+          @click="chatToggle = !chatToggle"
+          v-bind:class="{blue: !chatToggle}"
+        ></div>
+        <div
+          class="view-mode__chat"
+          @click="chatToggle = !chatToggle"
+          v-bind:class="{blue: chatToggle}"
+        ></div>
+      </div>
       <Video></Video>
-      <div class="team-info">
-        <div class = "team-selector">
+      <div class="team-info" v-bind:class="{hide__bottom: infoToggle}">
+        <div class="team-selector">
           <div class="team__icon">
             <p class="team__icon--name">아르헨티나</p>
             <img class="team__icon--img" src="@/assets/flags/arg-flag.png" />
@@ -14,88 +36,116 @@
             <img class="team__icon--img" src="@/assets/flags/fra-flag.png" />
           </div>
         </div>
-        <ul class="team__playerList">
-              <li class="playerList__player">
-                <p class="playerList__name">23 E.마르티네스</p>
-                <img class="playerList__img" src="@/assets/player/arg_0.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">3 N.타글리아피코</p>
-                <img class="playerList__img" src="@/assets/player/arg_1.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">19 N.오타멘디</p>
-                <img class="playerList__img" src="@/assets/player/arg_2.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">13 C.로메로</p>
-                <img class="playerList__img" src="@/assets/player/arg_3.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">26 N.몰리나</p>
-                <img class="playerList__img" src="@/assets/player/arg_4.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">20 A. 막알리스테르</p>
-                <img class="playerList__img" src="@/assets/player/arg_5.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">24 E.페르난데스</p>
-                <img class="playerList__img" src="@/assets/player/arg_6.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">7 R.데 파울</p>
-                <img class="playerList__img" src="@/assets/player/arg_7.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">11 A.디 마리아</p>
-                <img class="playerList__img" src="@/assets/player/arg_8.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">9 J.알바레스</p>
-                <img class="playerList__img" src="@/assets/player/arg_9.png" />
-              </li>
-              <li class="playerList__player">
-                <p class="playerList__name">10 L.메시</p>
-                <img class="playerList__img" src="@/assets/player/arg_10.png" />
-              </li>
-            </ul>
+        <div class="team__card" v-if="detailToggle">
+          <div class="team__playerInfo">
+            <p class="playerInfo__name">킬리안 음바페(Kylian Mbappe)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">파리 생제르망(PSG)</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1998년 12월 20일</p>
+                <p class="playerInfo__detailInfo">스트라이커(ST)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/mbappe.png" />
+          </div>
         </div>
-        <div class="chat">
+        <ul class="team__playerList" v-else>
+          <li class="playerList__player" @click="detailToggle = !detailToggle">
+            <p class="playerList__name">23 E.마르티네스</p>
+            <img class="playerList__img" src="@/assets/player/arg_0.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">3 N.타글리아피코</p>
+            <img class="playerList__img" src="@/assets/player/arg_1.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">19 N.오타멘디</p>
+            <img class="playerList__img" src="@/assets/player/arg_2.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">13 C.로메로</p>
+            <img class="playerList__img" src="@/assets/player/arg_3.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">26 N.몰리나</p>
+            <img class="playerList__img" src="@/assets/player/arg_4.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">20 A. 막알리스테르</p>
+            <img class="playerList__img" src="@/assets/player/arg_5.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">24 E.페르난데스</p>
+            <img class="playerList__img" src="@/assets/player/arg_6.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">7 R.데 파울</p>
+            <img class="playerList__img" src="@/assets/player/arg_7.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">11 A.디 마리아</p>
+            <img class="playerList__img" src="@/assets/player/arg_8.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">9 J.알바레스</p>
+            <img class="playerList__img" src="@/assets/player/arg_9.png" />
+          </li>
+          <li class="playerList__player" @click="detailToggle = true">
+            <p class="playerList__name">10 L.메시</p>
+            <img class="playerList__img" src="@/assets/player/arg_10.png" />
+          </li>
+        </ul>
+      </div>
+      <div class="chat" v-bind:class="{hide__right: chatToggle}">
         <div class="chat__header">
-          <p class="chat__userInfo">채팅방 참여자 : 2/5 명</p>
-          <div class="chat__invite">초대</div>
+          <p class="chat__userInfo">이름 :</p>
+          <input
+            type="text"
+            class="chat__userName"
+            v-model="myName"
+            placeholder="이름을 입력해주세요"
+          />
+          <div class="chat__userColor"></div>
           <div class="header__underLine"></div>
         </div>
-        <div class="chat__content">
+        <div class="chat__content" ref="chat__content">
           <div
             class="chat__liveChat"
             v-for="(message, idx) in messages"
             :key="idx"
           >
-            <div class="chat__userChat" v-if="message.user != 'Me'">
-              <span class="chat__userName">[AI 해설]</span><br /><br />
-              <p>{{ message.text }}</p>
+            <div class="chat__userChat">
+              <!-- v-if="message.user != 'Me'" -->
+              <p>
+                <span class="font__purple">{{ myName }}</span> :
+                {{ message.text }}
+              </p>
             </div>
-            <div class="chat__myChat" v-else>
+            <!-- <div class="chat__myChat">
+              v-else
               <span class="chat__sendTarget">[{{ message.user }}]</span
               ><br /><br />
               <p>{{ message.text }}</p>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="chat__box">
           <div class="chat__target">
             <div
               class="chat__targetText"
-              v-bind:class="{ select: !targetToggle }"
+              v-bind:class="{select: !targetToggle}"
               @click="targetChange"
             >
               모두
             </div>
             <div
               class="chat__targetText"
-              v-bind:class="{ select: targetToggle }"
+              v-bind:class="{select: targetToggle}"
               @click="targetChange(ai)"
             >
               AI
@@ -114,15 +164,13 @@
           </div>
         </div>
       </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Video from "@/components/Video.vue";
-import { getMatchInfo } from "@/api/index";
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 
 export default {
   components: {
@@ -134,6 +182,10 @@ export default {
       messages: [], // Store messages
       newMessage: "", // User input for new message
       socket: null, // WebSocket connection
+      infoToggle: false,
+      chatToggle: false,
+      detailToggle: false,
+      myName: "메시",
     };
   },
   async mounted() {
@@ -141,24 +193,24 @@ export default {
     this.socket = io("http://localhost:3000");
 
     // Add received message to messages array
-    this.socket.on("message", (message) => {
+    this.socket.on("message", message => {
       this.messages.push(message);
     });
 
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", (ev) => {
+    video.addEventListener("ended", ev => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", (ev) => {
+    video.addEventListener("timeupdate", ev => {
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       }
     });
@@ -194,6 +246,8 @@ export default {
           });
           this.socket.emit("message", this.messages);
           this.newMessage = "";
+          this.$refs.chat__content.scrollTop =
+            this.$refs.chat__content.scrollHeight;
         }
       }
     },
@@ -242,19 +296,44 @@ div {
   height: calc(100% - 4rem); */
   width: 1448px;
   height: 881px;
+  width: calc(100% - 2rem);
+  height: 0;
+  padding-bottom: 56.25%;
   background: rgba(255, 255, 255, 0.224);
   border-radius: 1rem;
+}
+.view-mode {
+  position: absolute;
+  top: -2.5rem;
+  left: calc(50% - 3rem);
+  width: 6rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.view-mode__info,
+.view-mode__chat {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.224);
+  cursor: pointer;
 }
 .team-info {
   position: absolute;
   bottom: 1rem;
   left: 1rem;
-  width: 72rem;
-  height: calc(881px - 43.5rem);
+  width: calc(100% - 3rem - 248px);
+  height: calc(881px - 42.5rem);
   border-radius: 1rem;
-  background: #08133ac4;
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  transition: bottom 1s;
+  background: #08133a84;
+  background: #0a1931c5;
+  /* opacity: 0.88; */
+  z-index: 9998;
 }
 .team-selector {
   display: flex;
@@ -271,19 +350,13 @@ div {
   justify-content: center;
 }
 .team__card {
-  width: 75%;
-  height: calc(100% - 2rem);
-  background: rgba(56, 56, 79, 0.365);
-  border-radius: 8px;
+  width: 89%;
+  height: 95%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: rgba(62, 133, 188, 0.8) 0px 1px 1px,
-    rgba(62, 133, 188, 0.8) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px,
-    rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
 }
 .team__playerInfo {
-  width: 90%;
+  width: 100%;
   height: 90%;
   background: rgba(17, 17, 33, 0.55);
   border-radius: 1rem;
@@ -405,39 +478,54 @@ div {
   position: absolute;
   right: 1rem;
   bottom: 1rem;
-  width: calc(1448px - 75rem);
-  height: calc(881px - 2rem);
+  width: 248px;
+  height: calc(881px - 4rem);
+  height: calc(100% - 2rem);
   border-radius: 1rem;
-  background: #08133ac4;
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: right 1s;
+  background: #08133a84;
+  background: #0a1931c5;
+  /* opacity: 0.98; */
+  z-index: 9998;
 }
 .chat__header {
   width: 100%;
+  padding: 0 1rem;
   margin-top: 0.5rem;
   height: 3.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   position: relative;
 }
 .chat__userInfo {
-  width: 65%;
-  height: 100%;
+  height: 1.2rem;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
+  font-size: 1rem;
 }
-.chat__invite {
-  width: 3rem;
-  height: 1.5rem;
-  border-radius: 0.6rem;
-  cursor: pointer;
+.chat__userName {
+  max-width: 60%;
+  height: 1.2rem;
+  white-space: nowrap;
+  overflow-x: hidden;
+  font-size: 1rem;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background: #496adf;
+  border: none;
+  background: rgba(0, 0, 0, 0);
+  color: white;
+}
+.chat__userColor {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgb(200, 20, 255);
 }
 .header__underLine {
   position: absolute;
@@ -453,6 +541,8 @@ div {
   overflow-x: hidden;
   overflow-y: auto;
   direction: ltr;
+  /* scroll-behavior: smooth;
+  scroll-snap-type: y proximity; */
 }
 /* Customize the scrollbar background and thickness */
 .chat__content::-webkit-scrollbar {
@@ -481,27 +571,29 @@ div {
 .chat__myChat {
   position: relative;
   box-sizing: border-box;
-  min-height: 3rem;
+  min-height: 1rem;
   width: fit-content;
   max-width: 100%;
-  padding: 0.5rem 0.8rem;
+  padding: 0.3rem 0.8rem;
   border-radius: 6px 0 6px 0;
-  background: rgba(100, 170, 0, 0.1);
-  border: 2px solid rgba(100, 170, 0, 0.1);
+  background: rgba(0, 0, 0, 0.5);
+  background: #26323800;
+  /* border: 2px solid rgba(0, 0, 0, 0.2); */
   color: #fff;
-  font-size: 0.9rem;
-  line-height: 1.1rem;
-  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  line-height: 1.3rem;
 }
 .chat__myChat {
   margin: 0 0 0 auto;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: right;
 }
-.chat__userChat:after {
+/* .chat__userChat:after {
   content: "";
   position: absolute;
   border: 10px solid transparent;
-  border-top: 10px solid rgba(100, 170, 0, 0.2);
+  border-top: 10px solid rgba(0, 0, 0, 0.2);
   border-left: none;
   bottom: -22px;
   left: 10px;
@@ -510,15 +602,11 @@ div {
   content: "";
   position: absolute;
   border: 10px solid transparent;
-  border-top: 10px solid rgba(100, 170, 0, 0.2);
+  border-top: 10px solid rgba(0, 0, 0, 0.2);
   border-right: none;
   bottom: -22px;
   right: 10px;
-}
-.chat__userName {
-  font-size: 1rem;
-  color: #e76f51;
-}
+} */
 .chat__sendTarget {
   font-size: 1rem;
   color: #6e8bf4;
@@ -576,7 +664,8 @@ div {
   font-size: 1rem;
   border-radius: 1rem;
 }
-.chat__text:focus {
+.chat__text:focus,
+.chat__userName:focus {
   outline: none;
 }
 .chat__send {
@@ -650,7 +739,19 @@ div {
 .font__yellow {
   color: #f2ae00;
 }
+.yellow {
+  background: #f2ae00;
+}
+.blue {
+  background: skyblue;
+}
 .hide {
   display: none;
+}
+.hide__bottom {
+  bottom: -100%;
+}
+.hide__right {
+  right: -100%;
 }
 </style>

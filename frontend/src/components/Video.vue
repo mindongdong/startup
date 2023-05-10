@@ -92,6 +92,9 @@ export default {
 .layout {
   width: 72rem;
   height: 40.5rem;
+  width: calc(100% - 2rem);
+  height: 0;
+  padding-bottom: 56.25%;
   position: absolute;
   top: 1rem;
   left: 1rem;
