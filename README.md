@@ -28,3 +28,11 @@ uvicorn app.main:app --reload
 ```bash
 node server.js
 ```
+
+## main에서 Pull 받을 때, 해야하는 일
+1. **frontend, socket-backend 폴더 안에 node_modules 폴더 삭제**
+
+2. **frontend, socket-backend 폴더로 터미널 열고 아래 명령어 입력**
+```bash
+npm install
+```
