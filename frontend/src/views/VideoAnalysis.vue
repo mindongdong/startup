@@ -36,48 +36,66 @@
             <img class="team__icon--img" src="@/assets/flags/fra-flag.png" />
           </div>
         </div>
-        <ul class="team__playerList">
-          <li class="playerList__player">
+        <div class="team__card" v-if="detailToggle">
+          <div class="team__playerInfo">
+            <p class="playerInfo__name">킬리안 음바페(Kylian Mbappe)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">파리 생제르망(PSG)</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1998년 12월 20일</p>
+                <p class="playerInfo__detailInfo">스트라이커(ST)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/mbappe.png" />
+          </div>
+        </div>
+        <ul class="team__playerList" v-else>
+          <li class="playerList__player" @click="detailToggle = !detailToggle">
             <p class="playerList__name">23 E.마르티네스</p>
             <img class="playerList__img" src="@/assets/player/arg_0.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">3 N.타글리아피코</p>
             <img class="playerList__img" src="@/assets/player/arg_1.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">19 N.오타멘디</p>
             <img class="playerList__img" src="@/assets/player/arg_2.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">13 C.로메로</p>
             <img class="playerList__img" src="@/assets/player/arg_3.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">26 N.몰리나</p>
             <img class="playerList__img" src="@/assets/player/arg_4.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">20 A. 막알리스테르</p>
             <img class="playerList__img" src="@/assets/player/arg_5.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">24 E.페르난데스</p>
             <img class="playerList__img" src="@/assets/player/arg_6.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">7 R.데 파울</p>
             <img class="playerList__img" src="@/assets/player/arg_7.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">11 A.디 마리아</p>
             <img class="playerList__img" src="@/assets/player/arg_8.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">9 J.알바레스</p>
             <img class="playerList__img" src="@/assets/player/arg_9.png" />
           </li>
-          <li class="playerList__player">
+          <li class="playerList__player" @click="detailToggle = true">
             <p class="playerList__name">10 L.메시</p>
             <img class="playerList__img" src="@/assets/player/arg_10.png" />
           </li>
@@ -166,6 +184,7 @@ export default {
       socket: null, // WebSocket connection
       infoToggle: false,
       chatToggle: false,
+      detailToggle: false,
       myName: "메시",
     };
   },
@@ -309,7 +328,7 @@ div {
   height: calc(881px - 42.5rem);
   border-radius: 1rem;
   display: flex;
-  flex-direction: row;
+  align-items: center;
   transition: bottom 1s;
   background: #08133a84;
   background: #0a1931c5;
@@ -331,19 +350,13 @@ div {
   justify-content: center;
 }
 .team__card {
-  width: 75%;
-  height: calc(100% - 2rem);
-  background: rgba(56, 56, 79, 0.365);
-  border-radius: 8px;
+  width: 89%;
+  height: 95%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: rgba(62, 133, 188, 0.8) 0px 1px 1px,
-    rgba(62, 133, 188, 0.8) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px,
-    rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
 }
 .team__playerInfo {
-  width: 90%;
+  width: 100%;
   height: 90%;
   background: rgba(17, 17, 33, 0.55);
   border-radius: 1rem;
