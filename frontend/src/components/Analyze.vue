@@ -64,19 +64,25 @@ export default {
       // console.log("New predictionList value:", newValue);
       // console.log(newValue["length"]);
       const playerBox_list = this.$refs.playerBox.childNodes;
-      for (var i = 0; i < newValue.length; i++) {
-        const prediction = newValue[i];
-        const kx = 1152 / 1280;
-        const ky = 648 / 720;
-        if (prediction != [0, 0, 0, 0]) {
-          playerBox_list[i].style.left =
-            (prediction[0] - prediction[2] / 100) * kx + "px";
-          playerBox_list[i].style.top =
-            (prediction[1] - prediction[3] / 100) * ky + "px";
-          playerBox_list[i].style.width = prediction[2] * kx + "px";
-          playerBox_list[i].style.height = prediction[3] * ky + "px";
-          playerBox_list[i].style.display = "flex";
-        } else {
+      if (newValue["22"] == 1) {
+        for (var i = 0; i < newValue.length - 1; i++) {
+          const prediction = newValue[i];
+          const kx = 1152 / 1280;
+          const ky = 648 / 720;
+          if (prediction != [0, 0, 0, 0]) {
+            playerBox_list[i].style.left =
+              (prediction[0] - prediction[2] / 100) * kx + "px";
+            playerBox_list[i].style.top =
+              (prediction[1] - prediction[3] / 100) * ky + "px";
+            playerBox_list[i].style.width = prediction[2] * kx + "px";
+            playerBox_list[i].style.height = prediction[3] * ky + "px";
+            playerBox_list[i].style.display = "flex";
+          } else {
+            playerBox_list[i].style.display = "none";
+          }
+        }
+      } else {
+        for (var i = 0; i < newValue.length - 1; i++) {
           playerBox_list[i].style.display = "none";
         }
       }
