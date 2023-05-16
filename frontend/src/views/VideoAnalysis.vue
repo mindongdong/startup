@@ -6,42 +6,404 @@
         <div
           class="view-mode__info"
           @click="infoToggle = !infoToggle"
-          v-bind:class="{yellow: !infoToggle}"
+          v-bind:class="{ yellow: !infoToggle }"
         ></div>
         <div
           class="view-mode__info"
           @click="infoToggle = !infoToggle"
-          v-bind:class="{yellow: infoToggle}"
+          v-bind:class="{ yellow: infoToggle }"
         ></div>
         <div
           class="view-mode__chat"
           @click="chatToggle = !chatToggle"
-          v-bind:class="{blue: !chatToggle}"
+          v-bind:class="{ blue: !chatToggle }"
         ></div>
         <div
           class="view-mode__chat"
           @click="chatToggle = !chatToggle"
-          v-bind:class="{blue: chatToggle}"
+          v-bind:class="{ blue: chatToggle }"
         ></div>
       </div>
       <Video></Video>
-      <div class="team-info" v-bind:class="{hide__bottom: infoToggle}">
+      <div class="team-info" v-bind:class="{ hide__bottom: infoToggle }">
         <div class="team-selector">
-          <div class="team__icon">
+          <div
+            class="team__icon"
+            @click="
+              detailToggle = false;
+              teamHome = true;
+            "
+          >
             <p class="team__icon--name">아르헨티나</p>
             <img class="team__icon--img" src="@/assets/flags/arg-flag.png" />
           </div>
-          <div class="team__icon">
+          <div
+            class="team__icon"
+            @click="
+              detailToggle = false;
+              teamHome = false;
+            "
+          >
             <p class="team__icon--name">프랑스</p>
             <img class="team__icon--img" src="@/assets/flags/fra-flag.png" />
           </div>
         </div>
         <div class="team__card" v-if="detailToggle">
-          <div class="team__playerInfo">
-            <p class="playerInfo__name">킬리안 음바페(Kylian Mbappe)</p>
+          <div class="team__playerInfo" v-if="teamHome && detailIndex == 0">
+            <p class="playerInfo__name">E. 마르티네스 (E. Martinez)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
-                <p class="playerInfo__detailInfo">파리 생제르망(PSG)</p>
+                <p class="playerInfo__detailInfo">아스톤 빌라(Aston Villa)</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">1992년 9월 2일</p>
+                <p class="playerInfo__detailInfo">골키퍼(GK)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_0.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 1"
+          >
+            <p class="playerInfo__name">N. 타글리아피코 (N. Tagliafico)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Ajax</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">1992년 8월 31일</p>
+                <p class="playerInfo__detailInfo">왼쪽 풀백(LB)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_1.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 2"
+          >
+            <p class="playerInfo__name">N. 오타멘디 (N. Otamendi)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Benfica</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">1988년 2월 12일</p>
+                <p class="playerInfo__detailInfo">센터백(CB)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_2.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 3"
+          >
+            <p class="playerInfo__name">C. 로메로 (C. Romero)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Tottenham Hotspur</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">1998년 4월 27일</p>
+                <p class="playerInfo__detailInfo">센터백(CB)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_3.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 4"
+          >
+            <p class="playerInfo__name">N. 몰리나 (N. Molina)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Udinese</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">1998년 7월 4일</p>
+                <p class="playerInfo__detailInfo">오른쪽 풀백(RB)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_4.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 5"
+          >
+            <p class="playerInfo__name">A. 막알리스테르 (A. Mac Allister)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Brighton & Hove Albion</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">1999년 12월 24일</p>
+                <p class="playerInfo__detailInfo">미드필더(MF)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_5.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 6"
+          >
+            <p class="playerInfo__name">E. 페르난데스 (E. Fernández)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Defensa y Justicia</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">2000년 3월 12일</p>
+                <p class="playerInfo__detailInfo">미드필더(MF)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_6.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 7"
+          >
+            <p class="playerInfo__name">R. 데 파울 (R. De Paul)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Atlético Madrid</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">1994년 5월 24일</p>
+                <p class="playerInfo__detailInfo">미드필더(MF)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_7.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 8"
+          >
+            <p class="playerInfo__name">A. 디 마리아 (A. Di Maria)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Paris Saint-Germain</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">1988년 2월 14일</p>
+                <p class="playerInfo__detailInfo">미드필더(MF)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_8.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 9"
+          >
+            <p class="playerInfo__name">J. 알바레스 (J. Alvarez)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">River Plate</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">2000년 7월 28일</p>
+                <p class="playerInfo__detailInfo">스트라이커(ST)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_9.png" />
+          </div>
+          <div
+            class="team__playerInfo"
+            v-else-if="teamHome && detailIndex == 10"
+          >
+            <p class="playerInfo__name">L. 메시 (L. Messi)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Paris Saint-Germain</p>
+                <p class="playerInfo__detailInfo">아르헨티나</p>
+                <p class="playerInfo__detailInfo">1987년 6월 24일</p>
+                <p class="playerInfo__detailInfo">스트라이커(ST)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/arg_10.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 0">
+            <p class="playerInfo__name">H. 요리스 (H. Lloris)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Tottenham Hotspur</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1986년 12월 26일</p>
+                <p class="playerInfo__detailInfo">골키퍼(GK)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_0.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 1">
+            <p class="playerInfo__name">J. 쿤데 (J. Koundé)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Sevilla FC</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1998년 11월 12일</p>
+                <p class="playerInfo__detailInfo">센터백(CB)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_1.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 2">
+            <p class="playerInfo__name">R. 바란 (R. Varane)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Manchester United</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1993년 4월 25일</p>
+                <p class="playerInfo__detailInfo">센터백(CB)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_2.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 3">
+            <p class="playerInfo__name">D. 우파메카노 (D. Upamecano)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Bayern Munich</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1998년 10월 27일</p>
+                <p class="playerInfo__detailInfo">센터백(CB)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_3.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 4">
+            <p class="playerInfo__name">T. 에르난데스 (T. Hernandez)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">AC Milan</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1997년 10월 29일</p>
+                <p class="playerInfo__detailInfo">왼쪽 풀백(LB)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_4.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 5">
+            <p class="playerInfo__name">A. 추아메니 (A. Tchouaméni)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">AS Monaco</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">2000년 1월 27일</p>
+                <p class="playerInfo__detailInfo">미드필더(MF)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_5.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 6">
+            <p class="playerInfo__name">A. 라비오 (A. Rabiot)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Juventus</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1995년 4월 3일</p>
+                <p class="playerInfo__detailInfo">미드필더(MF)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_6.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 7">
+            <p class="playerInfo__name">O. 뎀벨레 (O. Dembélé)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Barcelona</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1997년 5월 15일</p>
+                <p class="playerInfo__detailInfo">윙어(WF)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_7.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 8">
+            <p class="playerInfo__name">A. 그리즈만 (A. Griezmann)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Atletico Madrid</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1991년 3월 21일</p>
+                <p class="playerInfo__detailInfo">스트라이커(ST)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_8.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 9">
+            <p class="playerInfo__name">K. 음바페 (K. Mbappé)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">Paris Saint-Germain</p>
                 <p class="playerInfo__detailInfo">프랑스</p>
                 <p class="playerInfo__detailInfo">1998년 12월 20일</p>
                 <p class="playerInfo__detailInfo">스트라이커(ST)</p>
@@ -51,57 +413,251 @@
                 src="@/assets/playerIcons/스피드 드리블러.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/mbappe.png" />
+            <img class="playerInfo__img" src="@/assets/player/fr_9.png" />
+          </div>
+          <div class="team__playerInfo" v-else-if="detailIndex == 10">
+            <p class="playerInfo__name">O. 지루 (O. Giroud)</p>
+            <div class="playerInfo__detail">
+              <div class="playerInfo__detail--col">
+                <p class="playerInfo__detailInfo">AC Milan</p>
+                <p class="playerInfo__detailInfo">프랑스</p>
+                <p class="playerInfo__detailInfo">1986년 9월 30일</p>
+                <p class="playerInfo__detailInfo">스트라이커(ST)</p>
+              </div>
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/스피드 드리블러.png"
+              />
+            </div>
+            <img class="playerInfo__img" src="@/assets/player/fr_10.png" />
           </div>
         </div>
-        <ul class="team__playerList" v-else>
-          <li class="playerList__player" @click="detailToggle = !detailToggle">
+        <ul class="team__playerList" v-else-if="teamHome">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 0;
+            "
+          >
             <p class="playerList__name">23 E.마르티네스</p>
             <img class="playerList__img" src="@/assets/player/arg_0.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 1;
+            "
+          >
             <p class="playerList__name">3 N.타글리아피코</p>
             <img class="playerList__img" src="@/assets/player/arg_1.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 2;
+            "
+          >
             <p class="playerList__name">19 N.오타멘디</p>
             <img class="playerList__img" src="@/assets/player/arg_2.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 3;
+            "
+          >
             <p class="playerList__name">13 C.로메로</p>
             <img class="playerList__img" src="@/assets/player/arg_3.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 4;
+            "
+          >
             <p class="playerList__name">26 N.몰리나</p>
             <img class="playerList__img" src="@/assets/player/arg_4.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
-            <p class="playerList__name">20 A. 막알리스테르</p>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 5;
+            "
+          >
+            <p class="playerList__name">20 A.막알리스테르</p>
             <img class="playerList__img" src="@/assets/player/arg_5.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 6;
+            "
+          >
             <p class="playerList__name">24 E.페르난데스</p>
             <img class="playerList__img" src="@/assets/player/arg_6.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 7;
+            "
+          >
             <p class="playerList__name">7 R.데 파울</p>
             <img class="playerList__img" src="@/assets/player/arg_7.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 8;
+            "
+          >
             <p class="playerList__name">11 A.디 마리아</p>
             <img class="playerList__img" src="@/assets/player/arg_8.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 9;
+            "
+          >
             <p class="playerList__name">9 J.알바레스</p>
             <img class="playerList__img" src="@/assets/player/arg_9.png" />
           </li>
-          <li class="playerList__player" @click="detailToggle = true">
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 10;
+            "
+          >
             <p class="playerList__name">10 L.메시</p>
             <img class="playerList__img" src="@/assets/player/arg_10.png" />
           </li>
         </ul>
+        <ul class="team__playerList" v-else>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 0;
+            "
+          >
+            <p class="playerList__name">1 H.요리스</p>
+            <img class="playerList__img" src="@/assets/player/fr_0.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 1;
+            "
+          >
+            <p class="playerList__name">5 J.쿤데</p>
+            <img class="playerList__img" src="@/assets/player/fr_1.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 2;
+            "
+          >
+            <p class="playerList__name">4 R.바란</p>
+            <img class="playerList__img" src="@/assets/player/fr_2.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 3;
+            "
+          >
+            <p class="playerList__name">18 D.우파메카노</p>
+            <img class="playerList__img" src="@/assets/player/fr_3.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 4;
+            "
+          >
+            <p class="playerList__name">22 T.에르난데스</p>
+            <img class="playerList__img" src="@/assets/player/fr_4.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 5;
+            "
+          >
+            <p class="playerList__name">8 A.추아메니</p>
+            <img class="playerList__img" src="@/assets/player/fr_5.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 6;
+            "
+          >
+            <p class="playerList__name">14 A.라비오</p>
+            <img class="playerList__img" src="@/assets/player/fr_6.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 7;
+            "
+          >
+            <p class="playerList__name">11 O.뎀벨레</p>
+            <img class="playerList__img" src="@/assets/player/fr_7.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 8;
+            "
+          >
+            <p class="playerList__name">7 A.그리즈만</p>
+            <img class="playerList__img" src="@/assets/player/fr_8.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 9;
+            "
+          >
+            <p class="playerList__name">10 K.음바페</p>
+            <img class="playerList__img" src="@/assets/player/fr_9.png" />
+          </li>
+          <li
+            class="playerList__player"
+            @click="
+              detailToggle = true;
+              detailIndex = 10;
+            "
+          >
+            <p class="playerList__name">9 O.지루</p>
+            <img class="playerList__img" src="@/assets/player/fr_10.png" />
+          </li>
+        </ul>
       </div>
-      <div class="chat" v-bind:class="{hide__right: chatToggle}">
+      <div class="chat" v-bind:class="{ hide__right: chatToggle }">
         <div class="chat__header">
           <p class="chat__userInfo">이름 :</p>
           <input
@@ -138,14 +694,14 @@
           <div class="chat__target">
             <div
               class="chat__targetText"
-              v-bind:class="{select: !targetToggle}"
+              v-bind:class="{ select: !targetToggle }"
               @click="targetChange"
             >
               모두
             </div>
             <div
               class="chat__targetText"
-              v-bind:class="{select: targetToggle}"
+              v-bind:class="{ select: targetToggle }"
               @click="targetChange(ai)"
             >
               AI
@@ -170,7 +726,7 @@
 
 <script>
 import Video from "@/components/Video.vue";
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 
 export default {
   components: {
@@ -185,6 +741,8 @@ export default {
       infoToggle: false,
       chatToggle: false,
       detailToggle: false,
+      detailIndex: 0,
+      teamHome: true,
       myName: "메시",
     };
   },
@@ -193,24 +751,24 @@ export default {
     this.socket = io("http://localhost:3000");
 
     // Add received message to messages array
-    this.socket.on("message", message => {
+    this.socket.on("message", (message) => {
       this.messages.push(message);
     });
 
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", ev => {
+    video.addEventListener("timeupdate", (ev) => {
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       }
     });
