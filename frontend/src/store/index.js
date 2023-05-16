@@ -8,6 +8,7 @@ export default new Vuex.Store({
     currentVideo: null,
     currentInterval: null,
     currentAudio: [],
+    currentTime: 0,
   },
   getters: {
     getCurrentVideo(state) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     getCurrentInterval(state) {
       return state.currentInterval;
+    },
+    getCurrentTime(state) {
+      return state.currentTime;
     },
   },
   mutations: {
@@ -32,6 +36,9 @@ export default new Vuex.Store({
     },
     clearCurrentInterval(state) {
       state.currentInterval = null;
+    },
+    setCurrentTime(state, timeData) {
+      state.currentTime = timeData;
     },
   },
 });

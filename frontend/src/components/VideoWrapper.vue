@@ -4,31 +4,6 @@
       <router-link to="/">
         <div class="exit-button"></div>
       </router-link>
-      <!-- <div class="match-winrate">
-        <div class="match-info">
-          <img
-            class="icon"
-            @click="leftArrowClick"
-            src="@/assets/icons/left-arrow.png"
-          />
-          <span>{{ data_name }}</span>
-          <span>{{ team1_name }}</span>
-          <span>{{ team2_name }}</span>
-          <img
-            class="icon"
-            @click="rightArrowClick"
-            src="@/assets/icons/right-arrow.png"
-          />
-        </div>
-        <div class="progress-bar__container">
-          <div class="progress-bar">
-            <span class="progress-bar__text">{{ team1_winrate }}</span>
-          </div>
-          <div class="progress-bar">
-            <span class="progress-bar__text">{{ team2_winrate }}</span>
-          </div>
-        </div>
-      </div> -->
     </div>
     <div class="modal-content"></div>
     <div class="video-control">
@@ -60,6 +35,11 @@
               <img class="icon" v-else src="@/assets/icons/sound.png" />
             </div>
           </div>
+          <div class="button-wrapper">
+            <div class="change-button" @click="videoSwap">
+              <img class="icon" src="@/assets/icons/change.png" />
+            </div>
+          </div>
         </div>
         <div class="video-tools__column">
           <!-- <div class="timestamp">
@@ -87,6 +67,7 @@
 </template>
 
 <script>
+import Hls from "hls.js";
 export default {
   name: "VideoWrapper",
   props: {
@@ -103,62 +84,17 @@ export default {
     return {
       playToggle: true,
       muteToggle: false,
-      data_name: "승리확률",
-      team1_name: "아르헨티나",
-      team2_name: "프랑스",
-      team1_winrate: 38,
-      team2_winrate: 62,
-      dataList: [
-        {
-          name: "승리 확률",
-          team1__percent: 42,
-          team2__percent: 58,
-        },
-        {
-          name: "점유율",
-          team1__percent: 60,
-          team2__percent: 40,
-        },
-        {
-          name: "볼 경합 성공률",
-          team1__percent: 52,
-          team2__percent: 48,
-        },
-      ],
+      sourceToggle: false,
       currentData: 0,
+      videoSource_off_m3u8: "http://localhost:3000/video/output.m3u8",
+      videoSource_on_m3u8: "http://localhost:3000/video/output_on.m3u8",
+      videoSource_off: "http://localhost:3000/video/video_off.mp4",
+      videoSource_on: "http://localhost:3000/video/video_on.mp4",
+      audioSource_off: "http://localhost:3000/audio/audioTest.mp3",
+      audioSource_on: "http://localhost:3000/audio/audioTest2.mp3",
     };
   },
   methods: {
-    leftArrowClick() {
-      this.currentData -= 1;
-      if (this.currentData == -1) {
-        this.currentData = 2;
-      }
-      const progress = document.getElementsByClassName("progress-bar");
-
-      this.data_name = this.dataList[this.currentData]["name"];
-      this.team1_winrate = this.dataList[this.currentData]["team1__percent"];
-      this.team2_winrate = this.dataList[this.currentData]["team2__percent"];
-      progress[0].style.width =
-        this.dataList[this.currentData]["team1__percent"] + "%";
-      progress[1].style.width =
-        this.dataList[this.currentData]["team2__percent"] + "%";
-    },
-    rightArrowClick() {
-      this.currentData += 1;
-      if (this.currentData == 3) {
-        this.currentData = 0;
-      }
-      const progress = document.getElementsByClassName("progress-bar");
-
-      this.data_name = this.dataList[this.currentData]["name"];
-      this.team1_winrate = this.dataList[this.currentData]["team1__percent"];
-      this.team2_winrate = this.dataList[this.currentData]["team2__percent"];
-      progress[0].style.width =
-        this.dataList[this.currentData]["team1__percent"] + "%";
-      progress[1].style.width =
-        this.dataList[this.currentData]["team2__percent"] + "%";
-    },
     videoPlay() {
       const video = this.$store.getters.getCurrentVideo;
       this.playToggle = !this.playToggle;
@@ -180,6 +116,29 @@ export default {
         audio[0].muted = true;
         audio[1].muted = false;
       }
+    },
+    videoSwap() {
+      if (!this.sourceToggle) {
+        this.setupPlayer(this.videoSource_on_m3u8);
+      } else {
+        this.setupPlayer(this.videoSource_off_m3u8);
+      }
+      this.sourceToggle = !this.sourceToggle;
+    },
+    setupPlayer(source) {
+      const video = this.$store.getters.getCurrentVideo;
+      if (Hls.isSupported()) {
+        if (this.hls) {
+          this.hls.destroy();
+        }
+        this.hls = new Hls();
+        this.hls.loadSource(source);
+        this.hls.attachMedia(video);
+        this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play();
+        });
+      }
+      video.currentTime = this.$store.getters.getCurrentTime;
     },
   },
 };
