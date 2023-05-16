@@ -64,10 +64,11 @@ export default {
       // console.log("New predictionList value:", newValue);
       // console.log(newValue["length"]);
       const playerBox_list = this.$refs.playerBox.childNodes;
+      const video = this.$store.getters.getCurrentVideo;
       for (var i = 0; i < newValue.length; i++) {
         const prediction = newValue[i];
-        const kx = 1152 / 1280;
-        const ky = 648 / 720;
+        const kx = video.clientWidth / 1280;
+        const ky = video.clientHeight / 720;
         if (prediction != [0, 0, 0, 0]) {
           playerBox_list[i].style.left =
             (prediction[0] - prediction[2] / 100) * kx + "px";

@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const http = require("http");
 
 const { Server } = require("socket.io");
@@ -11,6 +12,12 @@ const io = new Server(server, {
     origin: "*",
   },
 });
+
+app.use(cors({
+  origin: "http://localhost:8080", // 접근 권한을 부여하는 도메인
+  credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
+  optionsSuccessStatus: 200, // 응답 상태 200으로 설정
+}));
 
 const config = {
   listenIp: "0.0.0.0",
