@@ -1026,7 +1026,7 @@ div {
   position: absolute;
   padding-right: 1rem;
   top: 1rem;
-  left: calc(50% + 5rem);
+  left: calc(50% - 1rem);
   width: 10rem;
   height: 2rem;
   display: flex;

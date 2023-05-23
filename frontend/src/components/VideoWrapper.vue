@@ -326,7 +326,7 @@ div {
 .video-tools__column {
   padding-left: 1rem;
   position: absolute;
-  left: calc(50% - 4rem);
+  left: calc(50% - 10rem);
   width: 10rem;
   height: 2rem;
   display: flex;
