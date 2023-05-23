@@ -39,6 +39,7 @@ export default {
   name: "Stream",
   data() {
     return {
+      videoSource_m3u8: "http://localhost:3000/video/video.m3u8",
       videoSource_off_m3u8: "http://localhost:3000/video/output.m3u8",
       videoSource_on_m3u8: "http://localhost:3000/video/output_on.m3u8",
       videoSource_off: "http://localhost:3000/video/video_off.mp4",
@@ -51,7 +52,7 @@ export default {
   mounted() {
     if (Hls.isSupported()) {
       this.hls = new Hls();
-      this.hls.loadSource(this.videoSource_off_m3u8);
+      this.hls.loadSource(this.videoSource_m3u8);
       this.hls.attachMedia(this.$refs.videoPlayer);
       this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
         this.$refs.videoPlayer.play();
@@ -67,10 +68,10 @@ export default {
     videoData(ev) {
       console.dir(ev);
       this.$store.commit("setCurrentVideo", ev.target);
-      // const interval = setInterval(() => {
-      //   this.$parent.getPrediction();
-      // }, 100);
-      // this.$store.commit("setCurrentInterval", interval);
+      const interval = setInterval(() => {
+        this.$parent.getPrediction();
+      }, 100);
+      this.$store.commit("setCurrentInterval", interval);
     },
     timeUpdate() {
       this.$parent.timeUpdate();
