@@ -3,7 +3,6 @@ from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 import pandas as pd
 import os
-import json
 
 router = APIRouter()
 
