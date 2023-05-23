@@ -60,6 +60,14 @@
               </div>
               <img
                 class="playerInfo__icon"
+                src="@/assets/playerIcons/GK 능숙한 펀칭.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/GK 적극적 크로스 수비.png"
+              />
+              <img
+                class="playerInfo__icon"
                 src="@/assets/playerIcons/스피드 드리블러.png"
               />
             </div>
@@ -79,7 +87,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/강철몸.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/슬라이딩 태클 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/아웃사이드 슈팅.크로스.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_1.png" />
@@ -98,7 +114,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/리더십.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/장거리 스로인.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/팀 플레이어.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_2.png" />
@@ -117,7 +141,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/긴 패스 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/주발 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/패스 마스터.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_3.png" />
@@ -136,7 +168,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/예리한 감아차기.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/중거리 슛 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/칩슛 선호.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_4.png" />
@@ -155,7 +195,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/플레이 메이커.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/테크니컬 드리블러.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/화려한 개인기.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_5.png" />
@@ -174,7 +222,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/유리몸.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/플레이 메이커.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/승부욕.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_6.png" />
@@ -193,7 +249,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/강철몸.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/얼리 크로스 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/패스 마스터.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_7.png" />
@@ -212,7 +276,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/개인 플레이 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/테크니컬 드리블러.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/아웃사이드 슈팅.크로스.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_8.png" />
@@ -233,6 +305,14 @@
                 class="playerInfo__icon"
                 src="@/assets/playerIcons/스피드 드리블러.png"
               />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/주발 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/중거리 슛 선호.png"
+              />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_9.png" />
           </div>
@@ -250,7 +330,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/화려한 개인기.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/테크니컬 드리블러.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/패스 마스터.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_10.png" />
@@ -266,7 +354,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/GK 능숙한 펀칭.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/GK 적극적 크로스 수비.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/GK 침착한 일대일 수비.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_0.png" />
@@ -282,7 +378,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/슬라이딩 태클 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/리더십.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/강철몸.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_1.png" />
@@ -298,7 +402,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/패스 마스터.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/강철몸.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/슬라이딩 태클 선호.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_2.png" />
@@ -314,7 +426,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/장거리 스로인.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/팀 플레이어.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/긴 패스 선호.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_3.png" />
@@ -332,6 +452,14 @@
                 class="playerInfo__icon"
                 src="@/assets/playerIcons/스피드 드리블러.png"
               />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/장거리 스로인.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/강철몸.png"
+              />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_4.png" />
           </div>
@@ -346,7 +474,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/리더십.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/팀 플레이어.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/플레이 메이커.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_5.png" />
@@ -362,7 +498,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/긴 패스 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/선호 포지션 고집.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/승부욕.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_6.png" />
@@ -380,6 +524,14 @@
                 class="playerInfo__icon"
                 src="@/assets/playerIcons/스피드 드리블러.png"
               />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/화려한 개인기.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/중거리 슛 선호.png"
+              />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_7.png" />
           </div>
@@ -394,7 +546,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/개인 플레이 선호.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/예리한 감아차기.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/패스 마스터.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_8.png" />
@@ -412,6 +572,14 @@
                 class="playerInfo__icon"
                 src="@/assets/playerIcons/스피드 드리블러.png"
               />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/아웃사이드 슈팅.크로스.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/화려한 개인기.png"
+              />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_9.png" />
           </div>
@@ -426,7 +594,15 @@
               </div>
               <img
                 class="playerInfo__icon"
-                src="@/assets/playerIcons/스피드 드리블러.png"
+                src="@/assets/playerIcons/파워 헤더.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/트러블 메이커.png"
+              />
+              <img
+                class="playerInfo__icon"
+                src="@/assets/playerIcons/초 장거리 스로인.png"
               />
             </div>
             <img class="playerInfo__img" src="@/assets/player/fr_10.png" />
@@ -924,18 +1100,21 @@ div {
   font-size: 1rem;
   font-weight: 800;
   margin: 0.8rem;
+  margin-left: 1.3rem;
 }
 .playerInfo__detail {
-  width: calc(100% - 11.5rem);
+  width: calc(100% - 20.5rem);
   height: calc(100% - 3.5rem);
   margin-left: 0.8rem;
+  padding-left: 0.5rem;
   background: rgba(58, 65, 123, 0.378);
   border-radius: 1rem;
   display: flex;
   align-items: center;
+  justify-items: space-evenly;
 }
 .playerInfo__detail--col {
-  width: 60%;
+  width: 80%;
   height: 90%;
   display: flex;
   flex-direction: column;
@@ -946,15 +1125,16 @@ div {
   font-size: 0.8rem;
 }
 .playerInfo__icon {
-  width: 4rem;
-  height: 4rem;
+  width: 5rem;
+  height: 5rem;
+  margin: 0.2rem;
 }
 .playerInfo__img {
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 10rem;
-  height: 10rem;
+  width: 20rem;
+  height: 20rem;
 }
 .team__icon {
   width: 5rem;
