@@ -1024,27 +1024,28 @@ div {
 }
 .view-mode {
   position: absolute;
+  padding-right: 1rem;
   top: 1rem;
-  left: 45%;
+  left: calc(50% + 5rem);
   width: 10rem;
   height: 2rem;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
   z-index: 9999;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.1);
-}
-.view-mode:hover {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   background: rgba(0, 0, 0, 0.3);
 }
+/* .view-mode:hover {
+  background: rgba(0, 0, 0, 0.3);
+} */
 .view-mode__info_off,
 .view-mode__chat_off {
   width: 1.8rem;
   height: 1.8rem;
   border-radius: 10%;
   opacity: 0.5;
-  /* background: rgba(255, 255, 255, 0.124); */
   cursor: pointer;
 }
 .view-mode__info_off:hover,

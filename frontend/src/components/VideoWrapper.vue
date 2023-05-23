@@ -4,13 +4,8 @@
       <router-link to="/">
         <div class="exit-button"></div>
       </router-link>
-    </div>
-    <div class="modal-content"></div>
-    <div class="video-control">
-      <div class="video-progress"></div>
-      <div class="video-tools">
-        <div class="video-tools__column">
-          <!-- <div class="button-wrapper">
+      <div class="video-tools__column">
+        <!-- <div class="button-wrapper">
             <div class="play-button" @click="videoPlay">
               <img
                 class="icon"
@@ -20,29 +15,41 @@
               <img class="icon" v-else src="@/assets/icons/play.png" />
             </div>
           </div> -->
-          <!-- <div class="button-wrapper">
+        <!-- <div class="button-wrapper">
             <div class="playrate-button">
               <img class="icon rotate180" src="@/assets/icons/playrate.png" />
             </div>
           </div> -->
-          <div class="button-wrapper">
-            <div class="sound-button" @click="soundMute">
-              <img
-                class="icon"
-                v-if="muteToggle"
-                src="@/assets/icons/mute.png"
-              />
-              <img class="icon" v-else src="@/assets/icons/sound.png" />
-            </div>
-          </div>
-          <div class="button-wrapper">
-            <div class="change-button" @click="videoSwap">
-              <img class="icon" src="@/assets/icons/change.png" />
-            </div>
+        <div class="button-wrapper">
+          <div class="sound-button" @click="soundMute">
+            <img class="icon" v-if="muteToggle" src="@/assets/icons/mute.png" />
+            <img class="icon" v-else src="@/assets/icons/sound.png" />
           </div>
         </div>
-        <div class="video-tools__column">
-          <!-- <div class="timestamp">
+        <div class="button-wrapper">
+          <div class="change-button" @click="videoSwap">
+            <img
+              class="icon"
+              v-if="!changeToggle"
+              @click="changeToggle = !changeToggle"
+              src="@/assets/icons/change.png"
+            />
+            <img
+              class="icon_on"
+              v-else
+              src="@/assets/icons/change.png"
+              @click="changeToggle = !changeToggle"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-content"></div>
+    <div class="video-control">
+      <div class="video-progress"></div>
+      <div class="video-tools">
+        <!-- <div class="video-tools__column"> -->
+        <!-- <div class="timestamp">
             {{ currentTime }}
           </div>
         </div>
@@ -55,12 +62,12 @@
               />
             </div>
           </div> -->
-          <!-- <div class="button-wrapper">
+        <!-- <div class="button-wrapper">
             <div class="setting-button">
               <img class="icon icon-large" src="@/assets/icons/setting.png" />
             </div>
           </div> -->
-        </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -85,6 +92,7 @@ export default {
       playToggle: true,
       muteToggle: false,
       sourceToggle: false,
+      changeToggle: false,
       currentData: 0,
       videoSource_m3u8: "http://localhost:3000/video/video.m3u8",
       videoSource_voronoi_m3u8:
@@ -140,7 +148,6 @@ export default {
       // 인터벌 멈추고
       clearInterval(this.$store.getters.getCurrentInterval);
 
-
       if (Hls.isSupported()) {
         if (this.hls) {
           this.hls.destroy();
@@ -153,7 +160,6 @@ export default {
         });
       }
 
-      
       video.currentTime = this.$store.getters.getCurrentTime;
     },
   },
@@ -318,18 +324,29 @@ div {
   align-items: flex-end;
 }
 .video-tools__column {
-  height: 27px;
+  padding-left: 1rem;
+  position: absolute;
+  left: calc(50% - 4rem);
+  width: 10rem;
+  height: 2rem;
   display: flex;
   align-items: center;
-  padding: 0 5px;
+  justify-content: space-around;
+  z-index: 9999;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
 }
+/* .video-tools__column:hover {
+  background: rgba(0, 0, 0, 0.3);
+} */
 .video-tools__column:first-child {
-  box-sizing: initial;
+  /* box-sizing: initial;
   padding-right: 10px;
-  border-right: 1px solid hsla(0, 0%, 100%, 0.5);
+  border-right: 1px solid hsla(0, 0%, 100%, 0.5); */
 }
 .video-tools__column:nth-child(2) {
-  margin-left: 20px;
+  /* margin-left: 20px; */
 }
 .video-tools__column:nth-child(3) {
   position: absolute;
@@ -341,8 +358,13 @@ div {
   font-size: 1rem;
 }
 .button-wrapper {
-  position: relative;
-  margin-right: 20px;
+  width: 1.8rem;
+  height: 1.8rem;
+  /* border-radius: 10%;
+  opacity: 0.5;
+  cursor: pointer; */
+  /* position: relative;
+  margin-right: 20px; */
 }
 .flag {
   cursor: pointer;
@@ -351,14 +373,34 @@ div {
   object-fit: cover;
 }
 .icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 10%;
+  opacity: 0.5;
   cursor: pointer;
+  /* cursor: pointer;
   width: 1.25rem;
   height: 1.25rem;
   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
-    contrast(103%);
+    contrast(103%); */
 }
 .icon:hover {
-  opacity: 0.6;
+  opacity: 1;
+}
+.icon_on {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 10%;
+  opacity: 0.8;
+  cursor: pointer;
+  /* cursor: pointer;
+  width: 1.25rem;
+  height: 1.25rem;
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
+    contrast(103%); */
+}
+.icon_on:hover {
+  opacity: 1;
 }
 .icon-large {
   width: 1.75rem;
