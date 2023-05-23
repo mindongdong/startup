@@ -3,26 +3,36 @@
     <img class="background-image" src="@/assets/background.png" />
     <div class="contents-container">
       <div class="view-mode">
-        <div
-          class="view-mode__info"
+        <img
+          v-if="infoToggle"
+          class="view-mode__info_off"
+          src="@/assets/showinfo.png"
           @click="infoToggle = !infoToggle"
-          v-bind:class="{ yellow: !infoToggle }"
-        ></div>
-        <div
-          class="view-mode__info"
+        />
+        <img
+          v-if="!infoToggle"
+          class="view-mode__info_on"
+          src="@/assets/showinfo.png"
           @click="infoToggle = !infoToggle"
-          v-bind:class="{ yellow: infoToggle }"
-        ></div>
-        <div
+        />
+        <img
+          v-if="chatToggle"
+          class="view-mode__chat_off"
+          src="@/assets/showchat.png"
+          @click="chatToggle = !chatToggle"
+        />
+        <img
+          v-else
+          class="view-mode__chat_on"
+          src="@/assets/showchat.png"
+          @click="chatToggle = !chatToggle"
+        />
+
+        <!-- <div
           class="view-mode__chat"
           @click="chatToggle = !chatToggle"
           v-bind:class="{ blue: !chatToggle }"
-        ></div>
-        <div
-          class="view-mode__chat"
-          @click="chatToggle = !chatToggle"
-          v-bind:class="{ blue: chatToggle }"
-        ></div>
+        ></div> -->
       </div>
       <Video></Video>
       <div class="team-info" v-bind:class="{ hide__bottom: infoToggle }">
@@ -890,8 +900,8 @@ export default {
       messages: [], // Store messages
       newMessage: "", // User input for new message
       socket: null, // WebSocket connection
-      infoToggle: false,
-      chatToggle: false,
+      infoToggle: true,
+      chatToggle: true,
       detailToggle: false,
       detailIndex: 0,
       teamHome: true,
@@ -1014,21 +1024,45 @@ div {
 }
 .view-mode {
   position: absolute;
-  top: -2.5rem;
-  left: calc(50% - 3rem);
-  width: 6rem;
+  top: 1rem;
+  left: 45%;
+  width: 10rem;
   height: 2rem;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  z-index: 9999;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.1);
 }
-.view-mode__info,
-.view-mode__chat {
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.224);
+.view-mode:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+.view-mode__info_off,
+.view-mode__chat_off {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 10%;
+  opacity: 0.5;
+  /* background: rgba(255, 255, 255, 0.124); */
   cursor: pointer;
+}
+.view-mode__info_off:hover,
+.view-mode__chat_off:hover {
+  opacity: 1;
+}
+.view-mode__info_on,
+.view-mode__chat_on {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 10%;
+  opacity: 0.8;
+  /* background: rgba(255, 255, 255, 0.124); */
+  cursor: pointer;
+}
+.view-mode__info_on:hover,
+.view-mode__chat_on:hover {
+  opacity: 1;
 }
 .team-info {
   position: absolute;
@@ -1138,7 +1172,7 @@ div {
 }
 .playerList__player {
   width: 7rem;
-  height: 9rem;
+  height: 10.5rem;
   background: rgba(17, 17, 33, 0.55);
   margin-left: 1rem;
   border-radius: 0.5rem;
