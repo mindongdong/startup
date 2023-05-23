@@ -9,6 +9,8 @@ export default new Vuex.Store({
     currentInterval: null,
     currentAudio: [],
     currentTime: 0,
+    currentFrame: 0,
+    currentSwapCount: 0,
   },
   getters: {
     getCurrentVideo(state) {
@@ -23,6 +25,12 @@ export default new Vuex.Store({
     getCurrentTime(state) {
       return state.currentTime;
     },
+    getCurrentFrame(state) {
+      return state.currentFrame;
+    },
+    getSwapCount(state) {
+      return state.currentSwapCount;
+    },
   },
   mutations: {
     setCurrentVideo(state, videoData) {
@@ -34,11 +42,17 @@ export default new Vuex.Store({
     setCurrentInterval(state, intervalData) {
       state.currentInterval = intervalData;
     },
+    setCurrentFrame(state, frameData) {
+      state.currentFrame = frameData;
+    },
     clearCurrentInterval(state) {
       state.currentInterval = null;
     },
     setCurrentTime(state, timeData) {
       state.currentTime = timeData;
+    },
+    setSwapCount(state, swapCountData) {
+      state.currentSwapCount += swapCountData;
     },
   },
 });

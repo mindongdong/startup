@@ -76,12 +76,35 @@ export default {
         durationSeconds;
     },
     async getPrediction() {
+      // const video = this.$store.getters.getCurrentVideo;
+      // const currentFrame = this.$store.getters.getCurrentFrame;
+      // if (swapCount === 0) {
+      //   const frame = {
+      //     frame: video.webkitDecodedFrameCount,
+      //   };
+      //   //프레임 store에 저장
+      //   this.$store.commit("setCurrentFrame", frame.frame + 3);
+      //   console.log(video.webkitDecodedFrameCount, currentFrame, frame.frame);
+      //   const response = await getTrackingInfo(frame);
+      //   this.predictionList = response.data;
+      // } else {
+      //   const frame = {
+      //     frame: currentFrame,
+      //   };
+      //   //프레임 store에 저장
+      //   this.$store.commit("setCurrentFrame", frame.frame + 3);
+      //   console.log(video.webkitDecodedFrameCount, currentFrame, frame.frame);
+      //   const response = await getTrackingInfo(frame);
+      //   this.predictionList = response.data;
+      // }
       const video = this.$store.getters.getCurrentVideo;
+      const videoTime = video.currentTime;
+      console.log(videoTime);
       const frame = {
-        frame: video.webkitDecodedFrameCount,
+        //change int
+        frame: parseInt(videoTime * 27),
       };
       const response = await getTrackingInfo(frame);
-      console.log(video.webkitDecodedFrameCount);
       this.predictionList = response.data;
     },
   },

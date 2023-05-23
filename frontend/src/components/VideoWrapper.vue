@@ -86,6 +86,9 @@ export default {
       muteToggle: false,
       sourceToggle: false,
       currentData: 0,
+      videoSource_m3u8: "http://localhost:3000/video/video.m3u8",
+      videoSource_voronoi_m3u8:
+        "http://localhost:3000/video/video_voronoi.m3u8",
       videoSource_off_m3u8: "http://localhost:3000/video/output.m3u8",
       videoSource_on_m3u8: "http://localhost:3000/video/output_on.m3u8",
       videoSource_off: "http://localhost:3000/video/video_off.mp4",
@@ -119,14 +122,25 @@ export default {
     },
     videoSwap() {
       if (!this.sourceToggle) {
-        this.setupPlayer(this.videoSource_on_m3u8);
+        this.setupPlayer(this.videoSource_voronoi_m3u8);
       } else {
-        this.setupPlayer(this.videoSource_off_m3u8);
+        this.setupPlayer(this.videoSource_m3u8);
       }
       this.sourceToggle = !this.sourceToggle;
     },
     setupPlayer(source) {
       const video = this.$store.getters.getCurrentVideo;
+      const currentFrame = this.$store.getters.getCurrentFrame;
+      console.log(video.webkitDecodedFrameCount, currentFrame);
+      // this.$store.commit(
+      //   "setCurrentFrame",
+      //   video.webkitDecodedFrameCount + currentFrame,
+      // );
+      this.$store.commit("setSwapCount", 1);
+      // 인터벌 멈추고
+      clearInterval(this.$store.getters.getCurrentInterval);
+
+
       if (Hls.isSupported()) {
         if (this.hls) {
           this.hls.destroy();
@@ -138,6 +152,8 @@ export default {
           video.play();
         });
       }
+
+      
       video.currentTime = this.$store.getters.getCurrentTime;
     },
   },
