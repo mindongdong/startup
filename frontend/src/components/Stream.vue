@@ -66,16 +66,31 @@ export default {
   },
   methods: {
     videoData(ev) {
-      console.dir(ev);
+      //프레임 정상화
+      const currentFrame = this.$store.getters.getCurrentFrame;
+      const swapCount = this.$store.getters.getSwapCount;
+      console.log(ev.target.webkitDecodedFrameCount, currentFrame);
+      console.log(swapCount);
+      // if (currentFrame === 0) {
+      //   this.$store.commit("setCurrentFrame", -2);
+      // } else {
+      //   this.$store.commit(
+      //     "setCurrentFrame",
+      //     -ev.target.webkitDecodedFrameCount + currentFrame - 1 - swapCount,
+      //   );
+      // }
       this.$store.commit("setCurrentVideo", ev.target);
+
+      //인터벌 실행
       const interval = setInterval(() => {
-        this.$parent.getPrediction();
+        this.$parent.getPrediction(swapCount);
       }, 100);
       this.$store.commit("setCurrentInterval", interval);
     },
     timeUpdate() {
       this.$parent.timeUpdate();
       this.$store.commit("setCurrentTime", this.$refs.videoPlayer.currentTime);
+      console.log(this.$refs.videoPlayer.currentTime);
       this.$refs.audioPlayer1.currentTime = this.$refs.videoPlayer.currentTime;
       this.$refs.audioPlayer2.currentTime = this.$refs.videoPlayer.currentTime;
     },

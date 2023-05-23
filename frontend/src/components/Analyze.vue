@@ -249,8 +249,8 @@ export default {
   border: 2px solid red;
   justify-content: center;
   align-items: center;
-  /* transition: all 1ms; */
-  border: none;
+  transition: all 1ms;
+  /* border: none; */
 }
 .playerBox__item:hover {
   display: flex;
@@ -260,7 +260,7 @@ export default {
 }
 .playerBox__name {
   position: relative;
-  top: -2.5rem;
+  top: -3rem;
   display: none;
   height: auto;
   font-size: 1rem;
