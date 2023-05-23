@@ -49,7 +49,7 @@
           </div>
         </div>
         <div class="team__card" v-if="detailToggle">
-          <div class="team__playerInfo" v-if="teamHome && detailIndex == 0">
+          <div class="team__playerInfo" v-if="detailIndex == 0">
             <p class="playerInfo__name">E. 마르티네스 (E. Martinez)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -73,10 +73,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_0.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 1"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 1">
             <p class="playerInfo__name">N. 타글리아피코 (N. Tagliafico)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -100,10 +97,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_1.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 2"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 2">
             <p class="playerInfo__name">N. 오타멘디 (N. Otamendi)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -127,10 +121,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_2.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 3"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 3">
             <p class="playerInfo__name">C. 로메로 (C. Romero)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -154,10 +145,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_3.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 4"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 4">
             <p class="playerInfo__name">N. 몰리나 (N. Molina)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -181,10 +169,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_4.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 5"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 5">
             <p class="playerInfo__name">A. 막알리스테르 (A. Mac Allister)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -208,10 +193,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_5.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 6"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 6">
             <p class="playerInfo__name">E. 페르난데스 (E. Fernández)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -235,10 +217,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_6.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 7"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 7">
             <p class="playerInfo__name">R. 데 파울 (R. De Paul)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -262,10 +241,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_7.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 8"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 8">
             <p class="playerInfo__name">A. 디 마리아 (A. Di Maria)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -289,10 +265,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_8.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 9"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 9">
             <p class="playerInfo__name">J. 알바레스 (J. Alvarez)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -316,10 +289,7 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_9.png" />
           </div>
-          <div
-            class="team__playerInfo"
-            v-else-if="teamHome && detailIndex == 10"
-          >
+          <div class="team__playerInfo" v-else-if="detailIndex == 10">
             <p class="playerInfo__name">L. 메시 (L. Messi)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -343,7 +313,13 @@
             </div>
             <img class="playerInfo__img" src="@/assets/player/arg_10.png" />
           </div>
-          <div class="team__playerInfo" v-else-if="detailIndex == 0">
+          <div>
+            <img
+              class="playerInfo__icon"
+              src="@/assets/playerIcons/vs_white.png"
+            />
+          </div>
+          <div class="team__playerInfo" v-if="detailIndex == 0">
             <p class="playerInfo__name">H. 요리스 (H. Lloris)</p>
             <div class="playerInfo__detail">
               <div class="playerInfo__detail--col">
@@ -1068,6 +1044,7 @@ div {
   background: #0a1931c5;
   /* opacity: 0.88; */
   z-index: 9998;
+  padding-right: 1rem;
 }
 .team-selector {
   display: flex;
@@ -1084,7 +1061,7 @@ div {
   justify-content: center;
 }
 .team__card {
-  width: 89%;
+  width: 100%;
   height: 95%;
   display: flex;
   align-items: center;
@@ -1103,7 +1080,7 @@ div {
   margin-left: 1.3rem;
 }
 .playerInfo__detail {
-  width: calc(100% - 20.5rem);
+  width: calc(100% - 13.5rem);
   height: calc(100% - 3.5rem);
   margin-left: 0.8rem;
   padding-left: 0.5rem;
@@ -1133,8 +1110,8 @@ div {
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 20rem;
-  height: 20rem;
+  width: 12.5rem;
+  height: 16rem;
 }
 .team__icon {
   width: 5rem;
