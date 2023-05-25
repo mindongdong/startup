@@ -34,8 +34,8 @@
           v-bind:class="{ blue: !chatToggle }"
         ></div> -->
       </div>
-      <Video></Video>
-      <div class="team-info" v-bind:class="{ hide__bottom: infoToggle }">
+      <Video ref="videoRef"></Video>
+      <div class="team-info" v-bind:class="{hide__bottom: infoToggle}">
         <div class="team-selector">
           <div
             class="team__icon"
@@ -43,9 +43,14 @@
               detailToggle = false;
               teamHome = true;
             "
+            @dblclick="flagClick"
           >
-            <p class="team__icon--name">아르헨티나</p>
-            <img class="team__icon--img" src="@/assets/flags/arg-flag.png" />
+            <p class="team__icon--name" draggable="false">아르헨티나</p>
+            <img
+              class="team__icon--img"
+              draggable="false"
+              src="@/assets/flags/arg-flag.png"
+            />
           </div>
           <div
             class="team__icon"
@@ -53,9 +58,14 @@
               detailToggle = false;
               teamHome = false;
             "
+            @dblclick="flagClick"
           >
-            <p class="team__icon--name">프랑스</p>
-            <img class="team__icon--img" src="@/assets/flags/fra-flag.png" />
+            <p class="team__icon--name" draggable="false">프랑스</p>
+            <img
+              class="team__icon--img"
+              draggable="false"
+              src="@/assets/flags/fra-flag.png"
+            />
           </div>
         </div>
         <div class="team__card" v-if="detailToggle">
@@ -81,7 +91,11 @@
                 src="@/assets/playerIcons/스피드 드리블러.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_0.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_0.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 1">
             <p class="playerInfo__name">N. 타글리아피코 (N. Tagliafico)</p>
@@ -105,7 +119,11 @@
                 src="@/assets/playerIcons/아웃사이드 슈팅.크로스.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_1.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_1.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 2">
             <p class="playerInfo__name">N. 오타멘디 (N. Otamendi)</p>
@@ -129,7 +147,11 @@
                 src="@/assets/playerIcons/팀 플레이어.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_2.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_2.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 3">
             <p class="playerInfo__name">C. 로메로 (C. Romero)</p>
@@ -153,7 +175,11 @@
                 src="@/assets/playerIcons/패스 마스터.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_3.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_3.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 4">
             <p class="playerInfo__name">N. 몰리나 (N. Molina)</p>
@@ -177,7 +203,11 @@
                 src="@/assets/playerIcons/칩슛 선호.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_4.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_4.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 5">
             <p class="playerInfo__name">A. 막알리스테르 (A. Mac Allister)</p>
@@ -201,7 +231,11 @@
                 src="@/assets/playerIcons/화려한 개인기.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_5.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_5.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 6">
             <p class="playerInfo__name">E. 페르난데스 (E. Fernández)</p>
@@ -225,7 +259,11 @@
                 src="@/assets/playerIcons/승부욕.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_6.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_6.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 7">
             <p class="playerInfo__name">R. 데 파울 (R. De Paul)</p>
@@ -249,7 +287,11 @@
                 src="@/assets/playerIcons/패스 마스터.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_7.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_7.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 8">
             <p class="playerInfo__name">A. 디 마리아 (A. Di Maria)</p>
@@ -273,7 +315,11 @@
                 src="@/assets/playerIcons/아웃사이드 슈팅.크로스.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_8.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_8.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 9">
             <p class="playerInfo__name">J. 알바레스 (J. Alvarez)</p>
@@ -297,7 +343,11 @@
                 src="@/assets/playerIcons/중거리 슛 선호.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_9.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_9.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 10">
             <p class="playerInfo__name">L. 메시 (L. Messi)</p>
@@ -321,7 +371,11 @@
                 src="@/assets/playerIcons/패스 마스터.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/arg_10.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/arg_10.png"
+            />
           </div>
           <div>
             <img
@@ -351,7 +405,11 @@
                 src="@/assets/playerIcons/GK 침착한 일대일 수비.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_0.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_0.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 1">
             <p class="playerInfo__name">J. 쿤데 (J. Koundé)</p>
@@ -375,7 +433,11 @@
                 src="@/assets/playerIcons/강철몸.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_1.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_1.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 2">
             <p class="playerInfo__name">R. 바란 (R. Varane)</p>
@@ -399,7 +461,11 @@
                 src="@/assets/playerIcons/슬라이딩 태클 선호.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_2.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_2.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 3">
             <p class="playerInfo__name">D. 우파메카노 (D. Upamecano)</p>
@@ -423,7 +489,11 @@
                 src="@/assets/playerIcons/긴 패스 선호.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_3.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_3.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 4">
             <p class="playerInfo__name">T. 에르난데스 (T. Hernandez)</p>
@@ -447,7 +517,11 @@
                 src="@/assets/playerIcons/강철몸.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_4.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_4.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 5">
             <p class="playerInfo__name">A. 추아메니 (A. Tchouaméni)</p>
@@ -471,7 +545,11 @@
                 src="@/assets/playerIcons/플레이 메이커.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_5.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_5.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 6">
             <p class="playerInfo__name">A. 라비오 (A. Rabiot)</p>
@@ -495,7 +573,11 @@
                 src="@/assets/playerIcons/승부욕.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_6.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_6.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 7">
             <p class="playerInfo__name">O. 뎀벨레 (O. Dembélé)</p>
@@ -519,7 +601,11 @@
                 src="@/assets/playerIcons/중거리 슛 선호.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_7.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_7.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 8">
             <p class="playerInfo__name">A. 그리즈만 (A. Griezmann)</p>
@@ -543,7 +629,11 @@
                 src="@/assets/playerIcons/패스 마스터.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_8.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_8.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 9">
             <p class="playerInfo__name">K. 음바페 (K. Mbappé)</p>
@@ -567,7 +657,11 @@
                 src="@/assets/playerIcons/화려한 개인기.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_9.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_9.png"
+            />
           </div>
           <div class="team__playerInfo" v-else-if="detailIndex == 10">
             <p class="playerInfo__name">O. 지루 (O. Giroud)</p>
@@ -591,7 +685,11 @@
                 src="@/assets/playerIcons/초 장거리 스로인.png"
               />
             </div>
-            <img class="playerInfo__img" src="@/assets/player/fr_10.png" />
+            <img
+              class="playerInfo__img"
+              @click="imageClick"
+              src="@/assets/player/fr_10.png"
+            />
           </div>
         </div>
         <ul class="team__playerList" v-else-if="teamHome">
@@ -819,7 +917,7 @@
           </li>
         </ul>
       </div>
-      <div class="chat" v-bind:class="{ hide__right: chatToggle }">
+      <div class="chat" v-bind:class="{hide__right: chatToggle}">
         <div class="chat__header">
           <p class="chat__userInfo">이름 :</p>
           <input
@@ -840,7 +938,15 @@
             <div class="chat__userChat">
               <!-- v-if="message.user != 'Me'" -->
               <p>
-                <span class="font__purple">{{ myName }}</span> :
+                <span
+                  :class="[
+                    {font__purple: message.user === myName},
+                    {font__yellow: message.user === 'AI'},
+                    {font__skyBlue: message},
+                  ]"
+                  >{{ message.user }}</span
+                >
+                :
                 {{ message.text }}
               </p>
             </div>
@@ -856,14 +962,14 @@
           <div class="chat__target">
             <div
               class="chat__targetText"
-              v-bind:class="{ select: !targetToggle }"
+              v-bind:class="{select: !targetToggle}"
               @click="targetChange"
             >
               모두
             </div>
             <div
               class="chat__targetText"
-              v-bind:class="{ select: targetToggle }"
+              v-bind:class="{select: targetToggle}"
               @click="targetChange(ai)"
             >
               AI
@@ -888,7 +994,7 @@
 
 <script>
 import Video from "@/components/Video.vue";
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 
 export default {
   components: {
@@ -913,24 +1019,24 @@ export default {
     this.socket = io("http://localhost:3000");
 
     // Add received message to messages array
-    this.socket.on("message", (message) => {
+    this.socket.on("message", message => {
       this.messages.push(message);
     });
 
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", (ev) => {
+    video.addEventListener("ended", ev => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", (ev) => {
+    video.addEventListener("timeupdate", ev => {
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime
+          video.currentTime,
         )} / 00:${Math.round(video.duration)}`;
       }
     });
@@ -961,13 +1067,72 @@ export default {
           //   text: this.newMessage.trim(),
           // });
           this.messages.push({
-            user: "Me",
+            user: this.myName,
             text: this.newMessage.trim(),
+            aiTarget: this.targetToggle,
           });
           this.socket.emit("message", this.messages);
           this.newMessage = "";
           this.$refs.chat__content.scrollTop =
             this.$refs.chat__content.scrollHeight;
+        }
+      }
+    },
+    setDetailIndex(teamHome, idx) {
+      console.log(idx);
+      this.infoToggle = false;
+      this.detailToggle = true;
+      this.detailIndex = idx;
+      this.teamHome = teamHome;
+    },
+    imageClick(ev) {
+      const url = ev.target.src;
+      let match = url.match(/(arg|fr)_(\d+)\./);
+      if (match) {
+        let label = match[1];
+        let number = parseInt(match[2]);
+        console.log(label + "_" + number);
+        if (label === "fr") {
+          this.$refs.videoRef.$refs.analyzeRef.toggleBox(number + 11);
+        } else {
+          this.$refs.videoRef.$refs.analyzeRef.toggleBox(number);
+        }
+      }
+    },
+    flagClick(ev) {
+      console.dir(ev.target);
+      if (ev.target.localName === "p") {
+        console.log(ev.target.innerText);
+        if (ev.target.innerText === "아르헨티나") {
+          for (let i = 0; i < 11; i++) {
+            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
+          }
+        } else if (ev.target.innerText === "프랑스") {
+          for (let i = 11; i < 22; i++) {
+            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
+          }
+        }
+      } else if (ev.target.localName === "img") {
+        console.log(ev.target.parentNode.children[0].innerText);
+        if (ev.target.parentNode.children[0].innerText === "아르헨티나") {
+          for (let i = 0; i < 11; i++) {
+            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
+          }
+        } else if (ev.target.parentNode.children[0].innerText === "프랑스") {
+          for (let i = 11; i < 22; i++) {
+            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
+          }
+        }
+      } else if (ev.target.localName === "div") {
+        console.log(ev.target.children[0].innerText);
+        if (ev.target.children[0].innerText === "아르헨티나") {
+          for (let i = 0; i < 11; i++) {
+            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
+          }
+        } else if (ev.target.children[0].innerText === "프랑스") {
+          for (let i = 11; i < 22; i++) {
+            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
+          }
         }
       }
     },
@@ -1012,10 +1177,6 @@ div {
 }
 .contents-container {
   position: relative;
-  /* width: calc(100% - 4rem);
-  height: calc(100% - 4rem); */
-  width: 1448px;
-  height: 881px;
   width: calc(100% - 2rem);
   height: 0;
   padding-bottom: 56.25%;
@@ -1078,7 +1239,7 @@ div {
   background: #08133a84;
   background: #0a1931c5;
   /* opacity: 0.88; */
-  z-index: 9998;
+  z-index: 9999;
   padding-right: 1rem;
 }
 .team-selector {
@@ -1147,6 +1308,7 @@ div {
   bottom: 0;
   width: 12.5rem;
   height: 16rem;
+  cursor: pointer;
 }
 .team__icon {
   width: 5rem;
@@ -1239,7 +1401,7 @@ div {
   background: #08133a84;
   background: #0a1931c5;
   /* opacity: 0.98; */
-  z-index: 9998;
+  z-index: 9999;
 }
 .chat__header {
   width: 100%;

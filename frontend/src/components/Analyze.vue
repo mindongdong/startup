@@ -2,6 +2,7 @@
   <ul class="playerBox__list" ref="playerBox">
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -9,6 +10,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -16,6 +18,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -23,6 +26,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -30,6 +34,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -37,6 +42,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -44,6 +50,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -51,6 +58,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -58,6 +66,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -65,6 +74,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -72,6 +82,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -79,6 +90,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -86,6 +98,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -93,6 +106,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -100,6 +114,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -107,6 +122,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -114,6 +130,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -121,6 +138,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -128,6 +146,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -135,6 +154,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -142,6 +162,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -149,6 +170,7 @@
     </li>
     <li
       class="playerBox__item"
+      @click="boxClick"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
@@ -158,7 +180,6 @@
 </template>
 
 <script>
-import html2canvas from "html2canvas";
 export default {
   props: {
     predictionList: {
@@ -167,37 +188,53 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      toggle_list: [],
+    };
+  },
   name: "Analyze",
   methods: {
-    async captureDiv() {
-      const captureDiv = this.$refs.captureDiv;
-
-      try {
-        const canvas = await html2canvas(captureDiv);
-        const imgData = canvas.toDataURL("image/png");
-        this.downloadImage(imgData, "captured-image.png");
-        // Do something with the captured image data, e.g. download the image or send it to a server
-        console.log(imgData);
-      } catch (error) {
-        console.error("Error capturing div:", error);
-      }
-    },
-    downloadImage(dataUrl, filename) {
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = filename;
-      link.click();
-      link.remove();
-    },
     showCompoenets(ev) {
-      console.dir(ev.target);
       const name = ev.target.childNodes[0];
       name.style.display = "block";
     },
     hideCompoenets(ev) {
-      console.dir(ev.target);
       const name = ev.target.childNodes[0];
       name.style.display = "none";
+    },
+    boxClick(ev) {
+      console.log(ev.target);
+      // Access the parent component
+      const parentComponent = this.$parent;
+      const grandparentComponent = parentComponent.$parent;
+      //ev.target이 부모 태그의 몇번째 자식인지 출력하는 코드
+      let index = Array.prototype.indexOf.call(
+        ev.target.parentNode.childNodes,
+        ev.target,
+      );
+      console.log(index);
+      if (index > 10) {
+        grandparentComponent.setDetailIndex(false, index - 11);
+      } else {
+        grandparentComponent.setDetailIndex(true, index);
+      }
+    },
+    toggleBox(num) {
+      const playerBox_list = this.$refs.playerBox.childNodes;
+      let index = this.toggle_list.indexOf(num);
+
+      if (index !== -1) {
+        // If num exists in the array, remove it
+        this.toggle_list.splice(index, 1);
+        playerBox_list[num].classList.remove("select");
+        playerBox_list[num].dispatchEvent(new Event("mouseleave"));
+      } else {
+        // If num does not exist in the array, add it
+        this.toggle_list.push(num);
+        playerBox_list[num].classList.add("select");
+        playerBox_list[num].dispatchEvent(new Event("mouseover"));
+      }
     },
   },
   watch: {
@@ -212,7 +249,8 @@ export default {
           const prediction = newValue[i];
           const kx = video.clientWidth / 1280;
           const ky = video.clientHeight / 720;
-          if (prediction != [0, 0, 0, 0]) {
+          const zero = Object.values(prediction).every(x => x === 0);
+          if (!zero) {
             playerBox_list[i].style.left =
               (prediction[0] - prediction[2] / 100) * kx + "px";
             playerBox_list[i].style.top =
@@ -220,8 +258,12 @@ export default {
             playerBox_list[i].style.width = prediction[2] * kx + "px";
             playerBox_list[i].style.height = prediction[3] * ky + "px";
             playerBox_list[i].style.display = "flex";
+            if (Object.values(this.toggle_list).indexOf(i) !== -1) {
+              playerBox_list[i].childNodes[0].style.display = "block";
+            }
           } else {
             playerBox_list[i].style.display = "none";
+            playerBox_list[i].childNodes[0].style.display = "none";
           }
         }
       } else {
@@ -239,28 +281,34 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 9999;
+  z-index: 9998;
 }
 .playerBox__item {
   /* display: none; */
   position: absolute;
-  z-index: 9999;
+  z-index: 9998;
   cursor: pointer;
-  border: 2px solid red;
+  /* border: 2px solid red; */
   justify-content: center;
   align-items: center;
-  transition: all 1ms;
+  transition: all 50ms linear;
   /* border: none; */
 }
 .playerBox__item:hover {
   display: flex;
   border: 1px solid rgba(255, 255, 255, 0.303);
   background: rgba(255, 255, 255, 0.15);
-  z-index: 9999;
+  z-index: 9998;
+}
+.select {
+  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.303);
+  background: rgba(255, 255, 255, 0.15);
+  z-index: 9998;
 }
 .playerBox__name {
   position: relative;
-  top: -3rem;
+  top: -60%;
   display: none;
   height: auto;
   font-size: 1rem;

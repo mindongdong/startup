@@ -14,20 +14,13 @@
       @seeking="timeUpdate"
     >
       <!-- <source src="http://localhost:3000/video" type="video/mp4" /> -->
-      <!-- <source :src="videoSource_off" type="video/mp4" /> -->
+      <!-- <source :src="videoSource_3min" type="video/mp4" /> -->
     </video>
     <audio
       ref="audioPlayer1"
       :src="audioSource_off"
       autoplay
       @loadeddata="audioData"
-    ></audio>
-    <audio
-      ref="audioPlayer2"
-      :src="audioSource_on"
-      autoplay
-      @loadeddata="audioData"
-      muted
     ></audio>
   </div>
 </template>
@@ -42,10 +35,12 @@ export default {
       videoSource_m3u8: "http://localhost:3000/video/video.m3u8",
       videoSource_off_m3u8: "http://localhost:3000/video/output.m3u8",
       videoSource_on_m3u8: "http://localhost:3000/video/output_on.m3u8",
-      videoSource_off: "http://localhost:3000/video/video_off.mp4",
-      videoSource_on: "http://localhost:3000/video/video_on.mp4",
-      audioSource_off: "http://localhost:3000/audio/audioTest.mp3",
-      audioSource_on: "http://localhost:3000/audio/audioTest2.mp3",
+      videoSource_3min: "http://localhost:3000/video/3min.mp4",
+      videoSource_voronoi: "http://localhost:3000/video/3min_voronoi.mp4",
+      // audioSource_off: "http://localhost:3000/audio/audioTest.mp3",
+      // audioSource_on: "http://localhost:3000/audio/audioTest2.mp3",
+      audioSource_off: "http://localhost:3000/audio/3min_audio.mp3",
+      audioSource_on: "http://localhost:3000/audio/3min_audio_on.mp3",
       hls: null,
     };
   },
@@ -81,9 +76,9 @@ export default {
       // }
       this.$store.commit("setCurrentVideo", ev.target);
 
-      //인터벌 실행
+      // 인터벌 실행
       const interval = setInterval(() => {
-        this.$parent.getPrediction(swapCount);
+        this.$parent.getPrediction();
       }, 100);
       this.$store.commit("setCurrentInterval", interval);
     },
@@ -91,12 +86,9 @@ export default {
       this.$parent.timeUpdate();
       this.$store.commit("setCurrentTime", this.$refs.videoPlayer.currentTime);
       console.log(this.$refs.videoPlayer.currentTime);
-      this.$refs.audioPlayer1.currentTime = this.$refs.videoPlayer.currentTime;
-      this.$refs.audioPlayer2.currentTime = this.$refs.videoPlayer.currentTime;
     },
     pause() {
       this.$refs.audioPlayer1.pause();
-      this.$refs.audioPlayer2.pause();
     },
     audioData(ev) {
       console.log(ev);

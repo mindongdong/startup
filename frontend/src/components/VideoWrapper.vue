@@ -99,10 +99,10 @@ export default {
         "http://localhost:3000/video/video_voronoi.m3u8",
       videoSource_off_m3u8: "http://localhost:3000/video/output.m3u8",
       videoSource_on_m3u8: "http://localhost:3000/video/output_on.m3u8",
-      videoSource_off: "http://localhost:3000/video/video_off.mp4",
-      videoSource_on: "http://localhost:3000/video/video_on.mp4",
-      audioSource_off: "http://localhost:3000/audio/audioTest.mp3",
-      audioSource_on: "http://localhost:3000/audio/audioTest2.mp3",
+      videoSource_3min: "http://localhost:3000/video/3min.mp4",
+      videoSource_voronoi: "http://localhost:3000/video/3min_voronoi.mp4",
+      audioSource_off: "http://localhost:3000/audio/3min_audio.mp3",
+      audioSource_on: "http://localhost:3000/audio/3min_audio_on.mp3",
     };
   },
   methods: {
@@ -118,21 +118,23 @@ export default {
       }
     },
     soundMute() {
-      this.muteToggle = !this.muteToggle;
       const audio = this.$store.getters.getCurrentAudio;
-      if (audio[0].muted) {
-        audio[0].muted = false;
-        audio[1].muted = true;
+      if (this.muteToggle) {
+        audio.src = this.audioSource_off;
       } else {
-        audio[0].muted = true;
-        audio[1].muted = false;
+        audio.src = this.audioSource_on;
       }
+      this.muteToggle = !this.muteToggle;
+      audio.currentTime = this.$store.getters.getCurrentTime;
     },
     videoSwap() {
+      // const video = this.$store.getters.getCurrentVideo;
       if (!this.sourceToggle) {
         this.setupPlayer(this.videoSource_voronoi_m3u8);
+        // video.source = this.videoSource_voronoi;
       } else {
         this.setupPlayer(this.videoSource_m3u8);
+        // video.source = this.videoSource_3min;
       }
       this.sourceToggle = !this.sourceToggle;
     },
@@ -341,9 +343,8 @@ div {
   background: rgba(0, 0, 0, 0.3);
 } */
 .video-tools__column:first-child {
-  /* box-sizing: initial;
   padding-right: 10px;
-  border-right: 1px solid hsla(0, 0%, 100%, 0.5); */
+  border-right: 1px solid hsla(0, 0%, 100%, 0.5);
 }
 .video-tools__column:nth-child(2) {
   /* margin-left: 20px; */

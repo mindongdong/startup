@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     currentVideo: null,
     currentInterval: null,
-    currentAudio: [],
+    currentAudio: null,
     currentTime: 0,
     currentFrame: 0,
     currentSwapCount: 0,
@@ -37,7 +37,7 @@ export default new Vuex.Store({
       state.currentVideo = videoData;
     },
     setCurrentAudio(state, audioData) {
-      state.currentAudio.push(audioData);
+      state.currentAudio = audioData;
     },
     setCurrentInterval(state, intervalData) {
       state.currentInterval = intervalData;

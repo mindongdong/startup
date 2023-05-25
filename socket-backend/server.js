@@ -31,11 +31,11 @@ io.on("connection", (socket) => {
   console.log("User connected");
 
   socket.on("message", async (messages) => {
-    console.log("chat");
-    const AIcomment = await soccerChat(messages);
-    if (AIcomment) io.emit("message", AIcomment);
-    // const message = messages[messages.length - 1].text;
-    // console.log(message);
+    console.log(messages);
+    if (messages[messages.length - 1].aiTarget) {
+      const AIcomment = await soccerChat(messages);
+      if (AIcomment) io.emit("message", AIcomment);
+    }
   });
 
   socket.on("disconnect", () => {

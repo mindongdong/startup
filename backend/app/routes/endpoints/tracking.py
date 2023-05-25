@@ -15,6 +15,6 @@ def trackingBtn(currentFrameNum: currentFrameNum):
     # with open("/Users/seancho/VSCodeProjects/startup/backend/matches/predictions.json", 'r') as file:
     with open("./matches/predictions.json", 'r') as file:
         predictions = json.load(file)
-        frameNum = int(currentFrameNum.frame*25/27)
+        frameNum = int(currentFrameNum.frame*25/27) + 5
     return list(predictions[str(i)][frameNum] for i in range(23))
 # print(type(trackingBtn(0)))

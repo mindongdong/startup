@@ -1,7 +1,7 @@
 <template>
   <div class="layout" ref="videoLayout">
     <Stream></Stream>
-    <Analyze :predictionList="predictionList"></Analyze>
+    <Analyze ref="analyzeRef" :predictionList="predictionList"></Analyze>
     <Wrapper :currentTime="currentTime" :percent="percent"></Wrapper>
   </div>
 </template>
@@ -102,7 +102,7 @@ export default {
       console.log(videoTime);
       const frame = {
         //change int
-        frame: parseInt(videoTime * 27),
+        frame: parseInt(videoTime * 27) - 1,
       };
       const response = await getTrackingInfo(frame);
       this.predictionList = response.data;

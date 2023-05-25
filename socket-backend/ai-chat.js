@@ -21,7 +21,7 @@ const soccerChat = async (input_messages) => {
   });
 
   input_messages.forEach((message) => {
-    if (message.user == "Me") {
+    if (message.user) {
       messages.push({ role: "user", content: message.text });
     } else {
       messages.push({ role: "assistant", content: message.text });
