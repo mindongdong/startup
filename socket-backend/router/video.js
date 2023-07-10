@@ -20,7 +20,7 @@ const path = require("path");
 
 router.get("/:videoName", (req, res) => {
   const videoName = req.params.videoName;
-  const videoPath = path.join("video", videoName);
+  const videoPath = path.join(__dirname, '..', 'video', videoName);
   const stat = fs.statSync(videoPath);
   const fileSize = stat.size;
   const range = req.headers.range;

@@ -97,10 +97,10 @@ export default {
       videoSource_m3u8: "http://localhost:3000/video/video.m3u8",
       videoSource_voronoi_m3u8:
         "http://localhost:3000/video/video_voronoi.m3u8",
+      videoSource_3min: "http://localhost:3000/video/test.m3u8",
+      videoSource_voronoi: "http://localhost:3000/video/test_voronoi.m3u8",
       videoSource_off_m3u8: "http://localhost:3000/video/output.m3u8",
       videoSource_on_m3u8: "http://localhost:3000/video/output_on.m3u8",
-      videoSource_3min: "http://localhost:3000/video/3min.mp4",
-      videoSource_voronoi: "http://localhost:3000/video/3min_voronoi.mp4",
       audioSource_off: "http://localhost:3000/audio/3min_audio.mp3",
       audioSource_on: "http://localhost:3000/audio/3min_audio_on.mp3",
     };
@@ -130,10 +130,10 @@ export default {
     videoSwap() {
       // const video = this.$store.getters.getCurrentVideo;
       if (!this.sourceToggle) {
-        this.setupPlayer(this.videoSource_voronoi_m3u8);
+        this.setupPlayer(this.videoSource_voronoi);
         // video.source = this.videoSource_voronoi;
       } else {
-        this.setupPlayer(this.videoSource_m3u8);
+        this.setupPlayer(this.videoSource_3min);
         // video.source = this.videoSource_3min;
       }
       this.sourceToggle = !this.sourceToggle;
