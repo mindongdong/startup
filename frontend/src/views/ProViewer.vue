@@ -29,7 +29,7 @@
         />
       </div>
       <Video ref="videoRef"></Video>
-      <div class="team-info" v-bind:class="{hide__bottom: infoToggle}">
+      <div class="team-info" v-bind:class="{ hide__bottom: infoToggle }">
         <div class="team-selector">
           <div
             class="team__icon"
@@ -911,7 +911,7 @@
           </li>
         </ul>
       </div>
-      <div class="chat" v-bind:class="{hide__right: chatToggle}">
+      <div class="chat" v-bind:class="{ hide__right: chatToggle }">
         <div class="chat__header">
           <p class="chat__userInfo">이름 :</p>
           <input
@@ -934,9 +934,9 @@
               <p>
                 <span
                   :class="[
-                    {font__purple: message.user === myName},
-                    {font__yellow: message.user === 'AI'},
-                    {font__skyBlue: message},
+                    { font__purple: message.user === myName },
+                    { font__yellow: message.user === 'AI' },
+                    { font__skyBlue: message },
                   ]"
                   >{{ message.user }}</span
                 >
@@ -956,14 +956,14 @@
           <div class="chat__target">
             <div
               class="chat__targetText"
-              v-bind:class="{select: !targetToggle}"
+              v-bind:class="{ select: !targetToggle }"
               @click="targetChange"
             >
               모두
             </div>
             <div
               class="chat__targetText"
-              v-bind:class="{select: targetToggle}"
+              v-bind:class="{ select: targetToggle }"
               @click="targetChange(ai)"
             >
               AI
@@ -988,7 +988,7 @@
 
 <script>
 import Video from "@/components/Video.vue";
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 
 export default {
   components: {
@@ -1013,24 +1013,24 @@ export default {
     this.socket = io("http://localhost:3000");
 
     // Add received message to messages array
-    this.socket.on("message", message => {
+    this.socket.on("message", (message) => {
       this.messages.push(message);
     });
 
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", ev => {
+    video.addEventListener("timeupdate", (ev) => {
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       }
     });

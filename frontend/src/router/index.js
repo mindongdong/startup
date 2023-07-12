@@ -18,5 +18,13 @@ export default new Router({
       path: "/viewer",
       component: () => import("@/views/VideoAnalysis"),
     },
+    {
+      path: "/proViewer",
+      component: () => import("@/views/ProViewer"),
+    },
+    {
+      path: "/begginerViewer",
+      component: () => import("@/views/BegginerViewer"),
+    },
   ],
 });
