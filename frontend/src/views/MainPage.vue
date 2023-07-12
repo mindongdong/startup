@@ -1,41 +1,32 @@
 <template>
   <div class="layout">
     <img class="background-image" src="@/assets/background.png" />
-    <ul class="playlist">
-      <li class="playlist__item" @click="goToViewer">
-        <div class="playlist__contentBox">
-          <img class="playlist__thumnail" src="@/assets/content_1.jpeg" />
-          <p class="playlist__time">{{ duration }}</p>
-        </div>
-        <div class="playlist__text">
-          <p class="playlist__title">[2022 WC] FRANCE VS ARGENTINA</p>
-        </div>
-      </li>
-      <li class="playlist__item" @click="goToViewer">
-        <div class="playlist__contentBox">
-          <img class="playlist__thumnail" src="@/assets/content_1.jpeg" />
-          <p class="playlist__time">{{ duration }}</p>
-        </div>
-        <div class="playlist__text">
-          <p class="playlist__title">[2022 WC] FRANCE VS ARGENTINA</p>
-        </div>
-      </li>
-    </ul>
+    <router-link to="/begginerViewer" class="mode">
+      <div class="mode-info">
+        <h1 class="mode-info__title">비기너</h1>
+        <p class="mode-info__description">
+          축구를 쉽고 재밌게 즐길<br />
+          수 있도록 스트리밍과 함께<br />
+          콘텐츠를 제공하는 모드입니다.<br />
+        </p>
+      </div>
+    </router-link>
+    <router-link to="/proViewer" class="mode">
+      <div class="mode-info">
+        <h1 class="mode-info__title">프로</h1>
+        <p class="mode-info__description">
+          축구를 분석적으로 즐길<br />
+          수 있도록 스트리밍과 함께<br />
+          통계 데이터를 제공하는 모드입니다.<br />
+        </p>
+      </div>
+    </router-link>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      duration: "00:05:53",
-    };
-  },
-  methods: {
-    goToViewer() {
-      this.$router.push("/viewer");
-    },
-  },
+  name: "MainPage",
 };
 </script>
 
@@ -54,7 +45,7 @@ img {
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   position: relative;
 }
 .background-image {
@@ -64,60 +55,33 @@ img {
   height: 100%;
   object-fit: cover;
 }
-.playlist {
-  width: 90%;
-  height: 90%;
+.mode {
+  width: 35rem;
+  height: 35rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 2rem;
   z-index: 9998;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
+  text-decoration: none;
 }
-.playlist__item {
-  width: 384px;
-  height: 256px;
-  margin-right: 6rem;
-  cursor: pointer;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
-}
-.playlist__item:nth-of-type(3n) {
-  margin-right: 0;
-}
-.playlist__contentBox {
-  width: 384px;
-  height: 216px;
-  position: relative;
-}
-.playlist__thumnail {
+.mode-info {
   width: 100%;
-  height: 100%;
-  border-radius: 5px 5px 0 0;
+  height: 40%;
+  padding: 3rem;
 }
-.playlist__time {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  width: 4.5rem;
-  height: 1.5rem;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  border-radius: 5px;
+.mode-info__title {
+  color: #fff;
+  font-family: Inter;
+  font-size: 4rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
-.playlist__text {
-  width: 100%;
-  height: calc(100% - 216px);
-  display: flex;
-  align-items: center;
-  padding-left: 1rem;
-  box-sizing: border-box;
-}
-.playlist__title {
-  font-size: 1rem;
-  /* font-weight: bolder; */
-  color: white;
+.mode-info__description {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: Inter;
+  font-size: 1.3rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 </style>
