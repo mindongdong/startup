@@ -7,10 +7,13 @@ import pandas as pd
 from tqdm import tqdm
 import os
 
+from app.schemas.matches import Events, Player
+
 router = APIRouter()
 # match_id = 2057988
 match_events = pd.read_csv('./matches/KOR.GER/match_events.csv')
 phase_records = pd.read_csv('./matches/KOR.GER/phase_records.csv')
+all_player_stats = pd.read_csv('./matches/KOR.GER/matches_player_stats.csv')
 
 # 이벤트 데이터를 시간에 따라 필터링
 def filter_by_time(match_events, start_time=None, end_time=None):
@@ -62,23 +65,21 @@ def read_teams(current_time: Optional[int] = None):
 
 # 경기 이벤트 데이터를 데이터에 따라 필터링하여 반환
 @router.get("/events")
-def filter_events(player_name: Optional[str] = None, event_type: Optional[str] = None, 
-                  sub_event_type: Optional[str] = None, team_name: Optional[str] = None, 
-                  tags: Optional[str] = None, start_time: Optional[int] = None, end_time: Optional[int] = None):
+def filter_events(Evnets: Events):
     # Start with all events
-    filtered = filter_by_time(match_events, start_time=start_time, end_time=end_time)
+    filtered = filter_by_time(match_events, start_time=Evnets.start_time, end_time=Evnets.end_time)
     
     # Apply filters if they are not None
-    if player_name is not None:
-        filtered = filtered[filtered['player_name'] == player_name]
-    if event_type is not None:
-        filtered = filtered[filtered['event_type'] == event_type]
-    if sub_event_type is not None:
-        filtered = filtered[filtered['sub_event_type'] == sub_event_type]
-    if team_name is not None:
-        filtered = filtered[filtered['team_name'] == team_name]
-    if tags is not None:
-        filtered = filtered[filtered['tags'].apply(lambda x: tags in x)]
+    if Evnets.player_name is not None:
+        filtered = filtered[filtered['player_name'] == Evnets.player_name]
+    if Evnets.event_type is not None:
+        filtered = filtered[filtered['event_type'] == Evnets.event_type]
+    if Evnets.sub_event_type is not None:
+        filtered = filtered[filtered['sub_event_type'] == Evnets.sub_event_type]
+    if Evnets.team_name is not None:
+        filtered = filtered[filtered['team_name'] == Evnets.team_name]
+    if Evnets.tags is not None:
+        filtered = filtered[filtered['tags'].apply(lambda x: Evnets.tags in x)]
     
     return filtered.to_dict('records')
 
@@ -237,3 +238,35 @@ def generate_player_stats(current_time: Optional[int] = None):
     cols = player_stats.columns.tolist()
     cols = cols[:4] + ['playing_time'] + cols[4:-2]
     return player_stats[cols]
+
+# 대회 선수들 통계 합산 반환 -> TOP 10까지 반환 및 특정 선수 통계 반환
+@router.get("/group")
+async def read_top10_players(Player: Player):
+    grouped = all_player_stats.groupby(['team_id', 'team_name', 'player_id', 'player_name'])
+
+    player_stats_accum = grouped[all_player_stats.columns[5:-1]].sum()
+    player_stats_accum['pass_accuracy'] = (player_stats_accum['acc_passes'] / player_stats_accum['total_passes']).round(2)
+    player_stats_accum['matches'] = grouped['match_id'].count()
+
+    player_stats_accum = player_stats_accum[['matches'] + all_player_stats.columns[5:-1].tolist()].reset_index()
+
+    # If stats is provided, sort by stats and take top 10
+    if Player.stats:
+        data = player_stats_accum.sort_values(Player.stats, ascending=False).head(10)
+    else:
+        data = player_stats_accum.head(10) # Modify this if you want to sort by a default column
+
+    # If player_name is provided and not in top 10, append player's row
+    if Player.player_name and Player.player_name not in data['player_name'].values:
+        player_row = player_stats_accum[player_stats_accum['player_name'] == Player.player_name]
+        data = pd.concat([data, player_row])
+    
+    return data.to_dict()
+
+# 특정 선수에 대한 이전 경기 기록 반환
+@router.get("/player/{player_name}")
+async def read_player(player_name: str):
+    # Filter the data by player_name
+    data = all_player_stats[all_player_stats['player_name'] == player_name]
+
+    return data.to_dict()
