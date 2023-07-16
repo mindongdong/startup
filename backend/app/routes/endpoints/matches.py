@@ -14,6 +14,8 @@ router = APIRouter()
 match_events = pd.read_csv('./matches/KOR.GER/match_events.csv')
 phase_records = pd.read_csv('./matches/KOR.GER/phase_records.csv')
 all_player_stats = pd.read_csv('./matches/KOR.GER/matches_player_stats.csv')
+seq_records = pd.read_csv('./matches/KOR.GER/seq_records.csv')
+match_shots = pd.read_csv('./matches/KOR.GER/match_shots.csv')
 
 # 이벤트 데이터를 시간에 따라 필터링
 def filter_by_time(match_events, start_time=None, end_time=None):
@@ -31,6 +33,38 @@ def filter_by_time(match_events, start_time=None, end_time=None):
     
     return filtered_events
 
+# 이벤트 데이터 인덱스를 기반으로 공격 시퀀스 검출
+def detect_attack_sequences(match_events, first_idx, last_idx):
+    cols = [
+        'period', 'time', 'display_time', 'team_name', 'player_name',
+        'event_type', 'sub_event_type', 'tags', 'start_x', 'start_y', 'end_x', 'end_y'
+    ]
+    match_events = match_events[match_events['event_type'] != 'Substitution'][cols]
+
+    seq_events = match_events.loc[first_idx:last_idx].copy()
+    seq_events[seq_events.columns[2:-4]]
+
+    return seq_events[seq_events.columns[2:-4]]
+
+# 현재 시간에 가장 가까운 이벤트 인덱스 반환
+def find_nearest_event(current_time: int):
+    # Calculate the absolute difference between current time and event times
+    time_diff = abs(match_events['time'] - current_time)
+    
+    # Find the index of the minimum difference
+    nearest_event_index = time_diff.idxmin()
+    
+    return nearest_event_index
+
+# 인덱스를 포함하고 있는 sequence의 column을 반환
+def find_sequence(index: int):
+    # Iterate over all columns of seq_records
+    for column in seq_records.columns:
+        # Check if the index is within the range of first_idx and last_idx of the current column
+        if seq_records[column]['first_idx'] <= index <= seq_records[column]['last_idx']:
+            return column
+    return "Index not found in any column"
+
 # 현재 시간에 출전 중인 선수들의 목록을 반환
 @router.get("/lineup")
 def read_teams(current_time: Optional[int] = None):
@@ -40,6 +74,9 @@ def read_teams(current_time: Optional[int] = None):
         team2_players = match_events[match_events['team_id'] == match_events['team_id'].unique()[1]]['player_name'].unique().tolist()
     else:
         # Identify the phase corresponding to the current time
+        # 클라이언트에서 current_time이 어떻게 넘어오는지 확인 필요
+        # current_time에 따라 period를 구분해야 함
+        # 예를 들어 current_time이 45 이상 일 때, period를 2로 설정하고 current_time에서 45를 빼줘야 함
         current_phase = phase_records[
             (phase_records['start_time'] <= current_time * 60) & 
             (phase_records['end_time'] > current_time * 60)
@@ -241,7 +278,7 @@ def generate_player_stats(current_time: Optional[int] = None):
 
 # 대회 선수들 통계 합산 반환 -> TOP 10까지 반환 및 특정 선수 통계 반환
 @router.get("/group")
-async def read_top10_players(Player: Player):
+def read_top10_players(Player: Player):                         
     grouped = all_player_stats.groupby(['team_id', 'team_name', 'player_id', 'player_name'])
 
     player_stats_accum = grouped[all_player_stats.columns[5:-1]].sum()
@@ -265,8 +302,71 @@ async def read_top10_players(Player: Player):
 
 # 특정 선수에 대한 이전 경기 기록 반환
 @router.get("/player/{player_name}")
-async def read_player(player_name: str):
+def read_player(player_name: str):
     # Filter the data by player_name
     data = all_player_stats[all_player_stats['player_name'] == player_name]
 
     return data.to_dict()
+
+# 공격 시퀀스 데이터 반환
+@router.get("/sequence")
+def read_sequence(current_time: int):
+    
+    # 현재 시간 기준 가장 가까운 이벤트 찾기
+    nearest_event_index = find_nearest_event(current_time)
+
+    # 인덱스를 포함하는 시퀀스 찾기
+    sequence = find_sequence(nearest_event_index)
+
+    first_idx, last_idx = sequence['first_idx'], sequence['last_idx'] 
+
+    # 시퀀스 데이터 검출
+    attack_sequence = detect_attack_sequences(match_events, first_idx, last_idx)
+
+    # 프론트엔드에서 어떻게 시각화 하느냐에 따라 attack_sequence의 형태를 바꿔야 함
+    return attack_sequence
+
+# 기대득점 데이터 반환
+@router.get("/match_shots")
+async def get_match_shots(current_time: int):
+    # Process the data
+    match_shots = filter_by_time(match_shots, end_time=current_time)
+
+    match_shots_failed = match_shots[match_shots['tags'].apply(lambda x: 'Goal' not in x)]
+    team1_name, team2_name = match_shots['team_name'].unique()
+
+    team1_shots = match_shots[match_shots['team_name'] == team1_name]
+    team2_shots = match_shots[match_shots['team_name'] == team2_name]
+
+    team1_goals = team1_shots[team1_shots['tags'].apply(lambda x: 'Goal' in x)]
+    team2_goals = team2_shots[team2_shots['tags'].apply(lambda x: 'Goal' in x)]
+
+    # Create the JSON response
+    response = {
+        "team1": {
+            "name": team1_name,
+            "goals": team1_goals[['x', 'y', 'display_name', 'xg', 'freekick']].to_dict(orient='records'),
+            "xg": team1_shots['xg'].sum().round(2)
+        },
+        "team2": {
+            "name": team2_name,
+            "goals": team2_goals[['x', 'y', 'display_name', 'xg', 'freekick']].to_dict(orient='records'),
+            "xg": team2_shots['xg'].sum().round(2)
+        },
+        "failed_shots": match_shots_failed[['x', 'y', 'display_name', 'xg', 'freekick']].to_dict(orient='records')
+    }
+
+    return response
+
+# 세트 피스 데이터 반환
+@router.get("/setpieces")
+def get_setpieces(current_time: int):
+    # Filter the data by time
+    match_events = filter_by_time(match_events, end_time=current_time)
+
+    # Filter out the set-piece situations
+    set_piece_events = match_events[match_events['sub_event_type'].isin(['Corner', 'Free Kick'])]
+
+    # Sort the events in chronological order
+    set_piece_events_sorted = set_piece_events.sort_values(['period', 'time'])
+    return set_piece_events_sorted.to_dict(orient='records')
