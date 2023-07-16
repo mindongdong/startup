@@ -1,0 +1,218 @@
+team_name,first_idx,last_idx,len,last_x,last_y,last_event_type,last_event_tags
+Germany,0,14,15,47.84,31.96,Pass,['Accurate']
+Germany,23,27,5,0.0,63.92,Others on the ball,['Not accurate']
+Korea Republic,28,32,5,5.200000000000003,48.959999999999994,Pass,['Accurate']
+Korea Republic,36,41,6,71.75999999999999,4.759999999999998,Pass,['Not accurate']
+Germany,44,51,8,31.200000000000003,51.00000000000001,Pass,['Accurate']
+Germany,55,86,32,64.48,3.4000000000000004,Pass,['Accurate']
+Germany,99,100,2,70.72,49.64,Pass,"['Counter attack', 'Not accurate']"
+Germany,103,109,7,95.68,48.28,Pass,"['Right foot', 'High', 'Not accurate']"
+Korea Republic,110,112,3,99.84,40.12,Pass,['Not accurate']
+Germany,113,114,2,63.440000000000005,57.120000000000005,Pass,"['Dangerous ball lost', 'Not accurate']"
+Korea Republic,115,120,6,21.840000000000003,57.12,Others on the ball,[]
+Germany,123,124,2,30.16,61.2,Pass,['Accurate']
+Germany,128,135,8,57.2,31.96,Pass,"['Through', 'Not accurate']"
+Korea Republic,136,143,8,74.88,3.3999999999999915,Pass,['Not accurate']
+Germany,144,149,6,64.48,62.56,Pass,['Not accurate']
+Germany,151,152,2,70.72,53.040000000000006,Pass,['Accurate']
+Germany,156,165,10,44.72,10.88,Others on the ball,[]
+Germany,167,176,10,94.64,2.04,Pass,"['Right foot', 'High', 'Not accurate']"
+Germany,178,188,11,84.24000000000001,51.68000000000001,Pass,['Not accurate']
+Korea Republic,189,192,4,94.64,59.84,Pass,['Not accurate']
+Germany,193,195,3,65.52,22.44,Pass,['Accurate']
+Germany,203,204,2,72.8,56.440000000000005,Pass,['Not accurate']
+Germany,206,217,12,70.72,12.920000000000002,Pass,['Accurate']
+Korea Republic,220,221,2,90.48,40.12,Pass,['Accurate']
+Germany,224,232,9,31.200000000000003,10.200000000000001,Pass,['Not accurate']
+Korea Republic,233,234,2,94.64,30.599999999999994,Others on the ball,[]
+Korea Republic,235,236,2,78.0,4.759999999999998,Pass,['Accurate']
+Germany,239,242,4,97.76,17.0,Pass,"['Right foot', 'Not accurate']"
+Germany,244,250,7,93.60000000000001,32.64,Shot,"['Head/body', 'Opportunity', 'Position: Goal high right', 'Accurate']"
+Korea Republic,251,257,7,79.03999999999999,61.88,Pass,['Not accurate']
+Germany,263,268,6,102.96000000000001,60.52,Pass,"['Left foot', 'Blocked', 'Not accurate']"
+Germany,270,273,4,73.84,48.28,Pass,"['Left foot', 'High', 'Accurate']"
+Korea Republic,280,281,2,89.44,24.479999999999997,Pass,['Not accurate']
+Germany,285,288,4,30.16,42.84,Foul,[]
+Germany,290,291,2,3.12,34.0,Others on the ball,['Not accurate']
+Korea Republic,292,296,5,30.159999999999997,43.519999999999996,Shot,"['Right foot', 'Position: Out high right', 'Not accurate']"
+Germany,297,300,4,7.28,61.88,Pass,['Accurate']
+Germany,304,311,8,65.52,4.760000000000001,Pass,['Accurate']
+Korea Republic,320,322,3,70.72,20.4,Pass,['Not accurate']
+Germany,323,329,7,31.200000000000003,31.96,Pass,['Accurate']
+Germany,333,338,6,95.68,58.480000000000004,Pass,"['Left foot', 'Accurate']"
+Korea Republic,339,342,4,94.64,48.959999999999994,Others on the ball,['Not accurate']
+Germany,343,347,5,95.68,6.12,Pass,"['Right foot', 'Blocked', 'Not accurate']"
+Germany,349,353,5,95.68,5.44,Pass,"['Right foot', 'High', 'Not accurate']"
+Korea Republic,355,358,4,89.44,42.16,Pass,['Not accurate']
+Germany,359,362,4,40.56,40.800000000000004,Pass,['Accurate']
+Germany,366,368,3,36.4,52.36000000000001,Pass,['Accurate']
+Germany,372,376,5,62.400000000000006,31.96,Pass,"['Through', 'Not accurate']"
+Korea Republic,383,398,16,21.840000000000003,61.2,Pass,"['Right foot', 'High', 'Accurate']"
+Germany,403,411,9,44.72,23.12,Pass,"['Through', 'Not accurate']"
+Korea Republic,412,413,2,68.64,9.519999999999996,Pass,['Not accurate']
+Germany,414,415,2,81.12,3.4000000000000004,Others on the ball,['Accurate']
+Germany,419,420,2,87.36,33.32,Others on the ball,[]
+Korea Republic,421,422,2,92.56,44.2,Pass,['Not accurate']
+Germany,423,432,10,70.72,4.08,Pass,['Accurate']
+Germany,436,437,2,68.64,17.0,Pass,"['Through', 'Not accurate']"
+Korea Republic,438,441,4,82.16,57.8,Pass,['Not accurate']
+Germany,442,446,5,39.52,43.52,Others on the ball,['Accurate']
+Korea Republic,449,453,5,71.75999999999999,34.0,Pass,['Not accurate']
+Germany,454,472,19,100.88000000000001,49.64,Pass,"['Left foot', 'Not accurate']"
+Germany,476,479,4,86.32000000000001,2.04,Pass,['Not accurate']
+Germany,481,492,12,80.08,2.72,Pass,"['Right foot', 'High', 'Not accurate']"
+Germany,494,495,2,66.56,27.200000000000003,Pass,['Not accurate']
+Germany,497,498,2,66.56,31.28,Others on the ball,['Missed ball']
+Korea Republic,499,500,2,95.68,35.36,Pass,['Not accurate']
+Germany,501,507,7,82.16,53.040000000000006,Pass,"['Through', 'Not accurate']"
+Korea Republic,508,509,2,93.6,60.519999999999996,Pass,['Not accurate']
+Germany,510,522,13,82.16,33.32,Shot,"['Left foot', 'Blocked', 'Not accurate']"
+Germany,524,525,2,86.32000000000001,35.36,Foul,[]
+Germany,529,534,6,18.72,46.24,Pass,['Accurate']
+Germany,538,548,11,96.72,2.04,Pass,"['Right foot', 'Blocked', 'Not accurate']"
+Germany,550,552,3,81.12,2.04,Pass,['Not accurate']
+Germany,554,560,7,93.60000000000001,5.44,Pass,"['Right foot', 'Not accurate']"
+Korea Republic,561,562,2,96.72,18.36,Pass,['Not accurate']
+Germany,563,571,9,81.12,3.4000000000000004,Pass,['Accurate']
+Germany,575,587,13,75.92,29.240000000000002,Pass,['Not accurate']
+Korea Republic,588,589,2,93.6,19.72,Pass,['Not accurate']
+Germany,590,591,2,93.60000000000001,8.84,Pass,"['Right foot', 'High', 'Not accurate']"
+Korea Republic,597,600,4,24.959999999999994,60.519999999999996,Pass,['Accurate']
+Germany,605,608,4,37.44,29.240000000000002,Others on the ball,['Not accurate']
+Korea Republic,610,611,2,99.84,20.4,Pass,['Not accurate']
+Germany,612,617,6,76.96000000000001,17.0,Foul,[]
+Korea Republic,618,627,10,45.76,54.4,Pass,['Not accurate']
+Korea Republic,633,634,2,58.239999999999995,55.76,Pass,['Accurate']
+Germany,638,642,5,94.64,22.44,Shot,"['Right foot', 'Blocked', 'Opportunity', 'Not accurate']"
+Germany,644,652,9,98.8,40.120000000000005,Shot,"['Right foot', 'Opportunity', 'Position: Goal low center', 'Accurate']"
+Korea Republic,654,659,6,40.559999999999995,3.3999999999999915,Pass,"['Through', 'Accurate']"
+Korea Republic,663,667,5,27.039999999999992,34.68,Pass,['Not accurate']
+Germany,668,694,27,92.56,36.04,Foul,[]
+Korea Republic,695,699,5,59.28,62.56,Pass,['Not accurate']
+Korea Republic,701,705,5,13.519999999999996,42.16,Pass,['Not accurate']
+Germany,708,709,2,80.08,57.120000000000005,Pass,['Not accurate']
+Korea Republic,710,726,17,29.120000000000005,43.519999999999996,Pass,['Accurate']
+Germany,729,738,10,84.24000000000001,47.6,Pass,['Not accurate']
+Germany,740,757,18,92.56,17.0,Pass,"['Right foot', 'Not accurate']"
+Korea Republic,763,764,2,48.879999999999995,64.6,Others on the ball,[]
+Germany,765,774,10,99.84,3.4000000000000004,Pass,"['Right foot', 'High', 'Not accurate']"
+Korea Republic,775,782,8,22.879999999999995,44.2,Shot,"['Right foot', 'Opportunity', 'Position: Out low left', 'Not accurate']"
+Germany,783,784,2,23.92,22.44,Pass,['Not accurate']
+Korea Republic,785,793,9,7.280000000000001,16.319999999999993,Pass,['Accurate']
+Germany,796,799,4,31.200000000000003,22.44,Others on the ball,[]
+Germany,803,810,8,69.68,8.16,Pass,['Not accurate']
+Germany,812,830,19,95.68,32.64,Shot,"['Head/body', 'Opportunity', 'Position: Goal center left', 'Accurate']"
+Korea Republic,831,833,3,61.36,58.48,Pass,"['Through', 'Not accurate']"
+Germany,834,839,6,37.44,63.24,Pass,['Not accurate']
+Korea Republic,840,851,12,30.159999999999997,42.16,Foul,['Yellow card']
+Germany,852,854,3,47.84,46.24,Pass,['Not accurate']
+Germany,856,858,3,65.52,53.720000000000006,Pass,"['Through', 'Not accurate']"
+Germany,862,866,5,72.8,37.400000000000006,Shot,"['Right foot', 'Opportunity', 'Position: Out low left', 'Not accurate']"
+Germany,870,880,11,41.6,64.60000000000001,Pass,['Not accurate']
+Germany,882,889,8,76.96000000000001,66.64,Pass,['Not accurate']
+Germany,891,903,13,92.56,35.36,Shot,"['Right foot', 'Opportunity', 'Position: Out center left', 'Not accurate']"
+Korea Republic,904,908,5,43.68,6.799999999999997,Pass,"['Key pass', 'Through', 'Accurate']"
+Germany,911,927,17,92.56,6.12,Pass,"['Right foot', 'Not accurate']"
+Korea Republic,930,931,2,99.84,21.08,Pass,['Not accurate']
+Germany,932,946,15,90.48,24.48,Shot,"['Left foot', 'Blocked', 'Not accurate']"
+Korea Republic,949,962,14,10.399999999999991,53.04,Pass,['Not accurate']
+Korea Republic,964,965,2,27.039999999999992,62.56,Pass,"['Right foot', 'High', 'Accurate']"
+Germany,968,974,7,97.76,19.040000000000003,Pass,"['Right foot', 'Blocked', 'Not accurate']"
+Korea Republic,975,976,2,92.56,19.04,Pass,"['Fairplay', 'Not accurate']"
+Germany,979,980,2,72.8,15.64,Pass,"['Fairplay', 'Not accurate']"
+Korea Republic,981,982,2,86.32,34.68,Pass,['Accurate']
+Korea Republic,986,987,2,27.039999999999992,61.2,Pass,['Not accurate']
+Germany,988,997,10,71.76,55.080000000000005,Pass,['Not accurate']
+Korea Republic,998,1003,6,27.039999999999992,23.119999999999997,Pass,"['Counter attack', 'Not accurate']"
+Germany,1004,1018,15,94.64,65.96000000000001,Foul,[]
+Korea Republic,1019,1028,10,64.47999999999999,56.44,Pass,['Accurate']
+Germany,1031,1045,15,85.28,17.0,Pass,"['Right foot', 'Blocked', 'Not accurate']"
+Germany,1047,1049,3,93.60000000000001,7.48,Pass,['Not accurate']
+Korea Republic,1050,1054,5,92.56,3.3999999999999915,Pass,['Not accurate']
+Germany,1055,1059,5,74.88,24.48,Pass,"['Left foot', 'High', 'Not accurate']"
+Germany,1063,1073,11,93.60000000000001,39.440000000000005,Others on the ball,['Interception']
+Korea Republic,1077,1080,4,41.599999999999994,57.12,Others on the ball,[]
+Korea Republic,1084,1091,8,22.879999999999995,39.44,Shot,"['Right foot', 'Position: Out high right', 'Not accurate']"
+Germany,1092,1097,6,75.92,4.08,Pass,['Not accurate']
+Korea Republic,1098,1103,6,55.12,34.68,Pass,"['Through', 'Not accurate']"
+Germany,1104,1111,8,95.68,9.520000000000001,Pass,"['Right foot', 'Blocked', 'Not accurate']"
+Germany,1113,1118,6,94.64,46.92,Shot,"['Right foot', 'Opportunity', 'Position: Out low left', 'Not accurate']"
+Korea Republic,1119,1135,17,10.399999999999991,45.56,Foul,['Yellow card']
+Germany,1136,1140,5,80.08,15.64,Pass,['Not accurate']
+Korea Republic,1145,1150,6,10.399999999999991,44.2,Pass,"['Key pass', 'Accurate']"
+Germany,1155,1162,8,90.48,49.64,Pass,"['Dangerous ball lost', 'Not accurate']"
+Korea Republic,1163,1166,4,31.200000000000003,48.959999999999994,Others on the ball,['Counter attack']
+Germany,1169,1176,8,86.32000000000001,25.16,Pass,['Not accurate']
+Korea Republic,1177,1187,11,28.08,8.159999999999997,Pass,"['Counter attack', 'Accurate']"
+Germany,1190,1196,7,76.96000000000001,22.44,Pass,['Not accurate']
+Korea Republic,1198,1199,2,79.03999999999999,25.839999999999996,Others on the ball,[]
+Germany,1200,1203,4,94.64,36.04,Shot,"['Head/body', 'Opportunity', 'Position: Goal high center', 'Accurate']"
+Korea Republic,1205,1209,5,56.16,40.8,Pass,['Not accurate']
+Germany,1210,1219,10,74.88,34.0,Shot,"['Left foot', 'Position: Out high left', 'Not accurate']"
+Germany,1223,1228,6,62.400000000000006,12.920000000000002,Foul,[]
+Korea Republic,1229,1230,2,20.799999999999997,5.439999999999998,Pass,"['Left foot', 'Not accurate']"
+Germany,1231,1239,9,95.68,7.48,Pass,"['Right foot', 'Accurate']"
+Germany,1243,1246,4,72.8,24.48,Pass,['Not accurate']
+Korea Republic,1247,1249,3,72.8,32.64,Others on the ball,['Missed ball']
+Germany,1250,1261,12,78.0,55.760000000000005,Pass,"['Left foot', 'Accurate']"
+Korea Republic,1262,1265,4,79.03999999999999,46.92,Pass,['Accurate']
+Germany,1268,1273,6,83.2,65.28,Others on the ball,[]
+Korea Republic,1276,1279,4,73.84,58.48,Pass,['Accurate']
+Germany,1282,1290,9,71.76,51.68000000000001,Pass,['Accurate']
+Germany,1293,1296,4,75.92,59.160000000000004,Pass,"['Right foot', 'High', 'Not accurate']"
+Germany,1300,1301,2,98.8,63.24,Others on the ball,[]
+Korea Republic,1302,1305,4,60.32,60.519999999999996,Pass,"['Counter attack', 'Through', 'Not accurate']"
+Germany,1306,1322,17,101.92,8.16,Pass,"['Right foot', 'High', 'Not accurate']"
+Germany,1328,1329,2,89.44,47.6,Others on the ball,[]
+Korea Republic,1330,1332,3,67.6,62.56,Pass,['Not accurate']
+Germany,1333,1340,8,82.16,51.68000000000001,Pass,['Not accurate']
+Korea Republic,1341,1346,6,85.28,63.92,Pass,['Not accurate']
+Germany,1347,1354,8,65.52,39.440000000000005,Pass,['Not accurate']
+Germany,1356,1359,4,99.84,14.280000000000001,Pass,"['Right foot', 'Blocked', 'Not accurate']"
+Korea Republic,1364,1371,8,16.64,26.519999999999996,Shot,"['Counter attack', 'Right foot', 'Opportunity', 'Position: Out low left', 'Not accurate']"
+Germany,1372,1384,13,88.4,8.16,Pass,"['Left foot', 'High', 'Not accurate']"
+Korea Republic,1385,1392,8,55.12,58.48,Others on the ball,"['Counter attack', 'Accurate']"
+Germany,1395,1402,8,78.0,19.040000000000003,Pass,['Not accurate']
+Germany,1404,1406,3,98.8,23.12,Offside,[]
+Korea Republic,1407,1408,2,59.28,6.799999999999997,Pass,['Not accurate']
+Germany,1409,1420,12,93.60000000000001,61.88,Pass,"['Right foot', 'Blocked', 'Not accurate']"
+Germany,1432,1445,14,94.64,29.240000000000002,Shot,"['Head/body', 'Opportunity', 'Position: Out high left', 'Not accurate']"
+Korea Republic,1446,1449,4,34.31999999999999,23.119999999999997,Pass,['Not accurate']
+Germany,1450,1461,12,80.08,25.16,Shot,"['Right foot', 'Opportunity', 'Position: Out high left', 'Not accurate']"
+Korea Republic,1462,1465,4,33.28,23.119999999999997,Foul,[]
+Germany,1466,1479,14,93.60000000000001,46.92,Shot,"['Right foot', 'Blocked', 'Opportunity', 'Not accurate']"
+Germany,1481,1482,2,76.96000000000001,38.760000000000005,Shot,"['Right foot', 'Position: Out high right', 'Not accurate']"
+Korea Republic,1485,1488,4,38.480000000000004,9.519999999999996,Pass,['Accurate']
+Germany,1491,1493,3,28.080000000000002,28.560000000000002,Pass,['Accurate']
+Korea Republic,1499,1502,4,23.92,6.119999999999997,Pass,['Not accurate']
+Korea Republic,1506,1508,3,50.96,34.68,Pass,['Not accurate']
+Germany,1509,1510,2,12.48,27.200000000000003,Pass,['Accurate']
+Korea Republic,1513,1514,2,63.44,19.04,Others on the ball,['Missed ball']
+Germany,1515,1519,5,90.48,6.800000000000001,Pass,"['Key pass', 'Left foot', 'High', 'Accurate']"
+Korea Republic,1522,1525,4,40.559999999999995,13.599999999999994,Foul,[]
+Germany,1526,1528,3,48.88,45.56,Pass,['Accurate']
+Germany,1534,1535,2,73.84,48.96,Pass,"['Through', 'Not accurate']"
+Korea Republic,1540,1547,8,30.159999999999997,29.239999999999995,Shot,"['Right foot', 'Opportunity', 'Position: Goal center right', 'Accurate']"
+Germany,1548,1549,2,11.440000000000001,38.080000000000005,Pass,['Not accurate']
+Korea Republic,1550,1553,4,27.039999999999992,55.08,Pass,"['Counter attack', 'Not accurate']"
+Korea Republic,1555,1556,2,28.08,59.84,Others on the ball,[]
+Germany,1557,1562,6,43.68,58.480000000000004,Pass,"['Dangerous ball lost', 'Not accurate']"
+Korea Republic,1563,1567,5,20.799999999999997,38.08,Shot,"['Left foot', 'Blocked', 'Not accurate']"
+Korea Republic,1569,1570,2,7.280000000000001,21.08,Others on the ball,['Missed ball']
+Germany,1576,1579,4,90.48,48.28,Others on the ball,['Missed ball']
+Korea Republic,1580,1581,2,91.52,50.32,Others on the ball,['Not accurate']
+Germany,1582,1587,6,91.52000000000001,63.92,Pass,"['Left foot', 'Not accurate']"
+Korea Republic,1588,1590,3,80.08,63.92,Others on the ball,['Missed ball']
+Germany,1591,1595,5,97.76,24.48,Shot,"['Head/body', 'Opportunity', 'Position: Out high left', 'Not accurate']"
+Korea Republic,1596,1601,6,41.599999999999994,23.799999999999997,Foul,[]
+Korea Republic,1607,1608,2,88.4,45.56,Others on the ball,['Accurate']
+Germany,1610,1611,2,34.32,31.28,Pass,['Accurate']
+Korea Republic,1614,1615,2,104.0,34.0,Goalkeeper leaving line,[]
+Germany,1616,1617,2,73.84,61.2,Others on the ball,['Dangerous ball lost']
+Korea Republic,1620,1621,2,5.200000000000003,26.519999999999996,Shot,"['Goal', 'Counter attack', 'Left foot', 'Opportunity', 'Position: Goal low center', 'Accurate']"
+Germany,1623,1632,10,84.24000000000001,36.720000000000006,Shot,"['Right foot', 'Blocked', 'Not accurate']"
+Germany,1636,1639,4,88.4,30.6,Shot,"['Right foot', 'Opportunity', 'Position: Goal center left', 'Accurate']"
+Germany,1643,1647,5,70.72,31.28,Pass,['Not accurate']
+Germany,1651,1652,2,96.72,17.68,Pass,['Not accurate']
+Korea Republic,1655,1656,2,104.0,34.0,Goalkeeper leaving line,[]
+Germany,1659,1662,4,96.72,36.720000000000006,Shot,"['Head/body', 'Opportunity', 'Position: Out high left', 'Not accurate']"
