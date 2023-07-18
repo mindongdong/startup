@@ -45,7 +45,7 @@ export default {
   mounted() {
     if (Hls.isSupported) {
       this.hls = new Hls();
-      this.hls.loadSource(this.videoSource_3min);
+      this.hls.loadSource(this.videoSource_m3u8);
       this.hls.attachMedia(this.$refs.videoPlayer);
       this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
         this.$refs.videoPlayer.play();
@@ -60,10 +60,10 @@ export default {
   methods: {
     videoData(ev) {
       //프레임 정상화
-      const currentFrame = this.$store.getters.getCurrentFrame;
-      const swapCount = this.$store.getters.getSwapCount;
-      console.log(ev.target.webkitDecodedFrameCount, currentFrame);
-      console.log(swapCount);
+      // const currentFrame = this.$store.getters.getCurrentFrame;
+      // const swapCount = this.$store.getters.getSwapCount;
+      // console.log(ev.target.webkitDecodedFrameCount, currentFrame);
+      // console.log(swapCount);
       // if (currentFrame === 0) {
       //   this.$store.commit("setCurrentFrame", -2);
       // } else {
@@ -74,16 +74,16 @@ export default {
       // }
       this.$store.commit("setCurrentVideo", ev.target);
 
-      // 인터벌 실행
-      const interval = setInterval(() => {
-        this.$parent.getPrediction();
-      }, 100);
-      this.$store.commit("setCurrentInterval", interval);
+      // // 인터벌 실행
+      // const interval = setInterval(() => {
+      //   this.$parent.getPrediction();
+      // }, 100);
+      // this.$store.commit("setCurrentInterval", interval);
     },
     timeUpdate() {
       this.$parent.timeUpdate();
       this.$store.commit("setCurrentTime", this.$refs.videoPlayer.currentTime);
-      console.log(this.$refs.videoPlayer.currentTime);
+      // console.log(this.$refs.videoPlayer.currentTime);
     },
     pause() {
       this.$refs.audioPlayer1.pause();
