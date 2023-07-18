@@ -1,21 +1,17 @@
 from fastapi import APIRouter
-from fastapi.responses import FileResponse, JSONResponse
-from pydantic import BaseModel
 from typing import Optional
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
-import os
-
+import ast
 from app.schemas.matches import Events, Player
 
 router = APIRouter()
 # match_id = 2057988
-match_events = pd.read_csv('./matches/KOR.GER/match_events.csv')
-phase_records = pd.read_csv('./matches/KOR.GER/phase_records.csv')
-all_player_stats = pd.read_csv('./matches/KOR.GER/matches_player_stats.csv')
+match_events = pd.read_csv('./matches/KOR.GER/match_events_korean.csv')
+phase_records = pd.read_csv('./matches/KOR.GER/phase_records_korean_sorted.csv')
+all_player_stats = pd.read_csv('./matches/KOR.GER/matches_player_stats_korean.csv')
 seq_records = pd.read_csv('./matches/KOR.GER/seq_records.csv')
-match_shots = pd.read_csv('./matches/KOR.GER/match_shots.csv')
+match_shots = pd.read_csv('./matches/KOR.GER/match_shots_korean.csv')
 
 # 이벤트 데이터를 시간에 따라 필터링
 def filter_by_time(match_events, start_time=None, end_time=None):
@@ -66,42 +62,30 @@ def find_sequence(index: int):
     return "Index not found in any column"
 
 # 현재 시간에 출전 중인 선수들의 목록을 반환
-@router.get("/lineup")
-def read_teams(current_time: Optional[int] = None):
-    # If current_time is not specified, return all players
+@router.get("/lineup/{current_time}")
+def get_teams(current_time: float = None):
+    # If current_time is None, return an empty dictionary
     if current_time is None:
-        team1_players = match_events[match_events['team_id'] == match_events['team_id'].unique()[0]]['player_name'].unique().tolist()
-        team2_players = match_events[match_events['team_id'] == match_events['team_id'].unique()[1]]['player_name'].unique().tolist()
-    else:
-        # Identify the phase corresponding to the current time
-        # 클라이언트에서 current_time이 어떻게 넘어오는지 확인 필요
-        # current_time에 따라 period를 구분해야 함
-        # 예를 들어 current_time이 45 이상 일 때, period를 2로 설정하고 current_time에서 45를 빼줘야 함
-        current_phase = phase_records[
-            (phase_records['start_time'] <= current_time * 60) & 
-            (phase_records['end_time'] > current_time * 60)
-        ].iloc[0]
-
-        # Filter the players who are on the field during the current phase
-        team1_players = match_events[
-            (match_events['team_id'] == match_events['team_id'].unique()[0]) & 
-            (match_events['player_id'].isin(current_phase['player_ids']))
-        ]['player_name'].unique().tolist()
-
-        team2_players = match_events[
-            (match_events['team_id'] == match_events['team_id'].unique()[1]) & 
-            (match_events['player_id'].isin(current_phase['player_ids']))
-        ]['player_name'].unique().tolist()
-
-    teams = {
-        match_events['team_id'].unique()[0]: team1_players,
-        match_events['team_id'].unique()[1]: team2_players
-    }
+        return {}
     
+    # Filter rows where current_time is between start_time and end_time
+    filtered_data = phase_records[(phase_records['start_time'] <= current_time) & (phase_records['end_time'] > current_time)]
+    
+    # Initialize an empty dictionary
+    teams = {}
+    
+    # Iterate over filtered rows
+    for _, row in filtered_data.iterrows():
+        # Convert string representation of list to actual list
+        player_names = ast.literal_eval(row['player_names'])
+        # Add to dictionary
+        teams[row['team_name']] = player_names
+        
     return teams
 
+
 # 경기 이벤트 데이터를 데이터에 따라 필터링하여 반환
-@router.get("/events")
+@router.post("/events")
 def filter_events(Evnets: Events):
     # Start with all events
     filtered = filter_by_time(match_events, start_time=Evnets.start_time, end_time=Evnets.end_time)
@@ -121,7 +105,7 @@ def filter_events(Evnets: Events):
     return filtered.to_dict('records')
 
 # 경기 통계 데이터(골, 도움 등 각종 스텟들)를 시간대에 따라 반환
-@router.get("/stats")
+@router.get("/stats/{current_time}")
 def generate_player_stats(current_time: Optional[int] = None):
     # Data loading
     filtered_events = filter_by_time(match_events, start_time=0, end_time=current_time * 60)
@@ -277,7 +261,7 @@ def generate_player_stats(current_time: Optional[int] = None):
     return player_stats[cols]
 
 # 대회 선수들 통계 합산 반환 -> TOP 10까지 반환 및 특정 선수 통계 반환
-@router.get("/group")
+@router.post("/group")
 def read_top10_players(Player: Player):                         
     grouped = all_player_stats.groupby(['team_id', 'team_name', 'player_id', 'player_name'])
 
@@ -309,7 +293,7 @@ def read_player(player_name: str):
     return data.to_dict()
 
 # 공격 시퀀스 데이터 반환
-@router.get("/sequence")
+@router.get("/sequence/{current_time}")
 def read_sequence(current_time: int):
     
     # 현재 시간 기준 가장 가까운 이벤트 찾기
@@ -327,7 +311,7 @@ def read_sequence(current_time: int):
     return attack_sequence
 
 # 기대득점 데이터 반환
-@router.get("/match_shots")
+@router.get("/shots/{current_time}")
 async def get_match_shots(current_time: int):
     # Process the data
     match_shots = filter_by_time(match_shots, end_time=current_time)
@@ -359,7 +343,7 @@ async def get_match_shots(current_time: int):
     return response
 
 # 세트 피스 데이터 반환
-@router.get("/setpieces")
+@router.get("/setpieces/{current_time}")
 def get_setpieces(current_time: int):
     # Filter the data by time
     match_events = filter_by_time(match_events, end_time=current_time)

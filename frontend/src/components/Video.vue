@@ -100,10 +100,8 @@ export default {
       const video = this.$store.getters.getCurrentVideo;
       const videoTime = video.currentTime;
       console.log(videoTime);
-      const frame = {
-        //change int
-        frame: parseInt(videoTime * 27) - 1,
-      };
+      const frame = parseInt(videoTime * 27) - 1;
+      console.log(frame);
       const response = await getTrackingInfo(frame);
       this.predictionList = response.data;
     },

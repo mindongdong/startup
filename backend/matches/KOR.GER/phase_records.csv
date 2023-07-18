@@ -1,7 +1,17 @@
-period,start_time,end_time,duration,player_ids
-1H,0.0,2905.875,2905.875,"[14943, 69968, 8287, 69409, 135747, 3309, 14812, 3476, 105361, 69396, 25393, 353833, 340646, 31528, 7936, 3682, 25381, 25397, 25437, 26010, 69616, 279545]"
-2H,0.0,540.0,540.0,"[14943, 69968, 8287, 69409, 135747, 3309, 14812, 3476, 105361, 69396, 25393, 353833, 340646, 31528, 7936, 3682, 25381, 25397, 25437, 26010, 69616, 279545]"
-2H,540.0,1500.0,960.0,"[14943, 69968, 8287, 69409, 135747, 3309, 14812, 3476, 105361, 69396, 25393, 353833, 340646, 7936, 3682, 25381, 25397, 25437, 26010, 69616, 279545, 8200]"
-2H,1500.0,1620.0,120.0,"[14943, 69968, 8287, 69409, 135747, 3309, 14812, 3476, 105361, 69396, 25393, 353833, 340646, 7936, 3682, 25381, 25397, 25437, 26010, 279545, 8200, 69411]"
-2H,1620.0,2100.0,480.0,"[14943, 69968, 8287, 69409, 135747, 3309, 14812, 3476, 105361, 69396, 25393, 353833, 340646, 7936, 3682, 25381, 25397, 26010, 279545, 8200, 69411, 209091]"
-2H,2100.0,3002.149,902.1489999999999,"[14943, 69968, 8287, 69409, 135747, 3309, 14812, 3476, 69396, 25393, 353833, 340646, 7936, 3682, 25381, 25397, 279545, 8200, 69411, 209091, 135810, 28115]"
+period,start_time,end_time,duration,player_names,team_name
+1H,0.0,2881.599,2881.599,"['M. Özil', 'T. Kroos', 'N. Süle', 'M. Neuer', 'S. Khedira', 'M. Hummels', 'J. Hector', 'J. Kimmich', 'M. Reus', 'T. Werner', 'L. Goretzka']",Germany
+1H,0.0,2881.599,2881.599,"['Seon-Min Moon', 'Ja-Cheol Koo', 'Young-Gwon Kim', 'Jae-Sung Lee', 'Yong Lee', 'Son Heung-Min', 'Woo-Young Jung', 'Young-Sun Yun', 'Chul Hong', 'Hyun-Woo Cho', 'Hyun-Soo Jang']",Korea Republic
+2H,0.0,600.0,600.0,"['M. Özil', 'T. Kroos', 'N. Süle', 'M. Neuer', 'S. Khedira', 'M. Hummels', 'J. Hector', 'J. Kimmich', 'M. Reus', 'T. Werner', 'L. Goretzka']",Germany
+2H,0.0,600.0,600.0,"['Seon-Min Moon', 'Ja-Cheol Koo', 'Young-Gwon Kim', 'Jae-Sung Lee', 'Yong Lee', 'Son Heung-Min', 'Woo-Young Jung', 'Young-Sun Yun', 'Chul Hong', 'Hyun-Woo Cho', 'Hyun-Soo Jang']",Korea Republic
+2H,600.0,720.0,120.0,"['M. Özil', 'T. Kroos', 'N. Süle', 'M. Neuer', 'S. Khedira', 'M. Hummels', 'J. Hector', 'J. Kimmich', 'M. Reus', 'T. Werner', 'L. Goretzka']",Germany
+2H,600.0,720.0,120.0,"['Seon-Min Moon', 'Young-Gwon Kim', 'Jae-Sung Lee', 'Yong Lee', 'Son Heung-Min', 'Woo-Young Jung', 'Young-Sun Yun', 'Chul Hong', 'Hyun-Woo Cho', 'Hyun-Soo Jang', 'Hwang Hee-Chan']",Korea Republic
+2H,720.0,1020.0,300.0,"['M. Özil', 'T. Kroos', 'N. Süle', 'M. Neuer', 'M. Hummels', 'J. Hector', 'J. Kimmich', 'M. Reus', 'T. Werner', 'L. Goretzka', 'M. Gómez']",Germany
+2H,720.0,1020.0,300.0,"['Seon-Min Moon', 'Young-Gwon Kim', 'Jae-Sung Lee', 'Yong Lee', 'Son Heung-Min', 'Woo-Young Jung', 'Young-Sun Yun', 'Chul Hong', 'Hyun-Woo Cho', 'Hyun-Soo Jang', 'Hwang Hee-Chan']",Korea Republic
+2H,1020.0,1380.0,360.0,"['M. Özil', 'T. Kroos', 'N. Süle', 'M. Neuer', 'M. Hummels', 'J. Hector', 'J. Kimmich', 'M. Reus', 'T. Werner', 'M. Gómez', 'T. Müller']",Germany
+2H,1020.0,1380.0,360.0,"['Seon-Min Moon', 'Young-Gwon Kim', 'Jae-Sung Lee', 'Yong Lee', 'Son Heung-Min', 'Woo-Young Jung', 'Young-Sun Yun', 'Chul Hong', 'Hyun-Woo Cho', 'Hyun-Soo Jang', 'Hwang Hee-Chan']",Korea Republic
+2H,1380.0,1920.0,540.0,"['M. Özil', 'T. Kroos', 'N. Süle', 'M. Neuer', 'M. Hummels', 'J. Hector', 'J. Kimmich', 'M. Reus', 'T. Werner', 'M. Gómez', 'T. Müller']",Germany
+2H,1380.0,1920.0,540.0,"['Young-Gwon Kim', 'Jae-Sung Lee', 'Yong Lee', 'Son Heung-Min', 'Woo-Young Jung', 'Young-Sun Yun', 'Chul Hong', 'Hyun-Woo Cho', 'Hyun-Soo Jang', 'Hwang Hee-Chan', 'Se-Jong Ju']",Korea Republic
+2H,1920.0,1980.0,60.0,"['M. Özil', 'T. Kroos', 'N. Süle', 'M. Neuer', 'M. Hummels', 'J. Kimmich', 'M. Reus', 'T. Werner', 'M. Gómez', 'T. Müller', 'J. Brandt']",Germany
+2H,1920.0,1980.0,60.0,"['Young-Gwon Kim', 'Jae-Sung Lee', 'Yong Lee', 'Son Heung-Min', 'Woo-Young Jung', 'Young-Sun Yun', 'Chul Hong', 'Hyun-Woo Cho', 'Hyun-Soo Jang', 'Hwang Hee-Chan', 'Se-Jong Ju']",Korea Republic
+2H,1980.0,3258.367,1338.3670000000002,"['M. Özil', 'T. Kroos', 'N. Süle', 'M. Neuer', 'M. Hummels', 'J. Kimmich', 'M. Reus', 'T. Werner', 'M. Gómez', 'T. Müller', 'J. Brandt']",Germany
+2H,1980.0,3258.367,1338.3670000000002,"['Young-Gwon Kim', 'Jae-Sung Lee', 'Yong Lee', 'Son Heung-Min', 'Woo-Young Jung', 'Young-Sun Yun', 'Chul Hong', 'Hyun-Woo Cho', 'Hyun-Soo Jang', 'Yo-Han Go', 'Se-Jong Ju']",Korea Republic

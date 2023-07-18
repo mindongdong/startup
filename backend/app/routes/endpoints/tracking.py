@@ -6,15 +6,11 @@ from fastapi.responses import FileResponse, JSONResponse
 
 router = APIRouter()
 
-class currentFrameNum(BaseModel):
-    frame: int
-
-@router.post("/info")
-def trackingBtn(currentFrameNum: currentFrameNum):
-    PATH_MATCH_INFO = f'./matches/'
+@router.get("/info/{frame}")
+def trackingBtn(frame: int):
     # with open("/Users/seancho/VSCodeProjects/startup/backend/matches/predictions.json", 'r') as file:
     with open("./matches/predictions.json", 'r') as file:
         predictions = json.load(file)
-        frameNum = int(currentFrameNum.frame*25/27) + 5
+        frameNum = int(frame*25/27) + 5
     return list(predictions[str(i)][frameNum] for i in range(23))
 # print(type(trackingBtn(0)))

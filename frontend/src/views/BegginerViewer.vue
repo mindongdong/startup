@@ -347,6 +347,7 @@ div {
   width: calc(100% - 3rem - 300px);
   height: calc(881px - 42.5rem);
   border-radius: 1rem;
+  z-index: 9998;
 }
 .chat {
   position: absolute;
