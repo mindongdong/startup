@@ -1,7 +1,7 @@
 <template>
   <div id="layout">
     <img class="background-image" src="@/assets/background.png" />
-    <div class="contents-container">
+    <draggable class="contents-container" v-model="rows">
       <div class="view-mode">
         <img
           v-if="infoToggle"
@@ -32,18 +32,31 @@
       <div class="info-container" v-bind:class="{ hide__bottom: infoToggle }">
         <TeamInfo></TeamInfo>
       </div>
-    </div>
+      <div class="drag-area" v-for="row in rows" :key="row.index">
+        <draggable
+          class="drag-component"
+          :list="row.items"
+          :group="{ name: 'row' }"
+        >
+          <div class="drag-content" v-for="item in row.items" :key="item.title">
+            <div>{{ item.title }}</div>
+          </div>
+        </draggable>
+      </div>
+    </draggable>
   </div>
 </template>
 
 <script>
 import Video from "@/components/Video.vue";
 import TeamInfo from "@/components/TeamInfo.vue";
+import draggable from "vuedraggable";
 
 export default {
   components: {
     Video,
     TeamInfo,
+    draggable,
   },
   data() {
     return {
@@ -56,6 +69,36 @@ export default {
       away_teamName: "",
       home_lineup: [],
       away_lineup: [],
+      rows: [
+        {
+          index: 1,
+          items: [
+            {
+              title: "item 1",
+            },
+            {
+              title: "item 4",
+            },
+            {
+              title: "item 5",
+            },
+          ],
+        },
+        {
+          index: 2,
+          items: [
+            {
+              title: "item 2",
+            },
+            {
+              title: "item 3",
+            },
+            {
+              title: "item 6",
+            },
+          ],
+        },
+      ],
     };
   },
   async mounted() {
@@ -64,17 +107,6 @@ export default {
     video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
-    });
-    video.addEventListener("timeupdate", (ev) => {
-      if (Math.round(video.currentTime) < 10) {
-        this.videoTimestamp = `00:0${Math.round(
-          video.currentTime
-        )} / 00:${Math.round(video.duration)}`;
-      } else {
-        this.videoTimestamp = `00:${Math.round(
-          video.currentTime
-        )} / 00:${Math.round(video.duration)}`;
-      }
     });
   },
   methods: {
@@ -236,11 +268,44 @@ div {
 .info-container {
   position: absolute;
   bottom: 4rem;
-  left: calc(50% - 35rem);
-  width: 70rem;
+  left: calc(50% - 33rem);
+  width: 66rem;
   height: calc(881px - 42.5rem);
   border-radius: 1rem;
   z-index: 9998;
+}
+.drag-layout {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.drag-area {
+  position: absolute;
+  top: 8rem;
+  left: 2rem;
+  width: calc((100% - 74rem) / 2);
+  height: calc(100% - 12rem);
+  cursor: pointer;
+  z-index: 9999;
+}
+.drag-area:last-child {
+  left: calc(100% - 2rem - calc((100% - 74rem) / 2));
+}
+.drag-component {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 9999;
+}
+.drag-content {
+  width: 100%;
+  height: 30%;
+  background: rgba(0, 0, 0, 0.353);
 }
 .flag {
   cursor: pointer;

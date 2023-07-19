@@ -97,7 +97,6 @@ export default {
   watch: {
     currentTime(newTime) {
       this.percent = (newTime / this.totalTime) * 100;
-      console.log(this.percent);
     },
     totalTime(newTotal) {
       this.percent = (this.currentTime / newTotal) * 100;
