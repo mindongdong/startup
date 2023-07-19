@@ -2,7 +2,7 @@
   <div class="layout" ref="videoLayout">
     <Stream></Stream>
     <Analyze ref="analyzeRef" :predictionList="predictionList"></Analyze>
-    <Wrapper :currentTime="currentTime" :percent="percent"></Wrapper>
+    <Wrapper :currentTime="currentTime" :totalTime="totalTime"></Wrapper>
   </div>
 </template>
 
@@ -21,59 +21,43 @@ export default {
   },
   data() {
     return {
-      currentTime: "00:00:00 / 00:00:00",
-      percent: 0,
+      currentTime: 0,
+      totalTime: 0,
       predictionList: [],
     };
   },
   methods: {
-    async timeUpdate() {
-      const video = this.$store.getters.getCurrentVideo;
-      const currentTime = video.currentTime;
-      const duration = video.duration;
-      const percent = (currentTime / duration) * 100;
-      this.percent = percent;
+    timeUpdate(currentTime, duration) {
+      // let seconds = Math.floor(currentTime % 60);
+      // let minutes = Math.floor((currentTime / 60) % 60);
+      // let hours = Math.floor(currentTime / 3600);
 
-      let seconds = Math.floor(currentTime % 60);
-      let minutes = Math.floor((currentTime / 60) % 60);
-      let hours = Math.floor(currentTime / 3600);
+      // if (seconds < 10) {
+      //   seconds = "0" + seconds;
+      // }
+      // if (minutes < 10) {
+      //   minutes = "0" + minutes;
+      // }
+      // if (hours < 10) {
+      //   hours = "0" + hours;
+      // }
 
-      if (seconds < 10) {
-        seconds = "0" + seconds;
-      }
-      if (minutes < 10) {
-        minutes = "0" + minutes;
-      }
-      if (hours < 10) {
-        hours = "0" + hours;
-      }
+      // let durationHours = Math.floor(duration / 3600);
+      // let durationMinutes = Math.floor((duration / 60) % 60);
+      // let durationSeconds = Math.floor(duration % 60);
 
-      let durationHours = Math.floor(duration / 3600);
-      let durationMinutes = Math.floor((duration / 60) % 60);
-      let durationSeconds = Math.floor(duration % 60);
+      // if (durationHours < 10) {
+      //   durationHours = "0" + durationHours;
+      // }
+      // if (durationMinutes < 10) {
+      //   durationMinutes = "0" + durationMinutes;
+      // }
+      // if (durationSeconds < 10) {
+      //   durationSeconds = "0" + durationSeconds;
+      // }
 
-      if (durationHours < 10) {
-        durationHours = "0" + durationHours;
-      }
-      if (durationMinutes < 10) {
-        durationMinutes = "0" + durationMinutes;
-      }
-      if (durationSeconds < 10) {
-        durationSeconds = "0" + durationSeconds;
-      }
-
-      this.currentTime =
-        hours +
-        ":" +
-        minutes +
-        ":" +
-        seconds +
-        " / " +
-        durationHours +
-        ":" +
-        durationMinutes +
-        ":" +
-        durationSeconds;
+      this.currentTime = currentTime;
+      this.totalTime = duration;
     },
     async getPrediction() {
       // const video = this.$store.getters.getCurrentVideo;
@@ -111,8 +95,6 @@ export default {
 
 <style scoped>
 .layout {
-  width: 72rem;
-  height: 40.5rem;
   width: calc(100% - 2rem);
   height: 0;
   padding-bottom: 56.25%;

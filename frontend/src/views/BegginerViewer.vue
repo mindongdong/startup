@@ -32,77 +32,6 @@
       <div class="info-container" v-bind:class="{ hide__bottom: infoToggle }">
         <TeamInfo></TeamInfo>
       </div>
-      <div class="chat" v-bind:class="{ hide__right: chatToggle }">
-        <div class="chat__header">
-          <p class="chat__userInfo">이름 :</p>
-          <input
-            type="text"
-            class="chat__userName"
-            v-model="myName"
-            placeholder="이름을 입력해주세요"
-          />
-          <div class="chat__userColor"></div>
-          <div class="header__underLine"></div>
-        </div>
-        <div class="chat__content" ref="chat__content">
-          <div
-            class="chat__liveChat"
-            v-for="(message, idx) in messages"
-            :key="idx"
-          >
-            <div class="chat__userChat">
-              <!-- v-if="message.user != 'Me'" -->
-              <p>
-                <span
-                  :class="[
-                    { font__purple: message.user === myName },
-                    { font__yellow: message.user === 'AI' },
-                    { font__skyBlue: message },
-                  ]"
-                  >{{ message.user }}</span
-                >
-                :
-                {{ message.text }}
-              </p>
-            </div>
-            <!-- <div class="chat__myChat">
-              v-else
-              <span class="chat__sendTarget">[{{ message.user }}]</span
-              ><br /><br />
-              <p>{{ message.text }}</p>
-            </div> -->
-          </div>
-        </div>
-        <div class="chat__box">
-          <div class="chat__target">
-            <div
-              class="chat__targetText"
-              v-bind:class="{ select: !targetToggle }"
-              @click="targetChange"
-            >
-              모두
-            </div>
-            <div
-              class="chat__targetText"
-              v-bind:class="{ select: targetToggle }"
-              @click="targetChange(ai)"
-            >
-              AI
-            </div>
-            에게
-          </div>
-          <div class="chat__input">
-            <textarea
-              class="chat__text"
-              v-model="newMessage"
-              @keydown.enter.prevent="sendMessage"
-            ></textarea>
-          </div>
-          <div class="chat__send">
-            <div class="chat__submit" @click="sendMessage">전송</div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -129,14 +58,6 @@ export default {
     };
   },
   async mounted() {
-    // Initialize WebSocket connection
-    this.socket = io("http://localhost:3000");
-
-    // Add received message to messages array
-    this.socket.on("message", (message) => {
-      this.messages.push(message);
-    });
-
     const video = document.querySelector("Video");
 
     video.addEventListener("ended", (ev) => {
@@ -157,39 +78,11 @@ export default {
     // console.log(video.duration);
   },
   methods: {
-    // stageResize() {
-    //   const video = document.querySelector("Video");
-    //   const modal = document.querySelector(".modal-wrapper");
-
-    //   modal.style.width = `${video.clientWidth}px`;
-    //   modal.style.height = `${video.clientHeight}px`;
-    // },
     targetChange(target) {
       if (target) {
         this.targetToggle = false;
       } else {
         this.targetToggle = true;
-      }
-    },
-    sendMessage(ev) {
-      console.log(ev);
-      if (!ev.isComposing) {
-        // Check if message is not empty
-        if (this.newMessage.trim() !== "") {
-          // this.socket.emit("message", {
-          //   user: "Me",
-          //   text: this.newMessage.trim(),
-          // });
-          this.messages.push({
-            user: this.myName,
-            text: this.newMessage.trim(),
-            aiTarget: this.targetToggle,
-          });
-          this.socket.emit("message", this.messages);
-          this.newMessage = "";
-          this.$refs.chat__content.scrollTop =
-            this.$refs.chat__content.scrollHeight;
-        }
       }
     },
     setDetailIndex(teamHome, idx) {
