@@ -12,16 +12,7 @@
       @timeupdate="timeUpdate"
       @pause="pause"
       @seeking="timeUpdate"
-    >
-      <!-- <source src="http://localhost:3000/video" type="video/mp4" /> -->
-      <!-- <source :src="videoSource_3min" type="video/mp4" /> -->
-    </video>
-    <audio
-      ref="audioPlayer1"
-      :src="audioSource_off"
-      autoplay
-      @loadeddata="audioData"
-    ></audio>
+    ></video>
   </div>
 </template>
 
@@ -33,12 +24,6 @@ export default {
   data() {
     return {
       videoSource_m3u8: "http://localhost:3000/video/video.m3u8",
-      videoSource_off_m3u8: "http://localhost:3000/video/output.m3u8",
-      videoSource_on_m3u8: "http://localhost:3000/video/output_on.m3u8",
-      videoSource_3min: "http://localhost:3000/video/test.m3u8",
-      videoSource_voronoi: "http://localhost:3000/video/test_voronoi.m3u8",
-      audioSource_off: "http://localhost:3000/audio/3min_audio.mp3",
-      audioSource_on: "http://localhost:3000/audio/3min_audio_on.mp3",
       hls: null,
     };
   },
@@ -81,7 +66,10 @@ export default {
       // this.$store.commit("setCurrentInterval", interval);
     },
     timeUpdate() {
-      this.$parent.timeUpdate();
+      this.$parent.timeUpdate(
+        this.$refs.videoPlayer.currentTime,
+        this.$refs.videoPlayer.duration
+      );
       this.$store.commit("setCurrentTime", this.$refs.videoPlayer.currentTime);
       // console.log(this.$refs.videoPlayer.currentTime);
     },

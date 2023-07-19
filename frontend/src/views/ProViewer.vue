@@ -32,77 +32,6 @@
       <div class="info-container" v-bind:class="{ hide__bottom: infoToggle }">
         <TeamInfo></TeamInfo>
       </div>
-      <div class="chat" v-bind:class="{ hide__right: chatToggle }">
-        <div class="chat__header">
-          <p class="chat__userInfo">이름 :</p>
-          <input
-            type="text"
-            class="chat__userName"
-            v-model="myName"
-            placeholder="이름을 입력해주세요"
-          />
-          <div class="chat__userColor"></div>
-          <div class="header__underLine"></div>
-        </div>
-        <div class="chat__content" ref="chat__content">
-          <div
-            class="chat__liveChat"
-            v-for="(message, idx) in messages"
-            :key="idx"
-          >
-            <div class="chat__userChat">
-              <!-- v-if="message.user != 'Me'" -->
-              <p>
-                <span
-                  :class="[
-                    { font__purple: message.user === myName },
-                    { font__yellow: message.user === 'AI' },
-                    { font__skyBlue: message },
-                  ]"
-                  >{{ message.user }}</span
-                >
-                :
-                {{ message.text }}
-              </p>
-            </div>
-            <!-- <div class="chat__myChat">
-              v-else
-              <span class="chat__sendTarget">[{{ message.user }}]</span
-              ><br /><br />
-              <p>{{ message.text }}</p>
-            </div> -->
-          </div>
-        </div>
-        <div class="chat__box">
-          <div class="chat__target">
-            <div
-              class="chat__targetText"
-              v-bind:class="{ select: !targetToggle }"
-              @click="targetChange"
-            >
-              모두
-            </div>
-            <div
-              class="chat__targetText"
-              v-bind:class="{ select: targetToggle }"
-              @click="targetChange(ai)"
-            >
-              AI
-            </div>
-            에게
-          </div>
-          <div class="chat__input">
-            <textarea
-              class="chat__text"
-              v-model="newMessage"
-              @keydown.enter.prevent="sendMessage"
-            ></textarea>
-          </div>
-          <div class="chat__send">
-            <div class="chat__submit" @click="sendMessage">전송</div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -110,7 +39,6 @@
 <script>
 import Video from "@/components/Video.vue";
 import TeamInfo from "@/components/TeamInfo.vue";
-import { io } from "socket.io-client";
 
 export default {
   components: {
@@ -120,15 +48,10 @@ export default {
   data() {
     return {
       targetToggle: true,
-      messages: [], // Store messages
-      newMessage: "", // User input for new message
-      socket: null, // WebSocket connection
       infoToggle: true,
-      chatToggle: true,
       detailToggle: false,
       detailIndex: 0,
       teamHome: true,
-      myName: "메시",
       home_teamName: "",
       away_teamName: "",
       home_lineup: [],
@@ -136,14 +59,6 @@ export default {
     };
   },
   async mounted() {
-    // Initialize WebSocket connection
-    this.socket = io("http://localhost:3000");
-
-    // Add received message to messages array
-    this.socket.on("message", (message) => {
-      this.messages.push(message);
-    });
-
     const video = document.querySelector("Video");
 
     video.addEventListener("ended", (ev) => {
@@ -168,27 +83,6 @@ export default {
         this.targetToggle = false;
       } else {
         this.targetToggle = true;
-      }
-    },
-    sendMessage(ev) {
-      console.log(ev);
-      if (!ev.isComposing) {
-        // Check if message is not empty
-        if (this.newMessage.trim() !== "") {
-          // this.socket.emit("message", {
-          //   user: "Me",
-          //   text: this.newMessage.trim(),
-          // });
-          this.messages.push({
-            user: this.myName,
-            text: this.newMessage.trim(),
-            aiTarget: this.targetToggle,
-          });
-          this.socket.emit("message", this.messages);
-          this.newMessage = "";
-          this.$refs.chat__content.scrollTop =
-            this.$refs.chat__content.scrollHeight;
-        }
       }
     },
     setDetailIndex(teamHome, idx) {
@@ -341,223 +235,12 @@ div {
 }
 .info-container {
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  width: calc(100% - 3rem - 300px);
+  bottom: 4rem;
+  left: calc(50% - 35rem);
+  width: 70rem;
   height: calc(881px - 42.5rem);
   border-radius: 1rem;
   z-index: 9998;
-}
-.chat {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  width: 248px;
-  height: calc(881px - 4rem);
-  height: calc(100% - 2rem);
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: right 1s;
-  background: #08133a84;
-  background: #0a1931c5;
-  /* opacity: 0.98; */
-  z-index: 9999;
-}
-.chat__header {
-  width: 100%;
-  padding: 0 1rem;
-  margin-top: 0.5rem;
-  height: 3.5rem;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: relative;
-}
-.chat__userInfo {
-  height: 1.2rem;
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  font-size: 1rem;
-}
-.chat__userName {
-  max-width: 60%;
-  height: 1.2rem;
-  white-space: nowrap;
-  overflow-x: hidden;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  border: none;
-  background: rgba(0, 0, 0, 0);
-  color: white;
-}
-.chat__userColor {
-  width: 1.2rem;
-  height: 1.2rem;
-  border-radius: 50%;
-  cursor: pointer;
-  background: rgb(200, 20, 255);
-}
-.header__underLine {
-  position: absolute;
-  bottom: 0;
-  width: 60%;
-  height: 1.5px;
-  background: #496adf;
-}
-.chat__content {
-  width: 100%;
-  height: calc(100% - 17rem);
-  padding: 1rem;
-  overflow-x: hidden;
-  overflow-y: auto;
-  direction: ltr;
-  /* scroll-behavior: smooth;
-  scroll-snap-type: y proximity; */
-}
-/* Customize the scrollbar background and thickness */
-.chat__content::-webkit-scrollbar {
-  width: 8px; /* Adjust the thickness of the scrollbar */
-}
-
-.chat__content::-webkit-scrollbar-track {
-  background: rgba(
-    255,
-    255,
-    255,
-    0.1
-  ); /* Set the background color of the scrollbar track */
-}
-
-.chat__content::-webkit-scrollbar-thumb {
-  background: rgba(
-    255,
-    255,
-    255,
-    0.3
-  ); /* Set the background color of the scrollbar thumb */
-  border-radius: 8px; /* Set the border radius of the scrollbar thumb */
-}
-.chat__userChat,
-.chat__myChat {
-  position: relative;
-  box-sizing: border-box;
-  min-height: 1rem;
-  width: fit-content;
-  max-width: 100%;
-  padding: 0.3rem 0.8rem;
-  border-radius: 6px 0 6px 0;
-  background: rgba(0, 0, 0, 0.5);
-  background: #26323800;
-  /* border: 2px solid rgba(0, 0, 0, 0.2); */
-  color: #fff;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 1rem;
-  line-height: 1.3rem;
-}
-.chat__myChat {
-  margin: 0 0 0 auto;
-  margin-bottom: 1rem;
-  text-align: right;
-}
-/* .chat__userChat:after {
-  content: "";
-  position: absolute;
-  border: 10px solid transparent;
-  border-top: 10px solid rgba(0, 0, 0, 0.2);
-  border-left: none;
-  bottom: -22px;
-  left: 10px;
-}
-.chat__myChat:after {
-  content: "";
-  position: absolute;
-  border: 10px solid transparent;
-  border-top: 10px solid rgba(0, 0, 0, 0.2);
-  border-right: none;
-  bottom: -22px;
-  right: 10px;
-} */
-.chat__sendTarget {
-  font-size: 1rem;
-  color: #6e8bf4;
-}
-.chat__box {
-  width: 90%;
-  height: 12rem;
-  background: rgba(56, 56, 79, 0.365);
-  border-radius: 1rem;
-  box-shadow: rgba(149, 149, 149, 0.24) 0px 3px 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.chat__target {
-  width: 90%;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-}
-.chat__targetText {
-  cursor: pointer;
-  width: 3.5rem;
-  height: 70%;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(38, 38, 53, 0.365);
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-}
-.chat__targetText:last-child {
-  margin-right: 0.5rem;
-}
-.select {
-  background: #496adf;
-}
-.chat__input {
-  width: 90%;
-  height: 7rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 0.6rem;
-}
-.chat__text {
-  resize: none;
-  overflow: auto;
-  min-height: 1rem;
-  width: 90%;
-  height: 90%;
-  border: none;
-  background: rgba(0, 0, 0, 0);
-  font-size: 1rem;
-  border-radius: 1rem;
-}
-.chat__text:focus,
-.chat__userName:focus {
-  outline: none;
-}
-.chat__send {
-  width: 90%;
-  height: 2.5rem;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-.chat__submit {
-  width: 3.5rem;
-  height: 1.5rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #496adf;
 }
 .flag {
   cursor: pointer;
