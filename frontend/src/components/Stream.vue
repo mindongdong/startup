@@ -68,7 +68,7 @@ export default {
     timeUpdate() {
       this.$parent.timeUpdate(
         this.$refs.videoPlayer.currentTime,
-        this.$refs.videoPlayer.duration
+        this.$refs.videoPlayer.duration,
       );
       this.$store.commit("setCurrentTime", this.$refs.videoPlayer.currentTime);
       // console.log(this.$refs.videoPlayer.currentTime);
