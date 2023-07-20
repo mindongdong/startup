@@ -11,6 +11,43 @@ export default new Vuex.Store({
     currentTime: 0,
     currentFrame: 0,
     currentSwapCount: 0,
+    toggleList: {
+      info: false,
+      mute: false,
+      change: false,
+      components: false,
+    },
+    components: [
+      {
+        index: 1,
+        items: [
+          {
+            title: "item 1",
+          },
+          {
+            title: "item 4",
+          },
+          {
+            title: "item 5",
+          },
+        ],
+      },
+      {
+        index: 2,
+        items: [
+          {
+            title: "item 2",
+          },
+          {
+            title: "item 3",
+          },
+          {
+            title: "item 6",
+          },
+        ],
+      },
+    ],
+    unactivateComponents: [],
   },
   getters: {
     getCurrentVideo(state) {
@@ -30,6 +67,15 @@ export default new Vuex.Store({
     },
     getSwapCount(state) {
       return state.currentSwapCount;
+    },
+    getToggleList(state) {
+      return state.toggleList;
+    },
+    getComponents(state) {
+      return state.components;
+    },
+    getUnactivateComponents(state) {
+      return state.unactivateComponents;
     },
   },
   mutations: {
@@ -53,6 +99,15 @@ export default new Vuex.Store({
     },
     setSwapCount(state, swapCountData) {
       state.currentSwapCount += swapCountData;
+    },
+    setToggleList(state, targetToggle) {
+      state.toggleList[targetToggle] = !state.toggleList[targetToggle];
+    },
+    updateComponents(state, componentsData) {
+      state.components = componentsData;
+    },
+    updateUnactivateComponents(state, unactivateComponentsData) {
+      state.unactivateComponents = unactivateComponentsData;
     },
   },
 });

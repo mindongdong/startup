@@ -1,32 +1,60 @@
 <template>
   <div class="modal-wrapper" @keydown.space.prevent="videoPlay">
     <div class="info-header" @mouseover="hideTooltip">
-      <router-link to="/">
+      <!-- <router-link to="/">
         <div class="exit-button"></div>
-      </router-link>
+      </router-link> -->
+      <div class="components_control">
+        <img
+          class="icon"
+          src="@/assets/icons/list.png"
+          @click="toggleComponentsList"
+        />
+        <ul class="components_list" :class="{show: isComponentsListVisible}">
+          <li
+            v-for="(item, idx) in componentList"
+            :key="idx"
+            @click="toggleComponent(item)"
+          >
+            {{ item }}
+          </li>
+        </ul>
+      </div>
       <div class="video-tools__column">
-        <div class="button-wrapper">
-          <div class="sound-button">
-            <img class="icon" v-if="muteToggle" src="@/assets/icons/mute.png" />
-            <img class="icon" v-else src="@/assets/icons/sound.png" />
-          </div>
-        </div>
-        <div class="button-wrapper">
-          <div class="change-button" @click="videoSwap">
-            <img
-              class="icon"
-              v-if="!changeToggle"
-              @click="changeToggle = !changeToggle"
-              src="@/assets/icons/change.png"
-            />
-            <img
-              class="icon_on"
-              v-else
-              src="@/assets/icons/change.png"
-              @click="changeToggle = !changeToggle"
-            />
-          </div>
-        </div>
+        <img
+          class="icon"
+          v-bind:class="{
+            icon_on: this.$store.getters.getToggleList['change'],
+          }"
+          @click="toggleManage('change')"
+          src="@/assets/icons/change.png"
+        />
+        <img
+          v-if="this.$store.getters.getToggleList['mute']"
+          class="icon"
+          src="@/assets/icons/mute.png"
+          @click="toggleManage('mute')"
+        />
+        <img
+          v-else
+          class="icon"
+          src="@/assets/icons/sound.png"
+          @click="toggleManage('mute')"
+        />
+        <img
+          v-bind:class="{icon_on: this.$store.getters.getToggleList['info']}"
+          class="icon"
+          src="@/assets/icons/showinfo.png"
+          @click="toggleManage('info')"
+        />
+        <img
+          v-bind="{
+            class: {icon_on: this.$store.getters.getToggleList['components']},
+          }"
+          class="icon white"
+          src="@/assets/icons/components.png"
+          @click="toggleManage('components')"
+        />
       </div>
     </div>
     <div class="modal-content" @mouseover="hideTooltip"></div>
@@ -45,7 +73,7 @@
       />
       <div
         v-if="showTooltip"
-        :style="{ left: `${mouseX}px` }"
+        :style="{left: `${mouseX}px`}"
         class="time-tooltip"
       >
         {{ tooltipTime }}
@@ -56,6 +84,7 @@
 
 <script>
 import Hls from "hls.js";
+import {mapGetters, mapMutations} from "vuex";
 export default {
   name: "VideoWrapper",
   props: {
@@ -71,9 +100,7 @@ export default {
   data() {
     return {
       playToggle: true,
-      muteToggle: false,
       sourceToggle: false,
-      changeToggle: false,
       currentData: 0,
       percent: 0,
       videoSource_m3u8: "http://localhost:3000/video/video.m3u8",
@@ -84,6 +111,15 @@ export default {
       tooltipStyle: {},
       mouseX: 0,
       tooltipHideTimeout: null,
+      isComponentsListVisible: false,
+      componentList: [
+        "item 1",
+        "item 2",
+        "item 3",
+        "item 4",
+        "item 5",
+        "item 6",
+      ],
     };
   },
   computed: {
@@ -92,6 +128,23 @@ export default {
       let color1 = "#FF0000"; // color for the completed part
       let color2 = "#D3D3D3"; // color for the uncompleted part
       return `background: linear-gradient(90deg, ${color1} ${progress}%, ${color2} ${progress}%);`;
+    },
+    ...mapGetters(["getComponents", "getUnactivateComponents"]),
+    components: {
+      get() {
+        return this.getComponents;
+      },
+      set(value) {
+        this.updateComponents(value);
+      },
+    },
+    unactivate_components: {
+      get() {
+        return this.getUnactivateComponents;
+      },
+      set(value) {
+        this.updateUnactivateComponents(value);
+      },
     },
   },
   watch: {
@@ -103,6 +156,53 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(["updateComponents", "updateUnactivateComponents"]),
+    toggleComponent(itemTitle) {
+      let found = false;
+
+      // Search for the item in active components
+      for (let component of this.components) {
+        const index = component.items.findIndex(
+          item => item.title === itemTitle,
+        );
+        if (index !== -1) {
+          const [item] = component.items.splice(index, 1);
+          this.unactivate_components.push(item);
+          found = true;
+          break;
+        }
+      }
+
+      // If not found in active components, search in inactive components
+      if (!found) {
+        const index = this.unactivate_components.findIndex(
+          item => item.title === itemTitle,
+        );
+        if (index !== -1) {
+          const [item] = this.unactivate_components.splice(index, 1);
+
+          // Move to the items in items with index 1 or 2
+          const targetComponent = this.components.find(
+            component => component.items.length < 3,
+          );
+
+          if (targetComponent) {
+            targetComponent.items.push(item);
+          }
+        }
+      }
+
+      this.updateComponents(this.components);
+      this.updateUnactivateComponents(this.unactivate_components);
+    },
+    toggleManage(icon) {
+      this.$store.commit("setToggleList", icon);
+      console.log(this.$store.getters.getToggleList);
+    },
+    toggleComponentsList() {
+      this.isComponentsListVisible = !this.isComponentsListVisible;
+      console.log(this.isComponentsListVisible);
+    },
     seekTime() {
       const video = this.$store.getters.getCurrentVideo;
       const seekto = video.duration * (this.percent / 100);
@@ -126,7 +226,8 @@ export default {
       if (hours < 10) {
         hours = "0" + hours;
       }
-      this.mouseX = event.clientX - event.target.getBoundingClientRect().left + 10;
+      this.mouseX =
+        event.clientX - event.target.getBoundingClientRect().left + 10;
       this.tooltipTime = `${hours}:${minutes}:${seconds}`;
       this.tooltipStyle = {
         left: `${event.pageX}px`,
@@ -247,6 +348,32 @@ div {
   font-size: 30px;
   font-weight: 100;
   color: white;
+}
+
+.components_control {
+  cursor: pointer;
+  position: absolute;
+  left: 1rem;
+  top: 2rem;
+  width: 10rem;
+  height: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.components_list {
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 2rem;
+  position: absolute;
+  left: 2.5rem;
+}
+
+.components_list.show {
+  display: flex;
 }
 
 /* 승률 모달 */
@@ -413,17 +540,15 @@ div {
   align-items: flex-end;
 }
 .video-tools__column {
-  padding-left: 1rem;
   position: absolute;
-  left: calc(50% - 10rem);
-  width: 10rem;
+  left: calc(50% - 8rem);
+  width: 16rem;
   height: 2rem;
   display: flex;
   align-items: center;
   justify-content: space-around;
   z-index: 9999;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-radius: 1rem;
   background: rgba(0, 0, 0, 0.3);
 }
 /* .video-tools__column:hover {
@@ -522,5 +647,9 @@ div {
 .icon-large2 {
   width: 2rem;
   height: 2rem;
+}
+.white {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
+    contrast(103%);
 }
 </style>

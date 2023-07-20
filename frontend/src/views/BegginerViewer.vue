@@ -4,18 +4,6 @@
     <div class="contents-container">
       <div class="view-mode">
         <img
-          v-if="infoToggle"
-          class="view-mode__info_off"
-          src="@/assets/showinfo.png"
-          @click="infoToggle = !infoToggle"
-        />
-        <img
-          v-if="!infoToggle"
-          class="view-mode__info_on"
-          src="@/assets/showinfo.png"
-          @click="infoToggle = !infoToggle"
-        />
-        <img
           v-if="chatToggle"
           class="view-mode__chat_off"
           src="@/assets/showchat.png"

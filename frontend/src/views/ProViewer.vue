@@ -1,44 +1,32 @@
 <template>
   <div id="layout">
     <img class="background-image" src="@/assets/background.png" />
-    <draggable class="contents-container" v-model="rows">
-      <div class="view-mode">
-        <img
-          v-if="infoToggle"
-          class="view-mode__info_off"
-          src="@/assets/showinfo.png"
-          @click="infoToggle = !infoToggle"
-        />
-        <img
-          v-if="!infoToggle"
-          class="view-mode__info_on"
-          src="@/assets/showinfo.png"
-          @click="infoToggle = !infoToggle"
-        />
-        <img
-          v-if="chatToggle"
-          class="view-mode__chat_off"
-          src="@/assets/showchat.png"
-          @click="chatToggle = !chatToggle"
-        />
-        <img
-          v-else
-          class="view-mode__chat_on"
-          src="@/assets/showchat.png"
-          @click="chatToggle = !chatToggle"
-        />
-      </div>
+    <draggable class="contents-container" v-model="components">
       <Video ref="videoRef"></Video>
-      <div class="info-container" v-bind:class="{ hide__bottom: infoToggle }">
+      <div
+        class="info-container"
+        v-bind:class="{
+          hide__bottom: this.$store.getters.getToggleList['info'],
+        }"
+      >
         <TeamInfo></TeamInfo>
       </div>
-      <div class="drag-area" v-for="row in rows" :key="row.index">
+      <div
+        class="drag-area"
+        v-if="isComponentVisible"
+        v-for="component in components"
+        :key="component.index"
+      >
         <draggable
           class="drag-component"
-          :list="row.items"
-          :group="{ name: 'row' }"
+          :list="component.items"
+          :group="{name: 'component'}"
         >
-          <div class="drag-content" v-for="item in row.items" :key="item.title">
+          <div
+            class="drag-content"
+            v-for="item in component.items"
+            :key="item.title"
+          >
             <div>{{ item.title }}</div>
           </div>
         </draggable>
@@ -51,6 +39,7 @@
 import Video from "@/components/Video.vue";
 import TeamInfo from "@/components/TeamInfo.vue";
 import draggable from "vuedraggable";
+import {mapGetters} from "vuex";
 
 export default {
   components: {
@@ -61,53 +50,74 @@ export default {
   data() {
     return {
       targetToggle: true,
-      infoToggle: true,
-      detailToggle: false,
       detailIndex: 0,
       teamHome: true,
       home_teamName: "",
       away_teamName: "",
       home_lineup: [],
       away_lineup: [],
-      rows: [
-        {
-          index: 1,
-          items: [
-            {
-              title: "item 1",
-            },
-            {
-              title: "item 4",
-            },
-            {
-              title: "item 5",
-            },
-          ],
-        },
-        {
-          index: 2,
-          items: [
-            {
-              title: "item 2",
-            },
-            {
-              title: "item 3",
-            },
-            {
-              title: "item 6",
-            },
-          ],
-        },
-      ],
+      // components: [
+      //   {
+      //     index: 1,
+      //     items: [
+      //       {
+      //         title: "item 1",
+      //       },
+      //       {
+      //         title: "item 4",
+      //       },
+      //       {
+      //         title: "item 5",
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     index: 2,
+      //     items: [
+      //       {
+      //         title: "item 2",
+      //       },
+      //       {
+      //         title: "item 3",
+      //       },
+      //       {
+      //         title: "item 6",
+      //       },
+      //     ],
+      //   },
+      // ],
+      // unactive_components: [],
     };
   },
   async mounted() {
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", (ev) => {
+    video.addEventListener("ended", ev => {
       // console.log(ev);
       this.playToggle = false;
     });
+  },
+  computed: {
+    isComponentVisible() {
+      return this.$store.getters.getToggleList["components"];
+    },
+    ...mapGetters(["getComponents", "getUnactivateComponents"]),
+    components: {
+      get() {
+        return this.getComponents;
+      },
+      set(value) {
+        this.updateComponents(value);
+      },
+    },
+    unactivate_components: {
+      get() {
+        return this.getUnactivateComponents;
+      },
+      set(value) {
+        this.updateUnactivateComponents(value);
+      },
+    },
   },
   methods: {
     targetChange(target) {
@@ -240,31 +250,6 @@ div {
 /* .view-mode:hover {
   background: rgba(0, 0, 0, 0.3);
 } */
-.view-mode__info_off,
-.view-mode__chat_off {
-  width: 1.8rem;
-  height: 1.8rem;
-  border-radius: 10%;
-  opacity: 0.5;
-  cursor: pointer;
-}
-.view-mode__info_off:hover,
-.view-mode__chat_off:hover {
-  opacity: 1;
-}
-.view-mode__info_on,
-.view-mode__chat_on {
-  width: 1.8rem;
-  height: 1.8rem;
-  border-radius: 10%;
-  opacity: 0.8;
-  /* background: rgba(255, 255, 255, 0.124); */
-  cursor: pointer;
-}
-.view-mode__info_on:hover,
-.view-mode__chat_on:hover {
-  opacity: 1;
-}
 .info-container {
   position: absolute;
   bottom: 4rem;
