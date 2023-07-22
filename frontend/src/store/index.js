@@ -22,10 +22,10 @@ export default new Vuex.Store({
         index: 1,
         items: [
           {
-            title: "GroupStats",
+            title: "PlayerStats",
           },
           {
-            title: "item 4",
+            title: "MatchStats",
           },
           {
             title: "item 5",

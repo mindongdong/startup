@@ -7,11 +7,11 @@ from app.schemas.matches import Events, Player
 
 router = APIRouter()
 # match_id = 2057988
-match_events = pd.read_csv('./matches/KOR.GER/match_events_korean.csv')
+match_events = pd.read_csv('./matches/KOR.GER/match_events_korean_final.csv')
 phase_records = pd.read_csv('./matches/KOR.GER/phase_records_korean_sorted.csv')
 all_player_stats = pd.read_csv('./matches/KOR.GER/matches_player_stats_korean.csv')
 seq_records = pd.read_csv('./matches/KOR.GER/seq_records.csv')
-match_shots = pd.read_csv('./matches/KOR.GER/match_shots_korean.csv')
+match_shots = pd.read_csv('./matches/KOR.GER/match_shots_korean_final.csv')
 
 # 이벤트 데이터를 시간에 따라 필터링
 def filter_by_time(match_events, start_time=None, end_time=None):
@@ -20,12 +20,17 @@ def filter_by_time(match_events, start_time=None, end_time=None):
         start_time = match_events['time'].min()
     if end_time is None:
         end_time = match_events['time'].max()
-    
-    # Convert time to minutes
-    match_events['time'] = match_events['time'] / 60
+
+    # Determine the period and adjust the times if necessary
+    if start_time >= 2882 or end_time >= 2882:
+        period = '2H'
+        start_time -= 2882
+        end_time -= 2882
+    else:
+        period = '1H'
 
     # Filter the events
-    filtered_events = match_events[(match_events['time'] >= start_time) & (match_events['time'] <= end_time)]
+    filtered_events = match_events[(match_events['period'] == period) & (match_events['time'] >= start_time) & (match_events['time'] <= end_time)]
     
     return filtered_events
 
@@ -106,15 +111,15 @@ def filter_events(Evnets: Events):
 
 # 경기 통계 데이터(골, 도움 등 각종 스텟들)를 시간대에 따라 반환
 @router.get("/stats/{current_time}")
-def generate_player_stats(current_time: Optional[int] = None):
+def generate_player_stats(current_time: float):
     # Data loading
-    filtered_events = filter_by_time(match_events, start_time=0, end_time=current_time * 60)
-    filtered_events = filtered_events[filtered_events['period'] != 'P']
+    filtered_events = filter_by_time(match_events, end_time=current_time)
 
     # Goal stats
-    goal_records = filtered_events[filtered_events['tags'].apply(lambda x: 'Goal' in x)]
+    goal_records = filtered_events[(filtered_events['tags'].apply(lambda x: 'Goal' in x)) & (filtered_events['event_type'] == 'Shot')]
     goals = goal_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
     goals.name = 'goals'
+    # print(goal_records)
 
     own_goal_records = filtered_events[filtered_events['tags'].apply(lambda x: 'Own goal' in x)]
     own_goals = own_goal_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
@@ -250,15 +255,63 @@ def generate_player_stats(current_time: Optional[int] = None):
 
     # Concatenation
     player_stats = pd.concat([goal_stats, shot_stats, foul_stats, pass_stats], axis=1, sort=True).fillna(0)
+    
+    stat_event_types = {
+        'key_passes': ('Pass', 'Smart pass', 'Accurate'),
+        'interceptions': ('Duel', ['Ground defending duel', 'Ground loose ball duel'], 'Interception'),
+        'tackle': ('Duel', ['Ground defending duel', 'Ground attacking duel'], None),
+        'tackle_accuracy': ('Duel', ['Ground defending duel', 'Ground attacking duel'], 'Accurate'),
+        'clearances': ('Others on the ball', 'Clearance', None)
+    }
+
+    # Calculate each statistic for each player
+    for stat, (event_type, sub_event_types, tag) in stat_event_types.items():
+        if isinstance(sub_event_types, list):
+            player_stats[stat] = filtered_events[(filtered_events['event_type'] == event_type) & (filtered_events['sub_event_type'].isin(sub_event_types)) & (filtered_events['tags'].str.contains(tag) if tag else True)].groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+        else:
+            player_stats[stat] = filtered_events[(filtered_events['event_type'] == event_type) & (filtered_events['sub_event_type'] == sub_event_types) & (filtered_events['tags'].str.contains(tag) if tag else True)].groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+
+    # Calculate the number of tackles and successful tackles for each player
+    player_stats['tackle'] = filtered_events[(filtered_events['event_type'] == 'Duel') & (filtered_events['sub_event_type'].isin(['Ground defending duel', 'Ground attacking duel']))].groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+    player_stats['successful_tackles'] = filtered_events[(filtered_events['event_type'] == 'Duel') & (filtered_events['sub_event_type'].isin(['Ground defending duel', 'Ground attacking duel'])) & filtered_events['tags'].str.contains('Accurate')].groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+
+    # Calculate tackle accuracy as the probability of a successful tackle
+    player_stats['tackle_accuracy'] = player_stats['successful_tackles'] / player_stats['tackle']
+
+    # Re-calculate total saves and successful saves for each team (since there is only one goalkeeper in each team)
+    team_stats = pd.DataFrame()
+    team_stats['total_saves'] = filtered_events[filtered_events['event_type'] == 'Save attempt'].groupby('team_id')['event_id'].count()
+    team_stats['successful_saves'] = filtered_events[(filtered_events['event_type'] == 'Save attempt') & filtered_events['tags'].str.contains('Accurate')].groupby('team_id')['event_id'].count()
+
+    # Re-calculate total effective shots for each team
+    team_stats['effective_shots'] = filtered_events[filtered_events['event_type'] == 'Shot'].groupby('team_id')['event_id'].count()
+
+    # Re-calculate save rate for each team
+    team_stats['save_rate'] = team_stats['successful_saves'] / team_stats['effective_shots']
+
+    # Re-get the goalkeeper for each team
+    team_goalkeepers = filtered_events[filtered_events['event_type'] == 'Save attempt'].groupby('team_id')['player_name'].first()
+
+    # Re-add the goalkeeper statistics to the player statistics
+    for team, goalkeeper in team_goalkeepers.items():
+        if (team, goalkeeper) in player_stats.index:
+            for stat in ['total_saves', 'successful_saves', 'save_rate']:
+                player_stats.loc[(team, goalkeeper), stat] = team_stats.loc[team, stat]
+
+    
     for col in player_stats.columns:
         if col != 'pass_accuracy':
-            player_stats[col] = player_stats[col].astype(int)
+            player_stats[col] = player_stats[col].fillna(0).astype(int)
 
     player_stats = pd.merge(player_stats.reset_index(), playing_times)
+    
+    # print(player_stats.columns)
 
     cols = player_stats.columns.tolist()
     cols = cols[:4] + ['playing_time'] + cols[4:-2]
-    return player_stats[cols]
+
+    # print(player_stats[cols])
+    return player_stats[cols].to_dict(orient='records')
 
 # 대회 선수들 통계 합산 반환 -> TOP 10까지 반환 및 특정 선수 통계 반환
 @router.post("/group")

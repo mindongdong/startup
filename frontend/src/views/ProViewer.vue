@@ -18,7 +18,7 @@
         <draggable
           class="drag-component"
           :list="component.items"
-          :group="{name: 'component'}"
+          :group="{ name: 'component' }"
         >
           <div
             class="drag-content"
@@ -36,16 +36,18 @@
 <script>
 import Video from "@/components/Video.vue";
 import TeamInfo from "@/components/TeamInfo.vue";
-import GroupStats from "@/components/dragComponents/GroupStats.vue";
+import PlayerStats from "@/components/dragComponents/PlayerStats.vue";
+import MatchStats from "@/components/dragComponents/MatchStats.vue";
 import draggable from "vuedraggable";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Video,
     TeamInfo,
     draggable,
-    GroupStats,
+    PlayerStats,
+    MatchStats,
   },
   data() {
     return {
@@ -61,7 +63,7 @@ export default {
   async mounted() {
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });

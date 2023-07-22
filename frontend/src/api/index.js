@@ -17,7 +17,7 @@ function getMatchEvents(Events) {
 }
 
 function getMatchStats(current_time) {
-  return instance.get(`/routes/matches/stats${current_time}`);
+  return instance.get(`/routes/matches/stats/${current_time}`);
 }
 
 function getGroupStats(Player) {
