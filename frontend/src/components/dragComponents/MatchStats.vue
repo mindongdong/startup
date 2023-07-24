@@ -67,31 +67,36 @@ export default {
       recordDict: {
         득점: "goals",
         도움: "assists",
-        자책골: "own_goals",
         슛: "total_shots",
         "유효 슛": "shots_on_target",
         파울: "fouls",
-        오프사이드: "offsides",
-        "옐로 카드": "yellow_cards",
-        "레드 카드": "red_cards",
-        "패스 횟수": "total_passes",
+        패스: "total_passes",
+        "키 패스": "key_passes",
         "패스 성공률": "pass_accuracy",
+        태클: "tackle",
+        선방: "successful_saves",
       },
       timeInterval: null,
     };
   },
   computed: {
     chartData() {
+      let sortedData = [...this.filteredStats];
+
+      // Filter out the data with '0' x-axis value
+      sortedData = sortedData.filter((item) => item[this.selectedRecord] !== 0);
+
+      // Sort data in descending order
+      sortedData.sort(
+        (a, b) => b[this.selectedRecord] - a[this.selectedRecord]
+      );
+
       return {
-        labels: this.filteredStats.map(
-          (item) => item.player_name + " (" + item.team_name + ")"
-        ),
+        labels: sortedData.map((item) => item.player_name),
         datasets: [
           {
-            label:
-              this.selectedRecord.charAt(0).toUpperCase() +
-              this.selectedRecord.slice(1),
-            data: this.filteredStats.map((item) => item[this.selectedRecord]),
+            label: this.selectedRecord,
+            data: sortedData.map((item) => item[this.selectedRecord]),
             backgroundColor: "#f87979",
           },
         ],
@@ -99,20 +104,38 @@ export default {
     },
     chartOptions() {
       return {
+        indexAxis: "y",
         responsive: true,
         scales: {
           x: {
-            title: {
-              display: true,
-              text: "Player",
+            ticks: {
+              color: "white", // Set color to white
+              // callback: (value, index) => {
+              //   // Return label only if corresponding y-axis value is not 0
+              //   if (this.chartData.datasets[0].data[index] !== 0) {
+              //     return this.chartData.labels[index];
+              //   } else {
+              //     return null;
+              //   }
+              // },
             },
           },
           y: {
-            title: {
-              display: true,
-              text: this.selectedRecord,
+            ticks: {
+              color: "white", // Set color to white
+              font: {
+                size: 10,
+              },
             },
           },
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: "white", // Set color to white
+            },
+          },
+          tooltip: {},
         },
       };
     },
@@ -120,7 +143,7 @@ export default {
       return {
         width: "100%",
         height: "100%",
-        color: "white",
+        overflow: "scroll",
       };
     },
   },
@@ -172,7 +195,7 @@ export default {
           [this.selectedRecord]: item[this.selectedRecord],
         }));
       console.log(this.filteredStats);
-    }, 2000);
+    }, 1000);
   },
   beforeDestroy() {
     clearInterval(this.timeInterval);
@@ -232,8 +255,7 @@ export default {
 }
 
 .chart {
-  width: 100%;
-  height: 100%;
-  padding: 10px;
+  width: 90%;
+  height: 70%;
 }
 </style>
