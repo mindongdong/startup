@@ -129,7 +129,10 @@ def generate_player_stats(current_time: float):
 
     # Goal stats
     try:
-        goal_records = filtered_events[(filtered_events['tags'].apply(lambda x: 'Goal' in x.split(','))) & (filtered_events['event_type'] == 'Shot')]
+        goal_records = filtered_events[
+            (filtered_events['event_type'] == 'Shot') & 
+            (filtered_events['tags'].apply(lambda x: x.count('Goal') == 2))]
+
         if not goal_records.empty:
             goals = goal_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
             goals.name = 'goals'
@@ -394,6 +397,16 @@ def generate_player_stats(current_time: float):
         else:
             player_stats[stat] = filtered_events[(filtered_events['event_type'] == event_type) & (filtered_events['sub_event_type'] == sub_event_types) & (filtered_events['tags'].str.contains(tag) if tag else True)].groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
 
+    # Calculate the number of key passes for each player
+    key_pass_events = filtered_events[(filtered_events['event_type'] == 'Pass') & (filtered_events['sub_event_type'] == 'Smart pass') & (filtered_events['tags'].apply(lambda x: 'Accurate' in x))]
+    if not key_pass_events.empty:
+        player_stats['key_passes'] = key_pass_events.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+
+    # Calculate the number of interceptions for each player
+    interception_events = filtered_events[(filtered_events['tags'].apply(lambda x: 'Interception' in x))]
+    if not interception_events.empty:
+        player_stats['interceptions'] = interception_events.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+
     # Calculate the number of tackles and successful tackles for each player
     tackle_events = filtered_events[(filtered_events['event_type'] == 'Duel') & (filtered_events['sub_event_type'].isin(['Ground defending duel', 'Ground attacking duel']))]
     if not tackle_events.empty:
@@ -405,7 +418,8 @@ def generate_player_stats(current_time: float):
 
     # Calculate tackle accuracy as the probability of a successful tackle
     if 'tackle' in player_stats.columns and 'successful_tackles' in player_stats.columns:
-        player_stats['tackle_accuracy'] = player_stats['successful_tackles'] / player_stats['tackle']
+        player_stats['tackle_accuracy'] = (player_stats['successful_tackles'] / player_stats['tackle']).round(2)
+        player_stats['tackle_accuracy'] = player_stats['tackle_accuracy'].fillna(0)
 
     # Re-calculate total saves and successful saves for each team (since there is only one goalkeeper in each team)
     team_stats = pd.DataFrame()
@@ -417,14 +431,10 @@ def generate_player_stats(current_time: float):
     if not successful_save_attempt_events.empty:
         team_stats['successful_saves'] = successful_save_attempt_events.groupby('team_id')['event_id'].count()
 
-    # Re-calculate total effective shots for each team
-    shot_events = filtered_events[filtered_events['event_type'] == 'Shot']
-    if not shot_events.empty:
-        team_stats['effective_shots'] = shot_events.groupby('team_id')['event_id'].count()
-
     # Re-calculate save rate for each team
     if 'successful_saves' in team_stats.columns and 'effective_shots' in team_stats.columns:
-        team_stats['save_rate'] = team_stats['successful_saves'] / team_stats['effective_shots']
+        team_stats['save_rate'] = (team_stats['successful_saves'] / team_stats['total_saves']).round(2)
+        team_stats['save_rate'] = team_stats['save_rate'].fillna(0)
 
     # Re-get the goalkeeper for each team
     if not save_attempt_events.empty:
@@ -447,29 +457,21 @@ def generate_player_stats(current_time: float):
             # Check if there are any matching rows
             if mask.any():
                 for stat in ['total_saves', 'successful_saves', 'save_rate']:
-                    print(team_stats.columns)
                     if stat in team_stats.columns:
                         # Update stats for matching rows
                         player_stats.loc[mask, stat] = team_stats.loc[team, stat]
-
-
     
     for col in player_stats.columns:
-        if col != 'pass_accuracy':
+        if col != 'pass_accuracy' and col != 'tackle_accuracy' and col != 'save_rate':
             player_stats[col] = player_stats[col].fillna(0).astype(int)
-
-    # print("player_stats columns:", player_stats)
-    # print("playing_times columns:", playing_times)
 
     player_stats.reset_index(inplace=True)
     player_stats.rename(columns={"level_0": "team_id", "level_1": "team_name", "level_2": "player_id", "level_3": "player_name"}, inplace=True)
 
     player_stats = pd.merge(player_stats, playing_times, left_on='player_id', right_on='player_id')
 
-    cols = player_stats.columns.tolist()
-    cols = cols[:4] + ['playing_time'] + cols[4:-2]
-
-    print(player_stats.columns)
+    # cols = player_stats.columns.tolist()
+    # cols = cols[:4] + ['playing_time'] + cols[4:-1]
 
     return player_stats.to_dict(orient='records')
 
