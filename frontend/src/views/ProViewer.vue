@@ -5,9 +5,7 @@
       <Video ref="videoRef"></Video>
       <div
         class="info-container"
-        v-bind:class="{
-          hide__bottom: this.$store.getters.getToggleList['info'],
-        }"
+        v-if="this.$store.getters.getToggleList['info']"
       >
         <TeamInfo></TeamInfo>
       </div>
@@ -20,14 +18,14 @@
         <draggable
           class="drag-component"
           :list="component.items"
-          :group="{name: 'component'}"
+          :group="{ name: 'component' }"
         >
           <div
             class="drag-content"
             v-for="item in component.items"
             :key="item.title"
           >
-            <div>{{ item.title }}</div>
+            <component :is="resolveComponent(item.title)"></component>
           </div>
         </draggable>
       </div>
@@ -38,14 +36,18 @@
 <script>
 import Video from "@/components/Video.vue";
 import TeamInfo from "@/components/TeamInfo.vue";
+import PlayerStats from "@/components/dragComponents/PlayerStats.vue";
+import MatchStats from "@/components/dragComponents/MatchStats.vue";
 import draggable from "vuedraggable";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Video,
     TeamInfo,
     draggable,
+    PlayerStats,
+    MatchStats,
   },
   data() {
     return {
@@ -56,43 +58,12 @@ export default {
       away_teamName: "",
       home_lineup: [],
       away_lineup: [],
-      // components: [
-      //   {
-      //     index: 1,
-      //     items: [
-      //       {
-      //         title: "item 1",
-      //       },
-      //       {
-      //         title: "item 4",
-      //       },
-      //       {
-      //         title: "item 5",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     index: 2,
-      //     items: [
-      //       {
-      //         title: "item 2",
-      //       },
-      //       {
-      //         title: "item 3",
-      //       },
-      //       {
-      //         title: "item 6",
-      //       },
-      //     ],
-      //   },
-      // ],
-      // unactive_components: [],
     };
   },
   async mounted() {
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });
@@ -120,6 +91,13 @@ export default {
     },
   },
   methods: {
+    resolveComponent(title) {
+      if (this.$options.components[title]) {
+        console.log(title);
+        return title;
+      }
+      return "div"; // Fallback to 'div' if the component does not exist
+    },
     targetChange(target) {
       if (target) {
         this.targetToggle = false;

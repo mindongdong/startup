@@ -10,7 +10,7 @@
 import Stream from "@/components/Stream.vue";
 import Analyze from "@/components/Analyze.vue";
 import Wrapper from "@/components/VideoWrapper.vue";
-import { getTrackingInfo } from "@/api/index";
+import {getTrackingInfo} from "@/api/index";
 
 export default {
   name: "Video",
