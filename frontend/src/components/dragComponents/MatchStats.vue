@@ -76,6 +76,7 @@ export default {
         인터셉트: "interceptions",
         태클: "tackle",
         "태클 성공률": "tackle_accuracy",
+        클리어: "clearances",
         선방: "successful_saves",
       },
       timeInterval: null,
@@ -145,13 +146,12 @@ export default {
       return {
         width: "100%",
         height: "100%",
-        overflow: "scroll",
       };
     },
   },
   methods: {
     async fetchMatchStats() {
-      console.log(this.selectedTeam, this.selectedRecord);
+      // console.log(this.selectedTeam, this.selectedRecord);
       if (this.selectedRecord) {
         const response = await getMatchStats(
           this.$store.getters.getCurrentTime
@@ -168,7 +168,7 @@ export default {
             team_name: item.team_name,
             [this.selectedRecord]: item[this.selectedRecord],
           }));
-        console.log(this.filteredStats);
+        // console.log(this.filteredStats);
       }
     },
   },
@@ -177,12 +177,12 @@ export default {
   },
   async mounted() {
     const lineup = await getMatchLineup(this.$store.getters.getCurrentTime);
+    console.log(lineup.data);
     const team_list = Object.keys(lineup.data);
     this.home_teamName = team_list[0];
     this.away_teamName = team_list[1];
     this.home_lineup = lineup.data[team_list[0]];
     this.away_lineup = lineup.data[team_list[1]];
-    this.player_list = this.home_lineup.concat(this.away_lineup);
     this.timeInterval = setInterval(async () => {
       const response = await getMatchStats(this.$store.getters.getCurrentTime);
       this.matchStats = response.data;
@@ -196,7 +196,6 @@ export default {
           team_name: item.team_name,
           [this.selectedRecord]: item[this.selectedRecord],
         }));
-      console.log(this.filteredStats);
     }, 1000);
   },
   beforeDestroy() {
@@ -257,7 +256,7 @@ export default {
 }
 
 .chart {
-  width: 90%;
-  height: 70%;
+  width: 100%;
+  height: 80%;
 }
 </style>

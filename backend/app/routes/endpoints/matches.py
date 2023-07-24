@@ -9,7 +9,8 @@ router = APIRouter()
 # match_id = 2057988
 match_events = pd.read_csv('./matches/KOR.GER/match_events_korean_final.csv')
 phase_records = pd.read_csv('./matches/KOR.GER/phase_records_korean_sorted.csv')
-all_player_stats = pd.read_csv('./matches/KOR.GER/matches_player_stats_korean.csv')
+all_player_stats = pd.read_csv('./matches/KOR.GER/all_player_stats_grouped.csv')
+per_90min_stats = pd.read_csv('./matches/KOR.GER/player_stats_per_90min.csv')
 seq_records = pd.read_csv('./matches/KOR.GER/seq_records.csv')
 match_shots = pd.read_csv('./matches/KOR.GER/match_shots_korean_final.csv')
 
@@ -77,6 +78,50 @@ def find_sequence(index: int):
             return column
     return "Index not found in any column"
 
+def calculate_stats(player_name):
+    # Define the stats and their related columns
+    stats_columns = {
+        '공격 포인트': ['goals_per_90min', 'assists_per_90min'],
+        '슈팅': ['total_shots_per_90min', 'shots_on_target_per_90min'],
+        '패스': ['total_passes_per_90min', 'pass_accuracy'],
+        '수비': ['interceptions_per_90min', 'tackle_per_90min', 'clearances_per_90min'],
+        '골키퍼 수비': ['total_saves_per_90min','save_rate']
+    }
+
+    goalkeepers = ['조현우', 'M. 노이어']
+
+    # Calculate the percentile ranks
+    # 랭킹을 매기지만 all_player_stats에서의 수치가 0일 경우 0으로 설정, 동률일 경우 playing_time이 높은 선수를 상위로 설정
+    cols = per_90min_stats.columns[3:]
+    player_stats_percentiles = per_90min_stats[cols].rank(pct=True, method='min', na_option='bottom')
+    player_stats_percentiles = player_stats_percentiles.fillna(0)
+
+    print(player_stats_percentiles)
+
+    # concat the player names
+    player_stats_percentiles['player_name'] = per_90min_stats['player_name']
+
+    # 골키퍼를 제외한 다른 선수들의 골키퍼 수비 수치를 0으로 설정
+    player_stats_percentiles.loc[~player_stats_percentiles['player_name'].isin(goalkeepers), ['total_saves_per_90min', 'save_rate']] = 0
+
+    # 골키퍼의 스텟 중 골키퍼 수비와 패스를 제외한 나머지 스텟을 0으로 설정
+    player_stats_percentiles.loc[player_stats_percentiles['player_name'].isin(goalkeepers), ['goals_per_90min', 'assists_per_90min', 'total_shots_per_90min', 'shots_on_target_per_90min']] = 0
+
+    # Get the player's data
+    player_data = player_stats_percentiles[player_stats_percentiles['player_name'] == player_name]
+
+    # Check if the player data is empty
+    if player_data.empty:
+        return f"No data found for player {player_name}"
+    
+    # Calculate the average percentile rank for each stat
+    stats = {}
+    for stat, columns in stats_columns.items():
+        stats[stat] = player_data[columns].mean(axis=1).values[0]
+
+    return stats
+
+
 # 현재 시간에 출전 중인 선수들의 목록을 반환
 @router.get("/lineup/{current_time}")
 def get_teams(current_time: float = None):
@@ -84,8 +129,15 @@ def get_teams(current_time: float = None):
     if current_time is None:
         return {}
     
+     # Determine the period and adjust the times if necessary
+    if current_time >= 2882:
+        period = '2H'
+        current_time -= 2882
+    else:
+        period = '1H'
+    
     # Filter rows where current_time is between start_time and end_time
-    filtered_data = phase_records[(phase_records['start_time'] <= current_time) & (phase_records['end_time'] > current_time)]
+    filtered_data = phase_records[(phase_records['period'] == period) & (phase_records['start_time'] <= current_time) & (phase_records['end_time'] > current_time)]
     
     # Initialize an empty dictionary
     teams = {}
@@ -96,6 +148,8 @@ def get_teams(current_time: float = None):
         player_names = ast.literal_eval(row['player_names'])
         # Add to dictionary
         teams[row['team_name']] = player_names
+
+    print(teams)
         
     return teams
 
@@ -503,9 +557,10 @@ def read_top10_players(Player: Player):
 @router.get("/player/{player_name}")
 def read_player(player_name: str):
     # Filter the data by player_name
-    data = all_player_stats[all_player_stats['player_name'] == player_name]
+    radar_data = calculate_stats(player_name)
+    print(radar_data)
 
-    return data.to_dict()
+    return radar_data
 
 # 공격 시퀀스 데이터 반환
 @router.get("/sequence/{current_time}")

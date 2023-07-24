@@ -27,9 +27,6 @@ export default new Vuex.Store({
           {
             title: "MatchStats",
           },
-          {
-            title: "item 5",
-          },
         ],
       },
       {
@@ -40,9 +37,6 @@ export default new Vuex.Store({
           },
           {
             title: "item 3",
-          },
-          {
-            title: "item 6",
           },
         ],
       },

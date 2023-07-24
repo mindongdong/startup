@@ -1,43 +1,72 @@
 <template>
   <div class="layout">
+    <h1 class="title">선수 기록</h1>
     <header class="option">
-      <h1 class="option__description">선수</h1>
+      <h1 class="option__description">선수 1</h1>
       <div class="dropdown">
-        <select v-model="selectedPlayer">
-          <option disabled value="">Select</option>
+        <select v-model="selectedPlayer_1" @change="fetchPlayerStats">
+          <option disabled value="">select</option>
           <option disabled value="">{{ home_teamName }}</option>
-          <option v-for="player in home_lineup" :key="player">
+          <option v-for="player in home_lineup" :key="player" :value="player">
             {{ player }}
           </option>
           <option disabled value="">{{ away_teamName }}</option>
-          <option v-for="player in away_lineup" :key="player">
+          <option v-for="player in away_lineup" :key="player" :value="player">
             {{ player }}
           </option>
         </select>
       </div>
-      <h1 class="option__description">기록</h1>
+      <h1 class="option__description">선수 2</h1>
       <div class="dropdown">
-        <select v-model="selectedRecord">
-          <option disabled value="">Select</option>
-          <option v-for="record in Object.keys(this.recordDict)" :key="record">
-            {{ record }}
+        <select v-model="selectedPlayer_2" @change="fetchPlayerStats">
+          <option disabled value="">select</option>
+          <option disabled value="">{{ home_teamName }}</option>
+          <option v-for="player in home_lineup" :key="player" :value="player">
+            {{ player }}
+          </option>
+          <option disabled value="">{{ away_teamName }}</option>
+          <option v-for="player in away_lineup" :key="player" :value="player">
+            {{ player }}
           </option>
         </select>
       </div>
     </header>
-    <main class="rankTable"></main>
+    <div class="chart">
+      <Radar :data="chartData" :options="chartOptions" :style="chartStyle" />
+    </div>
   </div>
 </template>
 
 <script>
-import { getMatchLineup, getGroupStats } from "@/api/index.js";
+import { getMatchLineup, getPlayerStats } from "@/api/index.js";
+import { Radar } from "vue-chartjs";
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend
+);
 export default {
-  name: "PlayerStats",
+  name: "MatchStats",
+  components: { Radar },
   data() {
     return {
-      selectedPlayer: "",
-      selectedRecord: "",
-      groupStats: [],
+      selectedPlayer_1: "",
+      selectedPlayer_2: "",
+      playerStats_1: null,
+      playerStats_2: null,
       home_teamName: "",
       away_teamName: "",
       home_lineup: [],
@@ -45,23 +74,101 @@ export default {
       recordDict: {
         득점: "goals",
         도움: "assists",
-        자책골: "own_goals",
         슛: "total_shots",
         "유효 슛": "shots_on_target",
         파울: "fouls",
-        오프사이드: "offsides",
-        "옐로 카드": "yellow_cards",
-        "레드 카드": "red_cards",
-        "패스 횟수": "total_passes",
+        패스: "total_passes",
+        "키 패스": "key_passes",
         "패스 성공률": "pass_accuracy",
+        인터셉트: "interceptions",
+        태클: "tackle",
+        "태클 성공률": "tackle_accuracy",
+        선방: "successful_saves",
       },
+      timeInterval: null,
     };
   },
-  methods: {
-    async getGroupStats() {
-      const response = await getGroupStats();
-      this.groupStats = response.data;
+  computed: {
+    chartData() {
+      return {
+        labels: ["공격 포인트", "슈팅", "패스", "수비", "골키퍼 수비"],
+        datasets: [
+          {
+            label: this.selectedPlayer_1 ? this.selectedPlayer_1 : "",
+            fill: true,
+            backgroundColor: "rgba(179,181,198,0.2)",
+            borderColor: "rgba(179,181,198,1)",
+            pointBackgroundColor: "rgba(179,181,198,1)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(179,181,198,1)",
+            data: this.playerStats_1
+              ? Object.values(this.playerStats_1).map((value) => value * 100)
+              : [0, 0, 0, 0, 0],
+          },
+          {
+            label: this.selectedPlayer_2 ? this.selectedPlayer_2 : "",
+            fill: true,
+            backgroundColor: "rgba(255,99,132,0.2)",
+            borderColor: "rgba(255,99,132,1)",
+            pointBackgroundColor: "rgba(255,99,132,1)",
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: "rgba(255,99,132,1)",
+            data: this.playerStats_2
+              ? Object.values(this.playerStats_2).map((value) => value * 100)
+              : [0, 0, 0, 0, 0],
+          },
+        ],
+      };
     },
+    chartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: "white", // Set color to white
+            },
+          },
+        },
+        scales: {
+          r: {
+            pointLabels: {
+              color: "white",
+            },
+            ticks: {
+              suggestedMin: 0, // Set min value
+              suggestedMax: 100, // Set max value
+            },
+          },
+        },
+      };
+    },
+    chartStyle() {
+      return {
+        width: "100%",
+        height: "100%",
+      };
+    },
+  },
+  methods: {
+    async fetchPlayerStats() {
+      if (this.selectedPlayer_1 !== "") {
+        const response = await getPlayerStats(this.selectedPlayer_1);
+        this.playerStats_1 = response.data;
+        console.log(this.playerStats_1);
+      }
+      if (this.selectedPlayer_2 !== "") {
+        const response = await getPlayerStats(this.selectedPlayer_2);
+        this.playerStats_2 = response.data;
+        console.log(this.playerStats_2);
+      }
+    },
+  },
+  created() {
+    this.selectedRecord = Object.values(this.recordDict)[0];
   },
   async mounted() {
     const lineup = await getMatchLineup(this.$store.getters.getCurrentTime);
@@ -72,6 +179,9 @@ export default {
     this.home_lineup = lineup.data[team_list[0]];
     this.away_lineup = lineup.data[team_list[1]];
   },
+  beforeDestroy() {
+    clearInterval(this.timeInterval);
+  },
 };
 </script>
 
@@ -80,34 +190,39 @@ export default {
   width: 100%;
   height: 100%;
 }
+.title {
+  color: white;
+  font-size: 1rem;
+}
 .option {
   background-color: black;
-  padding: 20px;
+  padding: 10px;
   display: flex;
   align-items: center;
 }
 
 .option__description {
   color: white;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-right: 0.5rem;
 }
 
 .dropdown {
   position: relative;
-  display: inline-block;
+  display: flex;
+  align-items: center;
   margin-right: 20px;
 }
 
 .dropdown select {
   background-color: transparent;
   color: white;
-  padding: 10px;
+  padding: 4px;
   border: 1px solid white;
   border-radius: 5px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   appearance: none; /* this will remove the default arrow in some browsers */
-  width: 100px;
+  width: 80px;
   outline: none;
 }
 
@@ -117,7 +232,12 @@ export default {
   font-size: 10px;
   position: absolute;
   right: 10px;
-  top: 15px;
+  top: 5px;
   color: white;
+}
+
+.chart {
+  width: 100%;
+  height: 85%;
 }
 </style>
