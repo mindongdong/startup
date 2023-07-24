@@ -24,8 +24,8 @@ function getGroupStats(Player) {
   return instance.post("/routes/matches/group", Player);
 }
 
-function getPlayertStats(player_name) {
-  return instance.get(`/routes/matches/player${player_name}`);
+function getPlayerStats(player_name) {
+  return instance.get(`/routes/matches/player/${player_name}`);
 }
 
 function getAttackSequence(current_time) {
@@ -46,7 +46,7 @@ export {
   getMatchEvents,
   getMatchStats,
   getGroupStats,
-  getPlayertStats,
+  getPlayerStats,
   getAttackSequence,
   getMatchShots,
   getMatchSetPieces,

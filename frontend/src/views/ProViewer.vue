@@ -1,7 +1,7 @@
 <template>
   <div id="layout">
     <img class="background-image" src="@/assets/background.png" />
-    <draggable class="contents-container" v-model="components">
+    <div class="contents-container" v-model="components">
       <Video ref="videoRef"></Video>
       <div
         class="info-container"
@@ -29,7 +29,7 @@
           </div>
         </draggable>
       </div>
-    </draggable>
+    </div>
   </div>
 </template>
 
@@ -244,10 +244,10 @@ div {
 }
 .drag-area {
   position: absolute;
-  top: 8rem;
+  top: 16rem;
   left: 2rem;
   width: calc((100% - 74rem) / 2);
-  height: calc(100% - 12rem);
+  height: calc(100% - 20rem);
   cursor: pointer;
   z-index: 9999;
 }
@@ -267,7 +267,7 @@ div {
 }
 .drag-content {
   width: 100%;
-  height: 30%;
+  height: 45%;
   background: rgba(0, 0, 0, 0.353);
 }
 .flag {
