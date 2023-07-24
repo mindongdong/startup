@@ -229,9 +229,11 @@ export default {
   height: 100%;
   display: flex;
   align-items: center;
-  background: #0a1931c5;
+  background: rgba(0, 4, 25, 0.7);
   border-radius: 1rem;
   z-index: 9998;
+  color: rgb(218, 222, 218);
+  font-weight: 300;
 }
 .team-selector {
   display: flex;
@@ -302,12 +304,13 @@ export default {
   cursor: pointer;
   object-position: center;
   object-fit: contain;
+  opacity: 0.8;
 }
 .team__icon {
   width: 5rem;
   height: 5rem;
   border-radius: 1rem;
-  background: rgba(17, 17, 33, 0.55);
+  background: rgba(0, 4, 25, 0.7);
   margin: 0 1rem;
   display: flex;
   flex-direction: column;
@@ -317,6 +320,7 @@ export default {
 .team__icon--img {
   width: 2rem;
   height: 2rem;
+  opacity: 0.8;
 }
 .team__playerList {
   width: 89%;
@@ -329,7 +333,7 @@ export default {
 .playerList__player {
   width: 7rem;
   height: 10.5rem;
-  background: rgba(17, 17, 33, 0.55);
+  background: rgba(0, 4, 25, 0.7);
   margin-left: 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
@@ -343,7 +347,7 @@ export default {
   width: 100%;
   height: 10%;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -357,6 +361,7 @@ export default {
   bottom: 0;
   object-position: center;
   object-fit: contain;
+  opacity: 0.8;
 }
 /* Customize the scrollbar background and thickness */
 .team__playerList::-webkit-scrollbar {

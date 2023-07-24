@@ -1,6 +1,6 @@
 <template>
   <div id="layout">
-    <img class="background-image" src="@/assets/background.png" />
+    <img class="background-image" src="@/assets/background_pro.png" />
     <draggable class="contents-container" v-model="components">
       <Video ref="videoRef"></Video>
       <div
@@ -20,7 +20,7 @@
         <draggable
           class="drag-component"
           :list="component.items"
-          :group="{name: 'component'}"
+          :group="{ name: 'component' }"
         >
           <div
             class="drag-content"
@@ -39,7 +39,7 @@
 import Video from "@/components/Video.vue";
 import TeamInfo from "@/components/TeamInfo.vue";
 import draggable from "vuedraggable";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -92,7 +92,7 @@ export default {
   async mounted() {
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });
@@ -290,7 +290,8 @@ div {
 .drag-content {
   width: 100%;
   height: 30%;
-  background: rgba(0, 0, 0, 0.353);
+  background: rgba(0, 4, 25, 0.4);
+  border-radius: 0.5rem;
 }
 .flag {
   cursor: pointer;
