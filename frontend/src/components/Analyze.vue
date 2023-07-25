@@ -291,10 +291,11 @@ export default {
   /* border: 2px solid red; */
   justify-content: center;
   align-items: center;
-  /* border: 1px solid rgba(255, 255, 255, 0.303); */
-  /* background: rgba(255, 255, 255, 0.15); */
-  border: none;
+  transition: all 0.1s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.303);
+  background: rgba(255, 255, 255, 0.15);
 }
+
 .playerBox__item:hover {
   display: flex;
   border: 1px solid rgba(255, 255, 255, 0.303);
@@ -309,11 +310,20 @@ export default {
 }
 .playerBox__name {
   position: relative;
-  top: -60%;
-  display: none;
+  top: -70%;
   height: auto;
   font-size: 1rem;
   text-align: center;
   white-space: nowrap;
+}
+/* playerBox__name에 :after 이용해서 아래 방향 화살표를 만들어줘 */
+.playerBox__name:after {
+  content: "";
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0.5rem solid transparent;
+  border-top-color: rgba(255, 255, 255, 1);
 }
 </style>

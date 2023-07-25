@@ -9,8 +9,8 @@
     ></canvas>
     <div
       v-if="tooltipVisible"
-      :style="{ top: tooltipY + 'px', left: tooltipX + 'px' }"
-      class="f"
+      :style="{ top: tooltipY - 12 + 'px', left: tooltipX + 'px' }"
+      class="tooltip"
     >
       {{ tooltipText }}
     </div>
@@ -46,8 +46,8 @@ export default {
     },
     shotColorDict() {
       return {
-        독일: "#38F4BB",
-        대한민국: "#FE6666",
+        독일: "rgba(150, 230, 180, 0.8)",
+        대한민국: "rgba(255,99,132,0.8)",
       };
     },
   },
@@ -155,6 +155,9 @@ export default {
       let canvas = this.$refs.soccerCanvas;
       let context = canvas.getContext("2d");
 
+      context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+      this.drawPitch();
+
       if (shotData === this.failedShots) {
         shotData.forEach((shot) => {
           let x = shot.x;
@@ -199,7 +202,7 @@ export default {
           context.arc(
             canvasX,
             canvasY,
-            Math.sqrt(goal.xg) * 35,
+            Math.sqrt(goal.xg) * 20,
             0,
             Math.PI * 2,
             false
@@ -210,8 +213,9 @@ export default {
           this.circles.push({
             x: canvasX,
             y: canvasY,
-            radius: Math.sqrt(goal.xg) * 35,
+            radius: Math.sqrt(goal.xg) * 20,
             text: goal.display_name,
+            hovered: false, // Add this line
           });
         });
       }
@@ -238,23 +242,30 @@ export default {
       let x = event.clientX - rect.left;
       let y = event.clientY - rect.top;
 
+      let isMouseInsideCircle = false;
+
       // check if the mouse is inside any circle
       for (let circle of this.circles) {
         let dx = x - circle.x;
         let dy = y - circle.y;
         if (dx * dx + dy * dy < circle.radius * circle.radius) {
-          console.log(circle.text);
+          isMouseInsideCircle = true;
+          circle.hovered = true;
           // the mouse is inside this circle, show the tooltip
           this.tooltipVisible = true;
           this.tooltipX = event.clientX;
           this.tooltipY = event.clientY;
           this.tooltipText = circle.text;
           return;
+        } else {
+          circle.hovered = false;
         }
       }
 
-      // the mouse is not inside any circle, hide the tooltip
-      this.tooltipVisible = false;
+      if (!isMouseInsideCircle) {
+        // the mouse is not inside any circle, hide the tooltip
+        this.tooltipVisible = false;
+      }
     },
   },
   beforeDestroy() {
@@ -265,25 +276,29 @@ export default {
 
 <style scoped>
 .title {
+  width: 95%;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1rem;
+  text-align: center;
   padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
 }
 .layout {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 canvas {
   border: 1px solid #000;
   position: relative;
 }
 .tooltip {
-  position: absolute;
-  left: 0;
-  top: 0;
-  background: #fff;
-  border: 1px solid #000;
   padding: 5px;
   pointer-events: none;
+  font-size: 1rem;
+  font-weight: 700;
 }
 </style>

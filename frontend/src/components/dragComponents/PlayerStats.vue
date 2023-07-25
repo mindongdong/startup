@@ -1,34 +1,38 @@
 <template>
   <div class="layout">
-    <h1 class="title">선수 기록</h1>
+    <h1 class="title">능력치 비교</h1>
     <header class="option">
-      <h1 class="option__description">선수 1</h1>
-      <div class="dropdown">
-        <select v-model="selectedPlayer_1" @change="fetchPlayerStats">
-          <option disabled value="">select</option>
-          <option disabled value="">{{ home_teamName }}</option>
-          <option v-for="player in home_lineup" :key="player" :value="player">
-            {{ player }}
-          </option>
-          <option disabled value="">{{ away_teamName }}</option>
-          <option v-for="player in away_lineup" :key="player" :value="player">
-            {{ player }}
-          </option>
-        </select>
+      <div class="option-L">
+        <h1 class="option__description">선수 1</h1>
+        <div class="dropdown">
+          <select v-model="selectedPlayer_1" @change="fetchPlayerStats">
+            <option disabled value="">select</option>
+            <option disabled value="">{{ home_teamName }}</option>
+            <option v-for="player in home_lineup" :key="player" :value="player">
+              {{ player }}
+            </option>
+            <option disabled value="">{{ away_teamName }}</option>
+            <option v-for="player in away_lineup" :key="player" :value="player">
+              {{ player }}
+            </option>
+          </select>
+        </div>
       </div>
-      <h1 class="option__description">선수 2</h1>
-      <div class="dropdown">
-        <select v-model="selectedPlayer_2" @change="fetchPlayerStats">
-          <option disabled value="">select</option>
-          <option disabled value="">{{ home_teamName }}</option>
-          <option v-for="player in home_lineup" :key="player" :value="player">
-            {{ player }}
-          </option>
-          <option disabled value="">{{ away_teamName }}</option>
-          <option v-for="player in away_lineup" :key="player" :value="player">
-            {{ player }}
-          </option>
-        </select>
+      <div class="option-L">
+        <h1 class="option__description">선수 2</h1>
+        <div class="dropdown">
+          <select v-model="selectedPlayer_2" @change="fetchPlayerStats">
+            <option disabled value="">select</option>
+            <option disabled value="">{{ home_teamName }}</option>
+            <option v-for="player in home_lineup" :key="player" :value="player">
+              {{ player }}
+            </option>
+            <option disabled value="">{{ away_teamName }}</option>
+            <option v-for="player in away_lineup" :key="player" :value="player">
+              {{ player }}
+            </option>
+          </select>
+        </div>
       </div>
     </header>
     <div class="chart">
@@ -76,17 +80,17 @@ export default {
   computed: {
     chartData() {
       return {
-        labels: ["공격 포인트", "슈팅", "패스", "수비", "골키퍼 수비"],
+        labels: ["공격 포인트", "슈팅", "패스", "수비", "골키퍼"],
         datasets: [
           {
             label: this.selectedPlayer_1 ? this.selectedPlayer_1 : "",
             fill: true,
-            backgroundColor: "rgba(179,181,198,0.2)",
-            borderColor: "rgba(179,181,198,1)",
-            pointBackgroundColor: "rgba(179,181,198,1)",
+            backgroundColor: "rgba(255,99,132,0.1)",
+            borderColor: "rgba(255,99,132,1)",
+            pointBackgroundColor: "rgba(255,99,132,1)",
             pointBorderColor: "#fff",
             pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(179,181,198,1)",
+            pointHoverBorderColor: "rgba(255,99,132,1)",
             data: this.playerStats_1
               ? Object.values(this.playerStats_1).map((value) => value * 100)
               : [0, 0, 0, 0, 0],
@@ -94,12 +98,12 @@ export default {
           {
             label: this.selectedPlayer_2 ? this.selectedPlayer_2 : "",
             fill: true,
-            backgroundColor: "rgba(255,99,132,0.2)",
-            borderColor: "rgba(255,99,132,1)",
-            pointBackgroundColor: "rgba(255,99,132,1)",
+            backgroundColor: "rgba(150, 230, 180, 0.1)",
+            borderColor: "rgba(150, 230, 180, 1)",
+            pointBackgroundColor: "rgba(150, 230, 180, 1)",
             pointBorderColor: "#fff",
             pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(255,99,132,1)",
+            pointHoverBorderColor: "rgba(150, 230, 180, 1)",
             data: this.playerStats_2
               ? Object.values(this.playerStats_2).map((value) => value * 100)
               : [0, 0, 0, 0, 0],
@@ -120,6 +124,8 @@ export default {
         },
         scales: {
           r: {
+            suggestedMin: 0, // Set min value
+            suggestedMax: 100, // Set max value
             pointLabels: {
               color: "white",
               font: {
@@ -127,9 +133,17 @@ export default {
               },
             },
             ticks: {
-              suggestedMin: 0, // Set min value
-              suggestedMax: 100, // Set max value
+              backdropColor: "rgba(0, 0, 0, 0.0)",
+              color: "white",
             },
+            grid: {
+              color: "rgba(255, 255, 255, 0.8)",
+              lineWidth: 0.5,
+            },
+            angleLines: {
+              color: "rgba(255, 255, 255, 0.8)",
+              lineWidth: 0.5,
+            }
           },
         },
       };
@@ -177,29 +191,42 @@ export default {
 .layout {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .title {
   color: white;
   font-size: 1rem;
+  text-align: center;
+  padding: 0.5rem;
 }
 .option {
-  background-color: black;
-  padding: 10px;
   display: flex;
+  justify-content: space-around;
   align-items: center;
+  padding: 0.4rem 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
 }
 
 .option__description {
   color: white;
   font-size: 0.8rem;
-  margin-right: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+}
+
+.option-L {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .dropdown {
   position: relative;
   display: flex;
   align-items: center;
-  margin-right: 20px;
 }
 
 .dropdown select {

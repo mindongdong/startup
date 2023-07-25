@@ -1,9 +1,6 @@
 <template>
   <div class="modal-wrapper" @keydown.space.prevent="videoPlay">
     <div class="info-header" @mouseover="hideTooltip">
-      <!-- <router-link to="/">
-        <div class="exit-button"></div>
-      </router-link> -->
       <div class="components_control">
         <!-- <img
           class="icon"
@@ -53,8 +50,8 @@
           v-bind="{
             class: { icon_on: this.$store.getters.getToggleList['components'] },
           }"
-          class="icon white"
-          src="@/assets/icons/components.png"
+          class="icon"
+          src="@/assets/icons/components2.png"
           @click="toggleComponentsList()"
         />
       </div>
@@ -115,10 +112,10 @@ export default {
       tooltipHideTimeout: null,
       isComponentsListVisible: false,
       componentList: {
-        "선수 기록": "PlayerStats",
+        "능력치 비교": "PlayerStats",
         "실시간 기록": "MatchStats",
         "공격 시퀀스": "AttackSeq",
-        "슈팅 기록": "ShotStats",
+        "슈팅 데이터": "ShotStats",
       },
     };
   },

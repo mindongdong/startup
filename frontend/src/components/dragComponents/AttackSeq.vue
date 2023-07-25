@@ -23,8 +23,8 @@ export default {
   computed: {
     colorDict() {
       return {
-        독일: "blue",
-        대한민국: "red",
+        독일: "rgba(150, 230, 180, 1)",
+        대한민국: "rgba(255,99,132,1)",
       };
     },
   },
@@ -185,6 +185,11 @@ export default {
           (teamName === "독일" && period === "2H")
             ? true
             : false;
+        let teamDiff =
+          teamName === this.attackSeqData.team_name[eventIndex - 1]
+            ? true
+            : false;
+        console.log(reverseBoolean && teamDiff);
         // let circle_startX = reverseBoolean
         //   ? this.reverseX(this.attackSeqData.start_x[eventIndex])
         //   : this.scaleX(this.attackSeqData.start_x[eventIndex]);
@@ -194,21 +199,25 @@ export default {
         let circle_startY = reverseBoolean
           ? this.reverseY(this.attackSeqData.start_y[eventIndex])
           : this.scaleY(this.attackSeqData.start_y[eventIndex]);
-        let line_startX = reverseBoolean
-          ? this.scaleX(this.attackSeqData.start_x[eventIndex - 1])
-          : this.reverseX(this.attackSeqData.start_x[eventIndex - 1]);
-        let line_startY = reverseBoolean
-          ? this.reverseY(this.attackSeqData.start_y[eventIndex - 1])
-          : this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
+        let line_startX =
+          reverseBoolean && teamDiff
+            ? this.scaleX(this.attackSeqData.start_x[eventIndex - 1])
+            : this.reverseX(this.attackSeqData.start_x[eventIndex - 1]);
+        let line_startY =
+          reverseBoolean && teamDiff
+            ? this.reverseY(this.attackSeqData.start_y[eventIndex - 1])
+            : this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
         // let line_endX = reverseBoolean
         //   ? this.reverseX(this.attackSeqData.end_x[eventIndex - 1])
         //   : this.scaleX(this.attackSeqData.end_x[eventIndex - 1]);
-        let line_endX = reverseBoolean
-          ? this.scaleX(this.attackSeqData.end_x[eventIndex - 1])
-          : this.reverseX(this.attackSeqData.end_x[eventIndex - 1]);
-        let line_endY = reverseBoolean
-          ? this.reverseY(this.attackSeqData.end_y[eventIndex - 1])
-          : this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
+        let line_endX =
+          reverseBoolean && teamDiff
+            ? this.scaleX(this.attackSeqData.end_x[eventIndex - 1])
+            : this.reverseX(this.attackSeqData.end_x[eventIndex - 1]);
+        let line_endY =
+          reverseBoolean && teamDiff
+            ? this.reverseY(this.attackSeqData.end_y[eventIndex - 1])
+            : this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
 
         // Draw circle at start position
         context.beginPath();
@@ -237,13 +246,20 @@ export default {
 
 <style scoped>
 .title {
+  width: 95%;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1rem;
+  text-align: center;
   padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
 }
 .layout {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 canvas {
   border: 1px solid #000;

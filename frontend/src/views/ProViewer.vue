@@ -278,19 +278,22 @@ div {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   font-size: 1.5rem;
   cursor: pointer;
   z-index: 9999;
 }
 .drag-content {
   width: 100%;
+  height: 45%;
+  margin-bottom: 0.4rem;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(5px);
   border-radius: 1rem;
-  height: 45%;
+  transition: all 0.3s ease;
 }
 .drag-content:hover {
+  background: rgba(0, 0, 0, 0.6);
   box-shadow: 0px 2px 6px -1px rgba(0, 0, 0, 1);
 }
 .flag {

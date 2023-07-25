@@ -2,25 +2,29 @@
   <div class="layout">
     <h1 class="title">실시간 기록</h1>
     <header class="option">
-      <h1 class="option__description">팀</h1>
-      <div class="dropdown">
-        <select v-model="selectedTeam" @change="fetchMatchStats">
-          <option value="">전체</option>
-          <option :value="home_teamName">{{ home_teamName }}</option>
-          <option :value="away_teamName">{{ away_teamName }}</option>
-        </select>
+      <div class="option-L">
+        <h1 class="option__description">팀</h1>
+        <div class="dropdown">
+          <select v-model="selectedTeam" @change="fetchMatchStats">
+            <option value="">전체</option>
+            <option :value="home_teamName">{{ home_teamName }}</option>
+            <option :value="away_teamName">{{ away_teamName }}</option>
+          </select>
+        </div>
       </div>
-      <h1 class="option__description">기록</h1>
-      <div class="dropdown">
-        <select v-model="selectedRecord" @change="fetchMatchStats">
-          <option
-            v-for="record in Object.keys(this.recordDict)"
-            :key="record"
-            :value="recordDict[record]"
-          >
-            {{ record }}
-          </option>
-        </select>
+      <div class="option-L">
+        <h1 class="option__description">기록</h1>
+        <div class="dropdown">
+          <select v-model="selectedRecord" @change="fetchMatchStats">
+            <option
+              v-for="record in Object.keys(this.recordDict)"
+              :key="record"
+              :value="recordDict[record]"
+            >
+              {{ record }}
+            </option>
+          </select>
+        </div>
       </div>
     </header>
     <div class="chart">
@@ -100,7 +104,7 @@ export default {
           {
             label: this.selectedRecord,
             data: sortedData.map((item) => item[this.selectedRecord]),
-            backgroundColor: "#f87979",
+            backgroundColor: "rgba(255,99,132,1)",
           },
         ],
       };
@@ -212,25 +216,37 @@ export default {
 .title {
   color: white;
   font-size: 1rem;
+  text-align: center;
+  padding: 0.5rem;
 }
+
 .option {
-  background-color: black;
-  padding: 10px;
   display: flex;
+  justify-content: space-around;
   align-items: center;
+  padding: 0.4rem 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
 }
 
 .option__description {
   color: white;
   font-size: 0.8rem;
-  margin-right: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+}
+
+.option-L {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .dropdown {
   position: relative;
   display: flex;
   align-items: center;
-  margin-right: 20px;
 }
 
 .dropdown select {
@@ -256,7 +272,7 @@ export default {
 }
 
 .chart {
-  width: 100%;
-  height: 80%;
+  width: 95%;
+  height: 70%;
 }
 </style>
