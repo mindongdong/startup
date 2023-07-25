@@ -1,13 +1,24 @@
 <template>
   <div class="layout">
     <h1 class="title">슈팅 데이터</h1>
-    <canvas ref="soccerCanvas" :width="canvasWidth" :height="canvasHeight">
-    </canvas>
+    <canvas
+      ref="soccerCanvas"
+      @mousemove="handleMouseMove"
+      :width="canvasWidth"
+      :height="canvasHeight"
+    ></canvas>
+    <div
+      v-if="tooltipVisible"
+      :style="{ top: tooltipY + 'px', left: tooltipX + 'px' }"
+      class="f"
+    >
+      {{ tooltipText }}
+    </div>
   </div>
 </template>
 
 <script>
-import {getMatchShots} from "@/api/index.js";
+import { getMatchShots } from "@/api/index.js";
 export default {
   name: "AttackSeq",
   data() {
@@ -19,6 +30,11 @@ export default {
       team1Goals: null,
       team2Goals: null,
       failedShots: null,
+      circles: [], // we will keep track of all circles here
+      tooltipVisible: false,
+      tooltipX: 0,
+      tooltipY: 0,
+      tooltipText: "",
     };
   },
   computed: {
@@ -78,7 +94,7 @@ export default {
         this.canvasHeight / 2,
         26.6666666667,
         0,
-        2 * Math.PI,
+        2 * Math.PI
       );
       context.stroke();
 
@@ -89,7 +105,7 @@ export default {
         this.canvasHeight / 2,
         2,
         0,
-        2 * Math.PI,
+        2 * Math.PI
       );
       context.fill();
 
@@ -99,14 +115,14 @@ export default {
         this.canvasWidth - 200 / 3,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3,
+        440 / 3
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3,
+        440 / 3
       );
 
       // Draw goal areas
@@ -115,24 +131,15 @@ export default {
         this.canvasWidth - 100 / 3,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3,
+        180 / 3
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3,
+        180 / 3
       );
-
-      // Draw penalty spots
-      this.drawCircle(
-        context,
-        this.canvasWidth - 230 / 3,
-        this.canvasHeight / 2,
-        2,
-      );
-      this.drawCircle(context, 230 / 3, this.canvasHeight / 2, 2);
     },
     drawRectangle(context, x, y, width, height) {
       context.beginPath();
@@ -149,7 +156,7 @@ export default {
       let context = canvas.getContext("2d");
 
       if (shotData === this.failedShots) {
-        shotData.forEach(shot => {
+        shotData.forEach((shot) => {
           let x = shot.x;
           let y = shot.y;
           let canvasX = this.scaleX(x);
@@ -161,16 +168,23 @@ export default {
             Math.sqrt(shot.xg) * 35,
             0,
             Math.PI * 2,
-            false,
+            false
           ); // size is now related to xg
           context.fillStyle = this.shotColorDict[shot.team_name];
           context.fill();
+
+          this.circles.push({
+            x: canvasX,
+            y: canvasY,
+            radius: Math.sqrt(shot.xg) * 35,
+            text: shot.display_name,
+          });
         });
       } else {
         const goals = shotData.goals;
         const teamName = shotData.name;
         // Prepare for drawing. As an example, we'll draw team1Goals here.
-        goals.forEach(goal => {
+        goals.forEach((goal) => {
           let x = goal.x;
           let y = goal.y;
 
@@ -188,10 +202,17 @@ export default {
             Math.sqrt(goal.xg) * 35,
             0,
             Math.PI * 2,
-            false,
+            false
           ); // size is now related to xg
           context.fillStyle = this.goalColorDict[teamName];
           context.fill();
+
+          this.circles.push({
+            x: canvasX,
+            y: canvasY,
+            radius: Math.sqrt(goal.xg) * 35,
+            text: goal.display_name,
+          });
         });
       }
     },
@@ -210,6 +231,30 @@ export default {
       const calY = this.canvasHeight / 68;
       y = y * calY;
       return y;
+    },
+    handleMouseMove(event) {
+      // calculate mouse position relative to the canvas
+      let rect = this.$refs.soccerCanvas.getBoundingClientRect();
+      let x = event.clientX - rect.left;
+      let y = event.clientY - rect.top;
+
+      // check if the mouse is inside any circle
+      for (let circle of this.circles) {
+        let dx = x - circle.x;
+        let dy = y - circle.y;
+        if (dx * dx + dy * dy < circle.radius * circle.radius) {
+          console.log(circle.text);
+          // the mouse is inside this circle, show the tooltip
+          this.tooltipVisible = true;
+          this.tooltipX = event.clientX;
+          this.tooltipY = event.clientY;
+          this.tooltipText = circle.text;
+          return;
+        }
+      }
+
+      // the mouse is not inside any circle, hide the tooltip
+      this.tooltipVisible = false;
     },
   },
   beforeDestroy() {
@@ -230,5 +275,15 @@ export default {
 }
 canvas {
   border: 1px solid #000;
+  position: relative;
+}
+.tooltip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #fff;
+  border: 1px solid #000;
+  padding: 5px;
+  pointer-events: none;
 }
 </style>

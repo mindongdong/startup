@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getAttackSequence } from "@/api/index.js";
+import {getAttackSequence} from "@/api/index.js";
 export default {
   name: "AttackSeq",
   data() {
@@ -43,15 +43,15 @@ export default {
     this.drawPitch();
     this.timeInterval = setInterval(async () => {
       const response = await getAttackSequence(
-        this.$store.getters.getCurrentTime
+        this.$store.getters.getCurrentTime,
       );
       this.attackSeqData = response.data.attack_sequence;
       this.currentIndex = response.data.index;
       this.indexList = Object.keys(response.data.attack_sequence.start_x);
       this.filteredIndexList = this.indexList.filter(
-        (index) => index <= this.currentIndex
+        index => index <= this.currentIndex,
       );
-      console.log(this.indexList);
+      // console.log(this.indexList);
     }, 1000);
   },
   methods: {
@@ -85,7 +85,7 @@ export default {
         this.canvasHeight / 2,
         26.6666666667,
         0,
-        2 * Math.PI
+        2 * Math.PI,
       );
       context.stroke();
 
@@ -96,7 +96,7 @@ export default {
         this.canvasHeight / 2,
         2,
         0,
-        2 * Math.PI
+        2 * Math.PI,
       );
       context.fill();
 
@@ -106,14 +106,14 @@ export default {
         this.canvasWidth - 200 / 3,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3
+        440 / 3,
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3
+        440 / 3,
       );
 
       // Draw goal areas
@@ -122,24 +122,15 @@ export default {
         this.canvasWidth - 100 / 3,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3
+        180 / 3,
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3
+        180 / 3,
       );
-
-      // Draw penalty spots
-      this.drawCircle(
-        context,
-        this.canvasWidth - 230 / 3,
-        this.canvasHeight / 2,
-        2
-      );
-      this.drawCircle(context, 230 / 3, this.canvasHeight / 2, 2);
     },
     drawRectangle(context, x, y, width, height) {
       context.beginPath();
@@ -174,7 +165,7 @@ export default {
       context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       this.drawPitch();
 
-      this.filteredIndexList.forEach((eventIndex) => {
+      this.filteredIndexList.forEach(eventIndex => {
         // Extract start and end positions
         // let adjust_start_x,
         //   adjust_start_y = this.adjustCoordinates(
@@ -209,16 +200,6 @@ export default {
           context.stroke();
         }
       });
-    },
-    adjustCoordinates(x, y) {
-      const originalWidth = 104 * 3;
-      const originalHeight = 68 * 3;
-      const scale_x = this.canvasWidth / originalWidth;
-      const scale_y = this.canvasHeight / originalHeight;
-      const adjustedStartX = x * scale_x;
-      const adjustedStartY = y * scale_y;
-      console.log(adjustedStartX, adjustedStartY);
-      return adjustedStartX, adjustedStartY;
     },
   },
   beforeDestroy() {
