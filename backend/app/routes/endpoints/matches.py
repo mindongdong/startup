@@ -28,10 +28,6 @@ def filter_by_time(match_events, start_time=None, end_time=None):
     else:
         period = '1H'
 
-    # print("start_time:", start_time)
-    # print("end_time:", end_time)
-    # print("period:", period)
-
     # Filter the events
     if period == '2H':
         # If the period is '2H', include all events from '1H' plus those from '2H' within the specified times
@@ -49,33 +45,31 @@ def filter_by_time(match_events, start_time=None, end_time=None):
 # 이벤트 데이터 인덱스를 기반으로 공격 시퀀스 검출
 def detect_attack_sequences(match_events, first_idx, last_idx):
     cols = [
-        'period', 'time', 'display_time', 'team_name', 'player_name',
+        'period', 'time', 'team_name', 'player_name',
         'event_type', 'sub_event_type', 'tags', 'start_x', 'start_y', 'end_x', 'end_y'
     ]
     match_events = match_events[match_events['event_type'] != 'Substitution'][cols]
 
     seq_events = match_events.loc[first_idx:last_idx].copy()
-    seq_events[seq_events.columns[2:-4]]
 
-    return seq_events[seq_events.columns[2:-4]]
+    return seq_events
 
-# 현재 시간에 가장 가까운 이벤트 인덱스 반환
-def find_nearest_event(current_time: int):
-    # Calculate the absolute difference between current time and event times
-    time_diff = abs(match_events['time'] - current_time)
-    
-    # Find the index of the minimum difference
-    nearest_event_index = time_diff.idxmin()
-    
-    return nearest_event_index
+def get_closest_event(current_time):
+    # First, filter the events by current_time
+    filtered_events = filter_by_time(match_events, start_time=None, end_time=current_time)
+
+    print(len(filtered_events) - 1)
+
+    # Return the length of filtered_events minus 1
+    return len(filtered_events) - 1
 
 # 인덱스를 포함하고 있는 sequence의 column을 반환
 def find_sequence(index: int):
     # Iterate over all columns of seq_records
-    for column in seq_records.columns:
-        # Check if the index is within the range of first_idx and last_idx of the current column
-        if seq_records[column]['first_idx'] <= index <= seq_records[column]['last_idx']:
-            return column
+    # print(index)
+    for _, row in seq_records.iterrows():
+        if row['first_idx'] <= index <= row['last_idx']:
+            return row
     return "Index not found in any column"
 
 def calculate_stats(player_name):
@@ -564,13 +558,16 @@ def read_player(player_name: str):
 
 # 공격 시퀀스 데이터 반환
 @router.get("/sequence/{current_time}")
-def read_sequence(current_time: int):
+def read_sequence(current_time: float):
     
     # 현재 시간 기준 가장 가까운 이벤트 찾기
-    nearest_event_index = find_nearest_event(current_time)
+    nearest_event_index = get_closest_event(current_time)
+
+    # print(nearest_event_index)
 
     # 인덱스를 포함하는 시퀀스 찾기
     sequence = find_sequence(nearest_event_index)
+    print(sequence)
 
     first_idx, last_idx = sequence['first_idx'], sequence['last_idx'] 
 
@@ -578,7 +575,7 @@ def read_sequence(current_time: int):
     attack_sequence = detect_attack_sequences(match_events, first_idx, last_idx)
 
     # 프론트엔드에서 어떻게 시각화 하느냐에 따라 attack_sequence의 형태를 바꿔야 함
-    return attack_sequence
+    return {"attack_sequence": attack_sequence, "index": nearest_event_index}
 
 # 기대득점 데이터 반환
 @router.get("/shots/{current_time}")

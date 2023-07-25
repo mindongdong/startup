@@ -38,6 +38,7 @@ import Video from "@/components/Video.vue";
 import TeamInfo from "@/components/TeamInfo.vue";
 import PlayerStats from "@/components/dragComponents/PlayerStats.vue";
 import MatchStats from "@/components/dragComponents/MatchStats.vue";
+import AttackSeq from "@/components/dragComponents/AttackSeq.vue";
 import draggable from "vuedraggable";
 import { mapGetters } from "vuex";
 
@@ -48,6 +49,7 @@ export default {
     draggable,
     PlayerStats,
     MatchStats,
+    AttackSeq,
   },
   data() {
     return {
@@ -250,7 +252,7 @@ div {
 }
 .drag-area {
   position: absolute;
-  top: 16rem;
+  top: 10rem;
   left: 2rem;
   width: calc((100% - 74rem) / 2);
   height: calc(100% - 20rem);

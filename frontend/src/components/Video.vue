@@ -10,7 +10,7 @@
 import Stream from "@/components/Stream.vue";
 import Analyze from "@/components/Analyze.vue";
 import Wrapper from "@/components/VideoWrapper.vue";
-import {getTrackingInfo} from "@/api/index";
+import { getTrackingInfo } from "@/api/index";
 
 export default {
   name: "Video",
@@ -84,7 +84,7 @@ export default {
       const video = this.$store.getters.getCurrentVideo;
       const videoTime = video.currentTime;
       console.log(videoTime);
-      const frame = parseInt(videoTime * 27) - 1;
+      const frame = parseInt(videoTime * 29.970156368607);
       console.log(frame);
       const response = await getTrackingInfo(frame);
       this.predictionList = response.data;
