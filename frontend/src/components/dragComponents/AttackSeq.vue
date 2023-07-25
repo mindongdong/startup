@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {getAttackSequence} from "@/api/index.js";
+import { getAttackSequence } from "@/api/index.js";
 export default {
   name: "AttackSeq",
   data() {
@@ -43,13 +43,13 @@ export default {
     this.drawPitch();
     this.timeInterval = setInterval(async () => {
       const response = await getAttackSequence(
-        this.$store.getters.getCurrentTime,
+        this.$store.getters.getCurrentTime
       );
       this.attackSeqData = response.data.attack_sequence;
       this.currentIndex = response.data.index;
       this.indexList = Object.keys(response.data.attack_sequence.start_x);
       this.filteredIndexList = this.indexList.filter(
-        index => index <= this.currentIndex,
+        (index) => index <= this.currentIndex
       );
       // console.log(this.indexList);
     }, 1000);
@@ -85,7 +85,7 @@ export default {
         this.canvasHeight / 2,
         26.6666666667,
         0,
-        2 * Math.PI,
+        2 * Math.PI
       );
       context.stroke();
 
@@ -96,7 +96,7 @@ export default {
         this.canvasHeight / 2,
         2,
         0,
-        2 * Math.PI,
+        2 * Math.PI
       );
       context.fill();
 
@@ -106,14 +106,14 @@ export default {
         this.canvasWidth - 200 / 3,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3,
+        440 / 3
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3,
+        440 / 3
       );
 
       // Draw goal areas
@@ -122,14 +122,14 @@ export default {
         this.canvasWidth - 100 / 3,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3,
+        180 / 3
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3,
+        180 / 3
       );
     },
     drawRectangle(context, x, y, width, height) {
@@ -152,10 +152,18 @@ export default {
     },
     scaleY(y) {
       // Transform y from the event's coordinate system to SVG's coordinate system.
-      // This function depends on the actual size of your SVG and your event's coordinate system.
-      // Here we simply use y as is.
       const calY = this.canvasHeight / 68;
       y = y * calY;
+      return y;
+    },
+    reverseX(x) {
+      const calX = this.canvasWidth / 104;
+      x = (104 - x) * calX; // Subtract x from the maximum X value (104)
+      return x;
+    },
+    reverseY(y) {
+      const calY = this.canvasHeight / 68;
+      y = (68 - y) * calY; // Subtract y from the maximum Y value (68)
       return y;
     },
     drawSequenceData() {
@@ -165,36 +173,55 @@ export default {
       context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       this.drawPitch();
 
-      this.filteredIndexList.forEach(eventIndex => {
-        // Extract start and end positions
-        // let adjust_start_x,
-        //   adjust_start_y = this.adjustCoordinates(
-        //     this.attackSeqData.start_x[eventIndex],
-        //     this.attackSeqData.start_y[eventIndex]
-        //   );
-        // let adjust_end_x,
-        //   adjust_end_y = this.adjustCoordinates(
-        //     this.attackSeqData.end_x[eventIndex],
-        //     this.attackSeqData.end_y[eventIndex]
-        //   );
-        let startX = this.scaleX(this.attackSeqData.start_x[eventIndex]);
-        let startY = this.scaleY(this.attackSeqData.start_y[eventIndex]);
+      let period = this.$store.getters.getCurrentTime < 2882 ? "1H" : "2H";
+      // period가 1H일 때는 독일이 reverseX, reverseY 적용 한국은 reverseY만 적용
+      // period가 2H일 때는 독일은 reverseY만 적용 한국은 reverseX, reverseY 적용
+
+      this.filteredIndexList.forEach((eventIndex) => {
+        let teamName = this.attackSeqData.team_name[eventIndex];
+        console.log(period, teamName);
+        let reverseBoolean =
+          (teamName === "대한민국" && period === "1H") ||
+          (teamName === "독일" && period === "2H")
+            ? true
+            : false;
+        // let circle_startX = reverseBoolean
+        //   ? this.reverseX(this.attackSeqData.start_x[eventIndex])
+        //   : this.scaleX(this.attackSeqData.start_x[eventIndex]);
+        let circle_startX = reverseBoolean
+          ? this.scaleX(this.attackSeqData.start_x[eventIndex])
+          : this.reverseX(this.attackSeqData.start_x[eventIndex]);
+        let circle_startY = reverseBoolean
+          ? this.reverseY(this.attackSeqData.start_y[eventIndex])
+          : this.scaleY(this.attackSeqData.start_y[eventIndex]);
+        let line_startX = reverseBoolean
+          ? this.scaleX(this.attackSeqData.start_x[eventIndex - 1])
+          : this.reverseX(this.attackSeqData.start_x[eventIndex - 1]);
+        let line_startY = reverseBoolean
+          ? this.reverseY(this.attackSeqData.start_y[eventIndex - 1])
+          : this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
+        // let line_endX = reverseBoolean
+        //   ? this.reverseX(this.attackSeqData.end_x[eventIndex - 1])
+        //   : this.scaleX(this.attackSeqData.end_x[eventIndex - 1]);
+        let line_endX = reverseBoolean
+          ? this.scaleX(this.attackSeqData.end_x[eventIndex - 1])
+          : this.reverseX(this.attackSeqData.end_x[eventIndex - 1]);
+        let line_endY = reverseBoolean
+          ? this.reverseY(this.attackSeqData.end_y[eventIndex - 1])
+          : this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
+
         // Draw circle at start position
         context.beginPath();
-        context.arc(startX, startY, 5, 0, 2 * Math.PI, false);
+        context.arc(circle_startX, circle_startY, 5, 0, 2 * Math.PI, false);
         context.fillStyle =
           this.colorDict[this.attackSeqData.team_name[eventIndex]];
         context.fill();
 
         // Draw line to end position, if it exists
         if (this.attackSeqData.end_x[eventIndex - 1]) {
-          let startX = this.scaleX(this.attackSeqData.start_x[eventIndex - 1]);
-          let startY = this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
-          let endX = this.scaleX(this.attackSeqData.end_x[eventIndex - 1]);
-          let endY = this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
           context.beginPath();
-          context.moveTo(startX, startY);
-          context.lineTo(endX, endY);
+          context.moveTo(line_startX, line_startY);
+          context.lineTo(line_endX, line_endY);
           context.strokeStyle =
             this.colorDict[this.attackSeqData.team_name[eventIndex]];
           context.stroke();
