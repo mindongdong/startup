@@ -1,6 +1,6 @@
 module.exports = {
-  lintOnSave: false,
   //   devServer: {
   //     overlay: false,
   //   },
+  lintOnSave: false,
 };

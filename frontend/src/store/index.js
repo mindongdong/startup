@@ -22,13 +22,10 @@ export default new Vuex.Store({
         index: 1,
         items: [
           {
-            title: "item 1",
+            title: "PlayerStats",
           },
           {
-            title: "item 4",
-          },
-          {
-            title: "item 5",
+            title: "MatchStats",
           },
         ],
       },
@@ -40,9 +37,6 @@ export default new Vuex.Store({
           },
           {
             title: "item 3",
-          },
-          {
-            title: "item 6",
           },
         ],
       },

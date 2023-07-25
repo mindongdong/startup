@@ -5,9 +5,7 @@
       <Video ref="videoRef"></Video>
       <div
         class="info-container"
-        v-bind:class="{
-          hide__bottom: this.$store.getters.getToggleList['info'],
-        }"
+        v-if="this.$store.getters.getToggleList['info']"
       >
         <TeamInfo></TeamInfo>
       </div>
@@ -27,17 +25,19 @@
             v-for="item in component.items"
             :key="item.title"
           >
-            <div>{{ item.title }}</div>
+            <component :is="resolveComponent(item.title)"></component>
           </div>
         </draggable>
       </div>
-    </draggable>
+    </div>
   </div>
 </template>
 
 <script>
 import Video from "@/components/Video.vue";
 import TeamInfo from "@/components/TeamInfo.vue";
+import PlayerStats from "@/components/dragComponents/PlayerStats.vue";
+import MatchStats from "@/components/dragComponents/MatchStats.vue";
 import draggable from "vuedraggable";
 import { mapGetters } from "vuex";
 
@@ -46,6 +46,8 @@ export default {
     Video,
     TeamInfo,
     draggable,
+    PlayerStats,
+    MatchStats,
   },
   data() {
     return {
@@ -56,37 +58,6 @@ export default {
       away_teamName: "",
       home_lineup: [],
       away_lineup: [],
-      // components: [
-      //   {
-      //     index: 1,
-      //     items: [
-      //       {
-      //         title: "item 1",
-      //       },
-      //       {
-      //         title: "item 4",
-      //       },
-      //       {
-      //         title: "item 5",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     index: 2,
-      //     items: [
-      //       {
-      //         title: "item 2",
-      //       },
-      //       {
-      //         title: "item 3",
-      //       },
-      //       {
-      //         title: "item 6",
-      //       },
-      //     ],
-      //   },
-      // ],
-      // unactive_components: [],
     };
   },
   async mounted() {
@@ -120,6 +91,13 @@ export default {
     },
   },
   methods: {
+    resolveComponent(title) {
+      if (this.$options.components[title]) {
+        console.log(title);
+        return title;
+      }
+      return "div"; // Fallback to 'div' if the component does not exist
+    },
     targetChange(target) {
       if (target) {
         this.targetToggle = false;
@@ -272,10 +250,10 @@ div {
 }
 .drag-area {
   position: absolute;
-  top: 8rem;
-  left: -2rem;
+  top: 16rem;
+  left: 2rem;
   width: calc((100% - 74rem) / 2);
-  height: calc(100% - 12rem);
+  height: calc(100% - 20rem);
   cursor: pointer;
   z-index: 9999;
 }
@@ -295,11 +273,11 @@ div {
 }
 .drag-content {
   width: 100%;
-  height: 30%;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
   box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.3);
   border-radius: 1rem;
+  height: 45%;
 }
 .flag {
   cursor: pointer;

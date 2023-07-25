@@ -7,27 +7,44 @@ from app.schemas.matches import Events, Player
 
 router = APIRouter()
 # match_id = 2057988
-match_events = pd.read_csv('./matches/KOR.GER/match_events_korean.csv')
+match_events = pd.read_csv('./matches/KOR.GER/match_events_korean_final.csv')
 phase_records = pd.read_csv('./matches/KOR.GER/phase_records_korean_sorted.csv')
-all_player_stats = pd.read_csv('./matches/KOR.GER/matches_player_stats_korean.csv')
+all_player_stats = pd.read_csv('./matches/KOR.GER/all_player_stats_grouped.csv')
+per_90min_stats = pd.read_csv('./matches/KOR.GER/player_stats_per_90min.csv')
 seq_records = pd.read_csv('./matches/KOR.GER/seq_records.csv')
-match_shots = pd.read_csv('./matches/KOR.GER/match_shots_korean.csv')
+match_shots = pd.read_csv('./matches/KOR.GER/match_shots_korean_final.csv')
 
-# 이벤트 데이터를 시간에 따라 필터링
 def filter_by_time(match_events, start_time=None, end_time=None):
     # Set the default values
     if start_time is None:
         start_time = match_events['time'].min()
     if end_time is None:
         end_time = match_events['time'].max()
-    
-    # Convert time to minutes
-    match_events['time'] = match_events['time'] / 60
+
+    # Determine the period and adjust the times if necessary
+    if end_time >= 2882:
+        period = '2H'
+        end_time -= 2882
+    else:
+        period = '1H'
+
+    # print("start_time:", start_time)
+    # print("end_time:", end_time)
+    # print("period:", period)
 
     # Filter the events
-    filtered_events = match_events[(match_events['time'] >= start_time) & (match_events['time'] <= end_time)]
+    if period == '2H':
+        # If the period is '2H', include all events from '1H' plus those from '2H' within the specified times
+        filtered_events = pd.concat([
+            match_events[match_events['period'] == '1H'],
+            match_events[(match_events['period'] == '2H') & (match_events['time'] >= start_time) & (match_events['time'] <= end_time)]
+        ])
+    else:
+        # If the period is not '2H', filter as usual
+        filtered_events = match_events[(match_events['period'] == period) & (match_events['time'] >= start_time) & (match_events['time'] <= end_time)]
     
     return filtered_events
+
 
 # 이벤트 데이터 인덱스를 기반으로 공격 시퀀스 검출
 def detect_attack_sequences(match_events, first_idx, last_idx):
@@ -61,6 +78,50 @@ def find_sequence(index: int):
             return column
     return "Index not found in any column"
 
+def calculate_stats(player_name):
+    # Define the stats and their related columns
+    stats_columns = {
+        '공격 포인트': ['goals_per_90min', 'assists_per_90min'],
+        '슈팅': ['total_shots_per_90min', 'shots_on_target_per_90min'],
+        '패스': ['total_passes_per_90min', 'pass_accuracy'],
+        '수비': ['interceptions_per_90min', 'tackle_per_90min', 'clearances_per_90min'],
+        '골키퍼 수비': ['total_saves_per_90min','save_rate']
+    }
+
+    goalkeepers = ['조현우', 'M. 노이어']
+
+    # Calculate the percentile ranks
+    # 랭킹을 매기지만 all_player_stats에서의 수치가 0일 경우 0으로 설정, 동률일 경우 playing_time이 높은 선수를 상위로 설정
+    cols = per_90min_stats.columns[3:]
+    player_stats_percentiles = per_90min_stats[cols].rank(pct=True, method='min', na_option='bottom')
+    player_stats_percentiles = player_stats_percentiles.fillna(0)
+
+    print(player_stats_percentiles)
+
+    # concat the player names
+    player_stats_percentiles['player_name'] = per_90min_stats['player_name']
+
+    # 골키퍼를 제외한 다른 선수들의 골키퍼 수비 수치를 0으로 설정
+    player_stats_percentiles.loc[~player_stats_percentiles['player_name'].isin(goalkeepers), ['total_saves_per_90min', 'save_rate']] = 0
+
+    # 골키퍼의 스텟 중 골키퍼 수비와 패스를 제외한 나머지 스텟을 0으로 설정
+    player_stats_percentiles.loc[player_stats_percentiles['player_name'].isin(goalkeepers), ['goals_per_90min', 'assists_per_90min', 'total_shots_per_90min', 'shots_on_target_per_90min']] = 0
+
+    # Get the player's data
+    player_data = player_stats_percentiles[player_stats_percentiles['player_name'] == player_name]
+
+    # Check if the player data is empty
+    if player_data.empty:
+        return f"No data found for player {player_name}"
+    
+    # Calculate the average percentile rank for each stat
+    stats = {}
+    for stat, columns in stats_columns.items():
+        stats[stat] = player_data[columns].mean(axis=1).values[0]
+
+    return stats
+
+
 # 현재 시간에 출전 중인 선수들의 목록을 반환
 @router.get("/lineup/{current_time}")
 def get_teams(current_time: float = None):
@@ -68,8 +129,15 @@ def get_teams(current_time: float = None):
     if current_time is None:
         return {}
     
+     # Determine the period and adjust the times if necessary
+    if current_time >= 2882:
+        period = '2H'
+        current_time -= 2882
+    else:
+        period = '1H'
+    
     # Filter rows where current_time is between start_time and end_time
-    filtered_data = phase_records[(phase_records['start_time'] <= current_time) & (phase_records['end_time'] > current_time)]
+    filtered_data = phase_records[(phase_records['period'] == period) & (phase_records['start_time'] <= current_time) & (phase_records['end_time'] > current_time)]
     
     # Initialize an empty dictionary
     teams = {}
@@ -80,6 +148,8 @@ def get_teams(current_time: float = None):
         player_names = ast.literal_eval(row['player_names'])
         # Add to dictionary
         teams[row['team_name']] = player_names
+
+    print(teams)
         
     return teams
 
@@ -106,84 +176,199 @@ def filter_events(Evnets: Events):
 
 # 경기 통계 데이터(골, 도움 등 각종 스텟들)를 시간대에 따라 반환
 @router.get("/stats/{current_time}")
-def generate_player_stats(current_time: Optional[int] = None):
+def generate_player_stats(current_time: float):
     # Data loading
-    filtered_events = filter_by_time(match_events, start_time=0, end_time=current_time * 60)
-    filtered_events = filtered_events[filtered_events['period'] != 'P']
+    filtered_events = filter_by_time(match_events, end_time=current_time)
+    # print(filtered_events)
 
     # Goal stats
-    goal_records = filtered_events[filtered_events['tags'].apply(lambda x: 'Goal' in x)]
-    goals = goal_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    goals.name = 'goals'
+    try:
+        goal_records = filtered_events[
+            (filtered_events['event_type'] == 'Shot') & 
+            (filtered_events['tags'].apply(lambda x: x.count('Goal') == 2))]
 
-    own_goal_records = filtered_events[filtered_events['tags'].apply(lambda x: 'Own goal' in x)]
-    own_goals = own_goal_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    own_goals.name = 'own_goals'
+        if not goal_records.empty:
+            goals = goal_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            goals.name = 'goals'
+        else:
+            goals = pd.Series(dtype='int')
+            goals.name = 'goals'
+    except KeyError:
+        goals = pd.Series(dtype='int')
+        goals.name = 'goals'
 
-    assist_records = filtered_events[filtered_events['tags'].apply(lambda x: 'Assist' in x)]
-    assists = assist_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    assists.name = 'assists'
+    try:
+        own_goal_records = filtered_events[filtered_events['tags'].apply(lambda x: 'Own goal' in x)]
+        if not own_goal_records.empty:
+            own_goals = own_goal_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            own_goals.name = 'own_goals'
+        else:
+            own_goals = pd.Series(dtype='int')
+            own_goals.name = 'own_goals'
+    except KeyError:
+        own_goals = pd.Series(dtype='int')
+        own_goals.name = 'own_goals'
+
+    try:
+        assist_records = filtered_events[filtered_events['tags'].apply(lambda x: 'Assist' in x)]
+        if not assist_records.empty:
+            assists = assist_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            assists.name = 'assists'
+        else:
+            assists = pd.Series(dtype='int')
+            assists.name = 'assists'
+    except KeyError:
+        assists = pd.Series(dtype='int')
+        assists.name = 'assists'
 
     goal_stats_list = [goals, assists, own_goals]
     goal_stats = pd.concat(goal_stats_list, axis=1).fillna(0).astype(int)
 
     # Shot stats
-    shot_records = filtered_events[
-        (filtered_events['event_type'] == 'Shot') |
-        (filtered_events['sub_event_type'].isin(['Free kick shot', 'Penalty']))
-    ]
-    shots = shot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    shots.name = 'total_shots'
+    try:
+        shot_records = filtered_events[
+            (filtered_events['event_type'] == 'Shot') |
+            (filtered_events['sub_event_type'].isin(['Free kick shot', 'Penalty']))
+        ]
+        if not shot_records.empty:
+            shots = shot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            shots.name = 'total_shots'
+        else:
+            shots = pd.Series(dtype='int')
+            shots.name = 'total_shots'
+    except KeyError:
+        shots = pd.Series(dtype='int')
+        shots.name = 'total_shots'
 
-    acc_shot_records = shot_records[shot_records['tags'].apply(lambda x: 'Accurate' in x)]
-    acc_shots = acc_shot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    acc_shots.name = 'shots_on_target'
+    try:
+        acc_shot_records = shot_records[shot_records['tags'].apply(lambda x: 'Accurate' in x)]
+        if not acc_shot_records.empty:
+            acc_shots = acc_shot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            acc_shots.name = 'shots_on_target'
+        else:
+            acc_shots = pd.Series(dtype='int')
+            acc_shots.name = 'shots_on_target'
+    except KeyError:
+        acc_shots = pd.Series(dtype='int')
+        acc_shots.name = 'shots_on_target'
 
-    rshot_records = shot_records[shot_records['tags'].apply(lambda x: 'Right foot' in x)]
-    rshots = rshot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    rshots.name = 'rfoot_shots'
+    try:
+        rshot_records = shot_records[shot_records['tags'].apply(lambda x: 'Right foot' in x)]
+        if not rshot_records.empty:
+            rshots = rshot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            rshots.name = 'rfoot_shots'
+        else:
+            rshots = pd.Series(dtype='int')
+            rshots.name = 'rfoot_shots'
+    except KeyError:
+        rshots = pd.Series(dtype='int')
+        rshots.name = 'rfoot_shots'
 
-    lshot_records = shot_records[shot_records['tags'].apply(lambda x: 'Left foot' in x)]
-    lshots = lshot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    lshots.name = 'lfoot_shots'
+    try:
+        lshot_records = shot_records[shot_records['tags'].apply(lambda x: 'Left foot' in x)]
+        if not lshot_records.empty:
+            lshots = lshot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            lshots.name = 'lfoot_shots'
+        else:
+            lshots = pd.Series(dtype='int')
+            lshots.name = 'lfoot_shots'
+    except KeyError:
+        lshots = pd.Series(dtype='int')
+        lshots.name = 'lfoot_shots'
 
-    hshot_records = shot_records[shot_records['tags'].apply(lambda x: 'Head/body' in x)]
-    hshots = hshot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    hshots.name = 'header_shots'
+    try:
+        hshot_records = shot_records[shot_records['tags'].apply(lambda x: 'Head/body' in x)]
+        if not hshot_records.empty:
+            hshots = hshot_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            hshots.name = 'header_shots'
+        else:
+            hshots = pd.Series(dtype='int')
+            hshots.name = 'header_shots'
+    except KeyError:
+        hshots = pd.Series(dtype='int')
+        hshots.name = 'header_shots'
 
     shot_stats_list = [shots, acc_shots, rshots, lshots, hshots]
     shot_stats = pd.concat(shot_stats_list, axis=1).fillna(0).astype(int)
 
     # Foul stats
-    foul_records = filtered_events[filtered_events['event_type'] == 'Foul']
-    fouls = foul_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    fouls.name = 'fouls'
+    try:
+        foul_records = filtered_events[filtered_events['event_type'] == 'Foul']
+        if not foul_records.empty:
+            fouls = foul_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            fouls.name = 'fouls'
+        else:
+            fouls = pd.Series(dtype='int')
+            fouls.name = 'fouls'
+    except KeyError:
+        fouls = pd.Series(dtype='int')
+        fouls.name = 'fouls'
 
-    offside_records = filtered_events[filtered_events['event_type'] == 'Offside']
-    offsides = offside_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    offsides.name = 'offsides'
+    try:
+        offside_records = filtered_events[filtered_events['event_type'] == 'Offside']
+        if not offside_records.empty:
+            offsides = offside_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            offsides.name = 'offsides'
+        else:
+            offsides = pd.Series(dtype='int')
+            offsides.name = 'offsides'
+    except KeyError:
+        offsides = pd.Series(dtype='int')
+        offsides.name = 'offsides'
 
-    yellow_records = foul_records[foul_records['tags'].apply(lambda x: 'Yellow card' in x)]
-    yellows = yellow_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    yellows.name = 'yellow_cards'
+    try:
+        yellow_records = foul_records[foul_records['tags'].apply(lambda x: 'Yellow card' in x)]
+        if not yellow_records.empty:
+            yellows = yellow_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            yellows.name = 'yellow_cards'
+        else:
+            yellows = pd.Series(dtype='int')
+            yellows.name = 'yellow_cards'
+    except KeyError:
+        yellows = pd.Series(dtype='int')
+        yellows.name = 'yellow_cards'
 
-    red_records = foul_records[foul_records['tags'].apply(lambda x: 'Red card' in x)]
-    reds = red_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    reds.name = 'red_cards'
+    try:
+        red_records = foul_records[foul_records['tags'].apply(lambda x: 'Red card' in x)]
+        if not red_records.empty:
+            reds = red_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            reds.name = 'red_cards'
+        else:
+            reds = pd.Series(dtype='int')
+            reds.name = 'red_cards'
+    except KeyError:
+        reds = pd.Series(dtype='int')
+        reds.name = 'red_cards'
 
     foul_stats = pd.concat([fouls, offsides, yellows, reds], axis=1).fillna(0).astype(int)
 
     # Pass stats
-    pass_records = filtered_events[
-        (filtered_events['event_type'] == 'Pass') |
-        (filtered_events['sub_event_type'].isin(['Free kick', 'Free kick cross', 'corner']))
-    ]
-    passes = pass_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    passes.name = 'total_passes'
+    try:
+        pass_records = filtered_events[
+            (filtered_events['event_type'] == 'Pass') |
+            (filtered_events['sub_event_type'].isin(['Free kick', 'Free kick cross', 'corner']))
+        ]
+        if not pass_records.empty:
+            passes = pass_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            passes.name = 'total_passes'
+        else:
+            passes = pd.Series(dtype='int')
+            passes.name = 'total_passes'
+    except KeyError:
+        passes = pd.Series(dtype='int')
+        passes.name = 'total_passes'
 
-    acc_pass_records = pass_records[pass_records['tags'].apply(lambda x: 'Accurate' in x)]
-    acc_passes = acc_pass_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
-    acc_passes.name = 'acc_passes'
+    try:
+        acc_pass_records = pass_records[pass_records['tags'].apply(lambda x: 'Accurate' in x)]
+        if not acc_pass_records.empty:
+            acc_passes = acc_pass_records.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+            acc_passes.name = 'acc_passes'
+        else:
+            acc_passes = pd.Series(dtype='int')
+            acc_passes.name = 'acc_passes'
+    except KeyError:
+        acc_passes = pd.Series(dtype='int')
+        acc_passes.name = 'acc_passes'
 
     pass_stats = pd.concat([passes, acc_passes], axis=1).fillna(0).astype(int)
     pass_stats['pass_accuracy'] = (pass_stats['acc_passes'] / pass_stats['total_passes']).round(2)
@@ -250,15 +435,99 @@ def generate_player_stats(current_time: Optional[int] = None):
 
     # Concatenation
     player_stats = pd.concat([goal_stats, shot_stats, foul_stats, pass_stats], axis=1, sort=True).fillna(0)
+    
+    stat_event_types = {
+        'key_passes': ('Pass', 'Smart pass', 'Accurate'),
+        'interceptions': ('Duel', ['Ground defending duel', 'Ground loose ball duel'], 'Interception'),
+        'tackle': ('Duel', ['Ground defending duel', 'Ground attacking duel'], None),
+        'tackle_accuracy': ('Duel', ['Ground defending duel', 'Ground attacking duel'], 'Accurate'),
+        'clearances': ('Others on the ball', 'Clearance', None)
+    }
+
+    # Calculate each statistic for each player
+    for stat, (event_type, sub_event_types, tag) in stat_event_types.items():
+        if isinstance(sub_event_types, list):
+            player_stats[stat] = filtered_events[(filtered_events['event_type'] == event_type) & (filtered_events['sub_event_type'].isin(sub_event_types)) & (filtered_events['tags'].str.contains(tag) if tag else True)].groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+        else:
+            player_stats[stat] = filtered_events[(filtered_events['event_type'] == event_type) & (filtered_events['sub_event_type'] == sub_event_types) & (filtered_events['tags'].str.contains(tag) if tag else True)].groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+
+    # Calculate the number of key passes for each player
+    key_pass_events = filtered_events[(filtered_events['event_type'] == 'Pass') & (filtered_events['sub_event_type'] == 'Smart pass') & (filtered_events['tags'].apply(lambda x: 'Accurate' in x))]
+    if not key_pass_events.empty:
+        player_stats['key_passes'] = key_pass_events.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+
+    # Calculate the number of interceptions for each player
+    interception_events = filtered_events[(filtered_events['tags'].apply(lambda x: 'Interception' in x))]
+    if not interception_events.empty:
+        player_stats['interceptions'] = interception_events.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+
+    # Calculate the number of tackles and successful tackles for each player
+    tackle_events = filtered_events[(filtered_events['event_type'] == 'Duel') & (filtered_events['sub_event_type'].isin(['Ground defending duel', 'Ground attacking duel']))]
+    if not tackle_events.empty:
+        player_stats['tackle'] = tackle_events.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+
+    successful_tackle_events = tackle_events[tackle_events['tags'].str.contains('Accurate')]
+    if not successful_tackle_events.empty:
+        player_stats['successful_tackles'] = successful_tackle_events.groupby(['team_id', 'team_name', 'player_id', 'player_name'])['event_id'].count()
+
+    # Calculate tackle accuracy as the probability of a successful tackle
+    if 'tackle' in player_stats.columns and 'successful_tackles' in player_stats.columns:
+        player_stats['tackle_accuracy'] = (player_stats['successful_tackles'] / player_stats['tackle']).round(2)
+        player_stats['tackle_accuracy'] = player_stats['tackle_accuracy'].fillna(0)
+
+    # Re-calculate total saves and successful saves for each team (since there is only one goalkeeper in each team)
+    team_stats = pd.DataFrame()
+    save_attempt_events = filtered_events[filtered_events['event_type'] == 'Save attempt']
+    if not save_attempt_events.empty:
+        team_stats['total_saves'] = save_attempt_events.groupby('team_id')['event_id'].count()
+
+    successful_save_attempt_events = save_attempt_events[save_attempt_events['tags'].str.contains('Accurate')]
+    if not successful_save_attempt_events.empty:
+        team_stats['successful_saves'] = successful_save_attempt_events.groupby('team_id')['event_id'].count()
+
+    # Re-calculate save rate for each team
+    if 'successful_saves' in team_stats.columns and 'effective_shots' in team_stats.columns:
+        team_stats['save_rate'] = (team_stats['successful_saves'] / team_stats['total_saves']).round(2)
+        team_stats['save_rate'] = team_stats['save_rate'].fillna(0)
+
+    # Re-get the goalkeeper for each team
+    if not save_attempt_events.empty:
+        team_goalkeepers = save_attempt_events.groupby('team_id')['player_name'].first()
+
+    # Initialize goalkeeper stats in player_stats
+    player_stats['total_saves'] = 0
+    player_stats['successful_saves'] = 0
+    player_stats['save_rate'] = 0
+
+    # Re-add the goalkeeper statistics to the player statistics
+    if 'team_goalkeepers' in locals():
+        for team, goalkeeper in team_goalkeepers.items():
+            # Create a boolean mask for matching rows
+            player_stats.index.names = ['team_id', 'team_name', 'player_id', 'player_name']
+
+            mask = (player_stats.index.get_level_values('team_id') == team) & \
+                (player_stats.index.get_level_values('player_name') == goalkeeper)
+            
+            # Check if there are any matching rows
+            if mask.any():
+                for stat in ['total_saves', 'successful_saves', 'save_rate']:
+                    if stat in team_stats.columns:
+                        # Update stats for matching rows
+                        player_stats.loc[mask, stat] = team_stats.loc[team, stat]
+    
     for col in player_stats.columns:
-        if col != 'pass_accuracy':
-            player_stats[col] = player_stats[col].astype(int)
+        if col != 'pass_accuracy' and col != 'tackle_accuracy' and col != 'save_rate':
+            player_stats[col] = player_stats[col].fillna(0).astype(int)
 
-    player_stats = pd.merge(player_stats.reset_index(), playing_times)
+    player_stats.reset_index(inplace=True)
+    player_stats.rename(columns={"level_0": "team_id", "level_1": "team_name", "level_2": "player_id", "level_3": "player_name"}, inplace=True)
 
-    cols = player_stats.columns.tolist()
-    cols = cols[:4] + ['playing_time'] + cols[4:-2]
-    return player_stats[cols]
+    player_stats = pd.merge(player_stats, playing_times, left_on='player_id', right_on='player_id')
+
+    # cols = player_stats.columns.tolist()
+    # cols = cols[:4] + ['playing_time'] + cols[4:-1]
+
+    return player_stats.to_dict(orient='records')
 
 # 대회 선수들 통계 합산 반환 -> TOP 10까지 반환 및 특정 선수 통계 반환
 @router.post("/group")
@@ -288,9 +557,10 @@ def read_top10_players(Player: Player):
 @router.get("/player/{player_name}")
 def read_player(player_name: str):
     # Filter the data by player_name
-    data = all_player_stats[all_player_stats['player_name'] == player_name]
+    radar_data = calculate_stats(player_name)
+    print(radar_data)
 
-    return data.to_dict()
+    return radar_data
 
 # 공격 시퀀스 데이터 반환
 @router.get("/sequence/{current_time}")

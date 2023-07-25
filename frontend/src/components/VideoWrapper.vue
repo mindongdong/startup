@@ -118,7 +118,7 @@ export default {
       tooltipHideTimeout: null,
       isComponentsListVisible: false,
       componentList: [
-        "item 1",
+        "GroupStats",
         "item 2",
         "item 3",
         "item 4",

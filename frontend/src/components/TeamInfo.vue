@@ -145,7 +145,7 @@
 </template>
 
 <script>
-import { getMatchLineup } from "@/api/index";
+import {getMatchLineup} from "@/api/index";
 
 export default {
   name: "Team",
@@ -162,7 +162,7 @@ export default {
     };
   },
   async mounted() {
-    const lineup = await getMatchLineup(1);
+    const lineup = await getMatchLineup(this.$store.getters.getCurrentTime);
     console.log(lineup.data);
     const team_list = Object.keys(lineup.data);
     this.home_teamName = team_list[0];
