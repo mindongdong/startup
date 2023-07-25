@@ -211,7 +211,7 @@ export default {
       //ev.target이 부모 태그의 몇번째 자식인지 출력하는 코드
       let index = Array.prototype.indexOf.call(
         ev.target.parentNode.childNodes,
-        ev.target,
+        ev.target
       );
       console.log(index);
       if (index > 10) {
@@ -249,7 +249,7 @@ export default {
           const prediction = newValue[i];
           const kx = video.clientWidth / 1280;
           const ky = video.clientHeight / 720;
-          const zero = Object.values(prediction).every(x => x === 0);
+          const zero = Object.values(prediction).every((x) => x === 0);
           if (!zero) {
             playerBox_list[i].style.left =
               (prediction[0] - prediction[2] / 100) * kx + "px";
@@ -284,16 +284,16 @@ export default {
   z-index: 9998;
 }
 .playerBox__item {
-  /* display: none; */
+  display: none;
   position: absolute;
   z-index: 9998;
   cursor: pointer;
   /* border: 2px solid red; */
   justify-content: center;
   align-items: center;
-  /* border: none; */
-  border: 1px solid rgba(255, 255, 255, 0.303);
-  background: rgba(255, 255, 255, 0.15);
+  /* border: 1px solid rgba(255, 255, 255, 0.303); */
+  /* background: rgba(255, 255, 255, 0.15); */
+  border: none;
 }
 .playerBox__item:hover {
   display: flex;

@@ -9,7 +9,7 @@
         "
         @dblclick="flagClick"
       >
-        <p class="team__icon--name" draggable="false">{{ home_teamName }}</p>
+        <!-- <p class="team__icon--name" draggable="false">{{ home_teamName }}</p> -->
         <img
           class="team__icon--img"
           draggable="false"
@@ -24,7 +24,7 @@
         "
         @dblclick="flagClick"
       >
-        <p class="team__icon--name" draggable="false">{{ away_teamName }}</p>
+        <!-- <p class="team__icon--name" draggable="false">{{ away_teamName }}</p> -->
         <img
           class="team__icon--img"
           draggable="false"
@@ -145,7 +145,7 @@
 </template>
 
 <script>
-import {getMatchLineup} from "@/api/index";
+import { getMatchLineup } from "@/api/index";
 
 export default {
   name: "Team",
@@ -235,11 +235,17 @@ export default {
   align-items: center;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
-  box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.3);
+  /* box-shadow: 0px 0px 8px 5px rgba(255, 255, 255, 0.3); */
+  /* box-shadow: 0px 2px 8px -1px rgba(0, 0, 0, 1); */
   border-radius: 1rem;
   z-index: 9998;
   color: rgb(218, 222, 218);
   font-weight: 400;
+  transition: all 0.3s ease;
+}
+.team-info:hover {
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: 0px 2px 6px -1px rgba(0, 0, 0, 1);
 }
 .team-selector {
   display: flex;
@@ -265,7 +271,7 @@ export default {
   width: 100%;
   height: 90%;
   background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  /* box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); */
   /* backdrop-filter: blur(10px); */
   border-radius: 1rem;
   position: relative;
@@ -319,23 +325,36 @@ export default {
   object-fit: contain;
   opacity: 0.9;
 }
+
 .team__icon {
-  width: 5rem;
-  height: 5rem;
-  border-radius: 1.5rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
   background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  /* box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); */
   /* backdrop-filter: blur(10px); */
-  margin: 0 1rem;
+  margin: 0 0.5rem 0 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+.team__icon:hover {
+  /* margin-top: -1px; */
+  background: rgba(40, 40, 40, 0.5);
+  box-shadow: 0px 1px 4px -1px rgba(0, 0, 0, 1);
 }
 .team__icon--img {
   width: 2rem;
   height: 2rem;
   opacity: 0.9;
+  transition: all 0.3s ease; /* 애니메이션을 추가합니다. */
+}
+.team__icon--img:hover {
+  width: 2.2rem;
+  height: 2.2rem;
 }
 .team__playerList {
   width: 89%;
@@ -346,10 +365,11 @@ export default {
   align-items: center;
 }
 .playerList__player {
-  width: 7rem;
-  height: 10.5rem;
+  top: -0.25rem;
+  width: 6.5rem;
+  height: 10rem;
   background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  /* box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); */
   /* backdrop-filter: blur(10px); */
   margin-left: 1rem;
   border-radius: 0.5rem;
@@ -359,6 +379,14 @@ export default {
   align-items: center;
   position: relative;
   flex-shrink: 0; /* add this property to keep the width fixed */
+  transition: all 0.5s ease; /* 애니메이션을 추가합니다. */
+}
+.playerList__player:hover {
+  width: 7.5rem;
+  height: 10.5rem;
+  background: rgba(19, 19, 19, 0.5);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 1);
+  transition: all 0.3s ease; /* 애니메이션을 추가합니다. */
 }
 .playerList__name {
   width: 100%;

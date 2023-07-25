@@ -17,7 +17,7 @@
         />
       </div>
       <Video ref="videoRef"></Video>
-      <div class="info-container" v-bind:class="{hide__bottom: infoToggle}">
+      <div class="info-container" v-bind:class="{ hide__bottom: infoToggle }">
         <TeamInfo></TeamInfo>
       </div>
     </div>
@@ -27,7 +27,7 @@
 <script>
 import Video from "@/components/Video.vue";
 import TeamInfo from "@/components/TeamInfo.vue";
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 
 export default {
   components: {
@@ -48,18 +48,18 @@ export default {
   async mounted() {
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });
-    video.addEventListener("timeupdate", ev => {
+    video.addEventListener("timeupdate", (ev) => {
       if (Math.round(video.currentTime) < 10) {
         this.videoTimestamp = `00:0${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       } else {
         this.videoTimestamp = `00:${Math.round(
-          video.currentTime,
+          video.currentTime
         )} / 00:${Math.round(video.duration)}`;
       }
     });

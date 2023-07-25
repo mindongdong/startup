@@ -1,6 +1,6 @@
 <template>
   <div id="layout">
-    <img class="background-image" src="@/assets/background_pro3.jpg" />
+    <img class="background-image" src="@/assets/background_pro5.png" />
     <div class="contents-container">
       <Video ref="videoRef"></Video>
       <div
@@ -212,13 +212,21 @@ div {
   position: relative;
   width: calc(100% - 2rem);
   height: 0;
-  margin: 3rem;
+  margin: 4.5rem;
   padding-bottom: 54.5%;
   /* padding-bottom: 2rem; */
   border-radius: 1rem;
-  background: rgba(89, 89, 89, 0.3);
-  backdrop-filter: blur(5px);
-  box-shadow: 0px 0px 3px 2px rgba(255, 217, 244, 0.711);
+  background: rgba(60, 60, 60, 0.5);
+  /* backdrop-filter: blur(5px); */
+  /* box-shadow: 1px 1px 2px 2px rgba(100, 100, 100, 1),
+    0px 0px 1px 4px rgba(255, 217, 244, 0.711), 0px 1px 5px 3px rgba(0, 0, 0, 1); */
+  box-shadow: 0px 0px 1px 1px rgba(255, 217, 244, 0.711),
+    0px 1px 5px 1px rgba(0, 0, 0, 1);
+}
+.contents-container:hover {
+  background: rgba(71, 71, 71, 0.5);
+  box-shadow: 0px 0px 1px 1px rgba(255, 217, 244, 0.711),
+    0px 2px 8px 1px rgba(0, 0, 0, 1);
 }
 .view-mode {
   position: absolute;
@@ -240,7 +248,7 @@ div {
 } */
 .info-container {
   position: absolute;
-  bottom: 4rem;
+  bottom: 6rem;
   left: calc(50% - 33rem);
   width: 66rem;
   height: calc(881px - 42.5rem);
@@ -255,14 +263,14 @@ div {
 .drag-area {
   position: absolute;
   top: 10rem;
-  left: 2rem;
-  width: calc((100% - 74rem) / 2);
+  left: -4rem;
+  width: calc((100% - 62rem) / 2);
   height: calc(100% - 20rem);
   cursor: pointer;
   z-index: 9999;
 }
 .drag-area:last-child {
-  left: calc(100% + 2rem - calc((100% - 74rem) / 2));
+  left: calc(100% + 4rem - calc((100% - 62rem) / 2));
 }
 .drag-component {
   width: 100%;
@@ -278,10 +286,12 @@ div {
 .drag-content {
   width: 100%;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(10px);
-  box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
   border-radius: 1rem;
   height: 45%;
+}
+.drag-content:hover {
+  box-shadow: 0px 2px 6px -1px rgba(0, 0, 0, 1);
 }
 .flag {
   cursor: pointer;
