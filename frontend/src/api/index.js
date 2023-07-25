@@ -5,7 +5,7 @@ const instance = axios.create({
 });
 
 function getTrackingInfo(frame) {
-  return instance.post("/routes/tracking/info", frame);
+  return instance.get(`/routes/tracking/info/${frame}`);
 }
 
 function getMatchLineup(current_time) {
@@ -29,7 +29,7 @@ function getPlayerStats(player_name) {
 }
 
 function getAttackSequence(current_time) {
-  return instance.get(`/routes/matches/attack${current_time}`);
+  return instance.get(`/routes/matches/sequence/${current_time}`);
 }
 
 function getMatchShots(current_time) {

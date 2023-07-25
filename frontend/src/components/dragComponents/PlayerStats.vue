@@ -71,21 +71,6 @@ export default {
       away_teamName: "",
       home_lineup: [],
       away_lineup: [],
-      recordDict: {
-        득점: "goals",
-        도움: "assists",
-        슛: "total_shots",
-        "유효 슛": "shots_on_target",
-        파울: "fouls",
-        패스: "total_passes",
-        "키 패스": "key_passes",
-        "패스 성공률": "pass_accuracy",
-        인터셉트: "interceptions",
-        태클: "tackle",
-        "태클 성공률": "tackle_accuracy",
-        선방: "successful_saves",
-      },
-      timeInterval: null,
     };
   },
   computed: {
@@ -137,6 +122,9 @@ export default {
           r: {
             pointLabels: {
               color: "white",
+              font: {
+                size: 14,
+              },
             },
             ticks: {
               suggestedMin: 0, // Set min value

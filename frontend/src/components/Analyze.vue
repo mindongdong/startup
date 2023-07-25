@@ -291,8 +291,9 @@ export default {
   /* border: 2px solid red; */
   justify-content: center;
   align-items: center;
-  transition: all 50ms linear;
   /* border: none; */
+  border: 1px solid rgba(255, 255, 255, 0.303);
+  background: rgba(255, 255, 255, 0.15);
 }
 .playerBox__item:hover {
   display: flex;

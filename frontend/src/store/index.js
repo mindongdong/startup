@@ -33,7 +33,7 @@ export default new Vuex.Store({
         index: 2,
         items: [
           {
-            title: "item 2",
+            title: "AttackSeq",
           },
           {
             title: "item 3",

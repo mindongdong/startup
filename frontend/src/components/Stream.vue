@@ -59,11 +59,11 @@ export default {
       // }
       this.$store.commit("setCurrentVideo", ev.target);
 
-      // // 인터벌 실행
-      // const interval = setInterval(() => {
-      //   this.$parent.getPrediction();
-      // }, 100);
-      // this.$store.commit("setCurrentInterval", interval);
+      // 인터벌 실행
+      const interval = setInterval(() => {
+        this.$parent.getPrediction();
+      }, 50);
+      this.$store.commit("setCurrentInterval", interval);
     },
     timeUpdate() {
       this.$parent.timeUpdate(
