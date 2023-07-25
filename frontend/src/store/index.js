@@ -12,9 +12,8 @@ export default new Vuex.Store({
     currentFrame: 0,
     currentSwapCount: 0,
     toggleList: {
-      info: true,
+      info: false,
       mute: false,
-      change: false,
       components: true,
     },
     components: [
@@ -96,6 +95,9 @@ export default new Vuex.Store({
     },
     setToggleList(state, targetToggle) {
       state.toggleList[targetToggle] = !state.toggleList[targetToggle];
+    },
+    setToggleListTrue(state, targetToggle) {
+      state.toggleList[targetToggle] = true;
     },
     updateComponents(state, componentsData) {
       state.components = componentsData;

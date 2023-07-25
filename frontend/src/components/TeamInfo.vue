@@ -7,7 +7,6 @@
           detailToggle = false;
           teamHome = true;
         "
-        @dblclick="flagClick"
       >
         <!-- <p class="team__icon--name" draggable="false">{{ home_teamName }}</p> -->
         <img
@@ -22,7 +21,6 @@
           detailToggle = false;
           teamHome = false;
         "
-        @dblclick="flagClick"
       >
         <!-- <p class="team__icon--name" draggable="false">{{ away_teamName }}</p> -->
         <img
@@ -64,7 +62,7 @@
         </div>
         <img
           class="playerInfo__img"
-          @click="imageClick"
+          @click="imageClick(player)"
           :src="require(`@/assets/player/${player}.png`)"
         />
       </div>
@@ -102,7 +100,7 @@
         </div>
         <img
           class="playerInfo__img"
-          @click="imageClick"
+          @click="imageClick(player)"
           :src="require(`@/assets/player/${player}.png`)"
         />
       </div>
@@ -172,56 +170,18 @@ export default {
     console.log(this.home_lineup);
   },
   methods: {
-    flagClick(ev) {
-      console.dir(ev.target);
-      if (ev.target.localName === "p") {
-        console.log(ev.target.innerText);
-        if (ev.target.innerText === "아르헨티나") {
-          for (let i = 0; i < 11; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        } else if (ev.target.innerText === "프랑스") {
-          for (let i = 11; i < 22; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        }
-      } else if (ev.target.localName === "img") {
-        console.log(ev.target.parentNode.children[0].innerText);
-        if (ev.target.parentNode.children[0].innerText === "아르헨티나") {
-          for (let i = 0; i < 11; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        } else if (ev.target.parentNode.children[0].innerText === "프랑스") {
-          for (let i = 11; i < 22; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        }
-      } else if (ev.target.localName === "div") {
-        console.log(ev.target.children[0].innerText);
-        if (ev.target.children[0].innerText === "아르헨티나") {
-          for (let i = 0; i < 11; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        } else if (ev.target.children[0].innerText === "프랑스") {
-          for (let i = 11; i < 22; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        }
-      }
+    imageClick(player) {
+      //부모에 있는 imageClick 함수를 호출
+      console.log(player);
+      const parentComponent = this.$parent;
+      parentComponent.imageClick(player);
     },
-    imageClick(ev) {
-      const url = ev.target.src;
-      let match = url.match(/(arg|fr)_(\d+)\./);
-      if (match) {
-        let label = match[1];
-        let number = parseInt(match[2]);
-        console.log(label + "_" + number);
-        if (label === "fr") {
-          this.$refs.videoRef.$refs.analyzeRef.toggleBox(number + 11);
-        } else {
-          this.$refs.videoRef.$refs.analyzeRef.toggleBox(number);
-        }
-      }
+    setDetailIndex(teamHome, idx) {
+      console.log(idx);
+      this.$store.commit("setToggleListTrue", "info");
+      this.detailToggle = true;
+      this.detailIndex = idx;
+      this.teamHome = teamHome;
     },
   },
 };

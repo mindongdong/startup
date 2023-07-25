@@ -7,7 +7,7 @@
           src="@/assets/icons/list.png"
           @click="toggleComponentsList"
         /> -->
-        <ul class="components_list" :class="{ show: isComponentsListVisible }">
+        <ul class="components_list" :class="{show: isComponentsListVisible}">
           <li
             v-for="(item, idx) in Object.keys(componentList)"
             :key="idx"
@@ -15,18 +15,17 @@
           >
             {{ item }}
           </li>
-          <!-- <li></li> -->
-          <!-- <li @click="toggleComponentsList">Close</li> -->
         </ul>
       </div>
       <div class="video-tools__column">
         <img
           class="icon"
-          v-bind:class="{
-            icon_on: this.$store.getters.getToggleList['change'],
-          }"
-          @click="toggleManage('change')"
-          src="@/assets/icons/change.png"
+          v-bind:class="{icon_on: videoStatus.name !== 'default'}"
+          v-for="(videoStatus, idx) in videoStatusList"
+          :key="idx"
+          v-if="videoStatus.status"
+          :src="require(`@/assets/icons/${videoStatus.name}.png`)"
+          @click="setupPlayer(videoStatus.name)"
         />
         <img
           v-if="this.$store.getters.getToggleList['mute']"
@@ -41,14 +40,14 @@
           @click="toggleManage('mute')"
         />
         <img
-          v-bind:class="{ icon_on: this.$store.getters.getToggleList['info'] }"
+          v-bind:class="{icon_on: this.$store.getters.getToggleList['info']}"
           class="icon"
           src="@/assets/icons/showinfo.png"
           @click="toggleManage('info')"
         />
         <img
           v-bind="{
-            class: { icon_on: this.$store.getters.getToggleList['components'] },
+            class: {icon_on: this.$store.getters.getToggleList['components']},
           }"
           class="icon"
           src="@/assets/icons/components2.png"
@@ -72,7 +71,7 @@
       />
       <div
         v-if="showTooltip"
-        :style="{ left: `${mouseX}px` }"
+        :style="{left: `${mouseX}px`}"
         class="time-tooltip"
       >
         {{ tooltipTime }}
@@ -83,7 +82,7 @@
 
 <script>
 import Hls from "hls.js";
-import { mapGetters, mapMutations } from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 export default {
   name: "VideoWrapper",
   props: {
@@ -102,9 +101,10 @@ export default {
       sourceToggle: false,
       currentData: 0,
       percent: 0,
-      videoSource_m3u8: "http://localhost:3000/video/video.m3u8",
+      videoSource_default_m3u8: "http://localhost:3000/video/video.m3u8",
       videoSource_voronoi_m3u8:
         "http://localhost:3000/video/video_voronoi.m3u8",
+      videoSource_pass_m3u8: "http://localhost:3000/video/video_passroot.m3u8",
       showTooltip: false,
       tooltipTime: "",
       tooltipStyle: {},
@@ -117,6 +117,21 @@ export default {
         "공격 시퀀스": "AttackSeq",
         "슈팅 데이터": "ShotStats",
       },
+      hls: null,
+      videoStatusList: [
+        {
+          name: "default",
+          status: true,
+        },
+        {
+          name: "voronoi",
+          status: false,
+        },
+        {
+          name: "pass",
+          status: false,
+        },
+      ],
     };
   },
   computed: {
@@ -160,7 +175,7 @@ export default {
       // Search for the item in active components
       for (let component of this.components) {
         const index = component.items.findIndex(
-          (item) => item.title === this.componentList[itemTitle]
+          item => item.title === this.componentList[itemTitle],
         );
         if (index !== -1) {
           const [item] = component.items.splice(index, 1);
@@ -173,14 +188,14 @@ export default {
       // If not found in active components, search in inactive components
       if (!found) {
         const index = this.unactivate_components.findIndex(
-          (item) => item.title === this.componentList[itemTitle]
+          item => item.title === this.componentList[itemTitle],
         );
         if (index !== -1) {
           const [item] = this.unactivate_components.splice(index, 1);
 
           // Move to the items in items with index 1 or 2
           const targetComponent = this.components.find(
-            (component) => component.items.length < 2
+            component => component.items.length < 2,
           );
 
           if (targetComponent) {
@@ -248,18 +263,18 @@ export default {
         video.pause();
       }
     },
-    videoSwap() {
-      // const video = this.$store.getters.getCurrentVideo;
-      if (!this.sourceToggle) {
-        this.setupPlayer(this.videoSource_voronoi);
-        // video.source = this.videoSource_voronoi;
-      } else {
-        this.setupPlayer(this.videoSource_3min);
-        // video.source = this.videoSource_3min;
-      }
-      this.sourceToggle = !this.sourceToggle;
-    },
-    setupPlayer(source) {
+    setupPlayer(name) {
+      this.videoStatusList.forEach((videoStatus, idx) => {
+        if (videoStatus.name === name) {
+          videoStatus.status = false;
+          // 다음 아이템의 status를 true로 바꾸기, 만약 마지막이면 첫번째 아이템으로
+          if (idx === this.videoStatusList.length - 1) {
+            this.videoStatusList[0].status = true;
+          } else {
+            this.videoStatusList[idx + 1].status = true;
+          }
+        }
+      });
       const video = this.$store.getters.getCurrentVideo;
       const currentFrame = this.$store.getters.getCurrentFrame;
       console.log(video.webkitDecodedFrameCount, currentFrame);
@@ -267,16 +282,19 @@ export default {
       //   "setCurrentFrame",
       //   video.webkitDecodedFrameCount + currentFrame,
       // );
-      this.$store.commit("setSwapCount", 1);
       // 인터벌 멈추고
       clearInterval(this.$store.getters.getCurrentInterval);
+
+      const nextVideoName = this.videoStatusList.find(
+        videoStatus => videoStatus.status,
+      ).name;
 
       if (Hls.isSupported()) {
         if (this.hls) {
           this.hls.destroy();
         }
         this.hls = new Hls();
-        this.hls.loadSource(source);
+        this.hls.loadSource(this[`videoSource_${nextVideoName}_m3u8`]);
         this.hls.attachMedia(video);
         this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
           video.play();
@@ -608,6 +626,16 @@ div {
   object-fit: cover;
 }
 .icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  opacity: 0.5;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 1.2rem;
+  background: rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease; /* 애니메이션을 추가합니다. */
+}
+.icon-wrapper {
   width: 1.6rem;
   height: 1.6rem;
   opacity: 0.5;

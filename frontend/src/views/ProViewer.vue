@@ -7,7 +7,7 @@
         class="info-container"
         v-if="this.$store.getters.getToggleList['info']"
       >
-        <TeamInfo></TeamInfo>
+        <TeamInfo ref="teamInfoRef"></TeamInfo>
       </div>
       <div
         class="drag-area"
@@ -18,7 +18,7 @@
         <draggable
           class="drag-component"
           :list="component.items"
-          :group="{name: 'component'}"
+          :group="{ name: 'component' }"
         >
           <div
             class="drag-content"
@@ -41,7 +41,7 @@ import MatchStats from "@/components/dragComponents/MatchStats.vue";
 import AttackSeq from "@/components/dragComponents/AttackSeq.vue";
 import ShotStats from "@/components/dragComponents/ShotStats.vue";
 import draggable from "vuedraggable";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -67,7 +67,7 @@ export default {
   async mounted() {
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", ev => {
+    video.addEventListener("ended", (ev) => {
       // console.log(ev);
       this.playToggle = false;
     });
@@ -110,62 +110,10 @@ export default {
       }
     },
     setDetailIndex(teamHome, idx) {
-      console.log(idx);
-      this.infoToggle = false;
-      this.detailToggle = true;
-      this.detailIndex = idx;
-      this.teamHome = teamHome;
+      this.$refs.teamInfoRef.setDetailIndex(teamHome, idx);
     },
-    imageClick(ev) {
-      const url = ev.target.src;
-      let match = url.match(/(arg|fr)_(\d+)\./);
-      if (match) {
-        let label = match[1];
-        let number = parseInt(match[2]);
-        console.log(label + "_" + number);
-        if (label === "fr") {
-          this.$refs.videoRef.$refs.analyzeRef.toggleBox(number + 11);
-        } else {
-          this.$refs.videoRef.$refs.analyzeRef.toggleBox(number);
-        }
-      }
-    },
-    flagClick(ev) {
-      console.dir(ev.target);
-      if (ev.target.localName === "p") {
-        console.log(ev.target.innerText);
-        if (ev.target.innerText === "아르헨티나") {
-          for (let i = 0; i < 11; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        } else if (ev.target.innerText === "프랑스") {
-          for (let i = 11; i < 22; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        }
-      } else if (ev.target.localName === "img") {
-        console.log(ev.target.parentNode.children[0].innerText);
-        if (ev.target.parentNode.children[0].innerText === "아르헨티나") {
-          for (let i = 0; i < 11; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        } else if (ev.target.parentNode.children[0].innerText === "프랑스") {
-          for (let i = 11; i < 22; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        }
-      } else if (ev.target.localName === "div") {
-        console.log(ev.target.children[0].innerText);
-        if (ev.target.children[0].innerText === "아르헨티나") {
-          for (let i = 0; i < 11; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        } else if (ev.target.children[0].innerText === "프랑스") {
-          for (let i = 11; i < 22; i++) {
-            this.$refs.videoRef.$refs.analyzeRef.toggleBox(i);
-          }
-        }
-      }
+    imageClick(player) {
+      this.$refs.videoRef.$refs.analyzeRef.toggleBox(player);
     },
   },
 };

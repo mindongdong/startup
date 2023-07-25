@@ -2,185 +2,31 @@
   <ul class="playerBox__list" ref="playerBox">
     <li
       class="playerBox__item"
-      @click="boxClick"
+      v-for="(player, index) in home_lineup"
+      :key="player"
+      @click="boxClick(index)"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
-      <div class="playerBox__name">E.마르티네즈</div>
+      <div class="playerBox__name">{{ player }}</div>
     </li>
     <li
       class="playerBox__item"
-      @click="boxClick"
+      v-for="(player, index) in away_lineup"
+      :key="player"
+      @click="boxClick(index + 11)"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
-      <div class="playerBox__name">N.타글리아피코</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">N.오타멘디</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">C.로메로</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">N.몰리나</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">A.막알리스테르</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">E.페르난데스</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">R.데 파울</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">A.디 마리아</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">J.알바레스</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">L.메시</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">H.요리스</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">J.쿤데</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">R.바란</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">D.우파메카노</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">T.에르난데스</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">A.추아메니</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">A.라비오</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">O.뎀벨레</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">A.그리즈만</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">K.음바페</div>
-    </li>
-    <li
-      class="playerBox__item"
-      @click="boxClick"
-      @mouseover="showCompoenets"
-      @mouseleave="hideCompoenets"
-    >
-      <div class="playerBox__name">O.지루</div>
+      <div class="playerBox__name">{{ player }}</div>
     </li>
   </ul>
 </template>
 
 <script>
+import { getMatchLineup } from "@/api/index.js";
 export default {
+  name: "Analyze",
   props: {
     predictionList: {
       type: Array,
@@ -191,9 +37,24 @@ export default {
   data() {
     return {
       toggle_list: [],
+      home_teamName: "",
+      away_teamName: "",
+      home_lineup: [],
+      away_lineup: [],
+      player_list: [],
     };
   },
-  name: "Analyze",
+  async mounted() {
+    const lineup = await getMatchLineup(this.$store.getters.getCurrentTime);
+    console.log(lineup.data);
+    const team_list = Object.keys(lineup.data);
+    this.home_teamName = team_list[0];
+    this.away_teamName = team_list[1];
+    this.home_lineup = lineup.data[team_list[0]];
+    this.away_lineup = lineup.data[team_list[1]];
+    this.player_list = this.home_lineup.concat(this.away_lineup);
+    console.log(this.home_lineup);
+  },
   methods: {
     showCompoenets(ev) {
       const name = ev.target.childNodes[0];
@@ -203,16 +64,15 @@ export default {
       const name = ev.target.childNodes[0];
       name.style.display = "none";
     },
-    boxClick(ev) {
-      console.log(ev.target);
+    boxClick(index) {
       // Access the parent component
       const parentComponent = this.$parent;
       const grandparentComponent = parentComponent.$parent;
       //ev.target이 부모 태그의 몇번째 자식인지 출력하는 코드
-      let index = Array.prototype.indexOf.call(
-        ev.target.parentNode.childNodes,
-        ev.target
-      );
+      // let index = Array.prototype.indexOf.call(
+      //   ev.target.parentNode.childNodes,
+      //   ev.target
+      // );
       console.log(index);
       if (index > 10) {
         grandparentComponent.setDetailIndex(false, index - 11);
@@ -220,21 +80,35 @@ export default {
         grandparentComponent.setDetailIndex(true, index);
       }
     },
-    toggleBox(num) {
+    toggleBox(player) {
       const playerBox_list = this.$refs.playerBox.childNodes;
+      console.log(player, this.player_list);
+      const num = this.player_list.indexOf(player);
+      console.log("num: " + num);
       let index = this.toggle_list.indexOf(num);
 
       if (index !== -1) {
-        // If num exists in the array, remove it
         this.toggle_list.splice(index, 1);
         playerBox_list[num].classList.remove("select");
         playerBox_list[num].dispatchEvent(new Event("mouseleave"));
       } else {
-        // If num does not exist in the array, add it
         this.toggle_list.push(num);
         playerBox_list[num].classList.add("select");
         playerBox_list[num].dispatchEvent(new Event("mouseover"));
       }
+
+      // const playerBox_list = this.$refs.playerBox.childNodes;
+      // let index = this.toggle_list.indexOf(num);
+
+      // if (index !== -1) {
+      //   this.toggle_list.splice(index, 1);
+      // playerBox_list[num].classList.remove("select");
+      // playerBox_list[num].dispatchEvent(new Event("mouseleave"));
+      // } else {
+      //   this.toggle_list.push(num);
+      // playerBox_list[num].classList.add("select");
+      // playerBox_list[num].dispatchEvent(new Event("mouseover"));
+      // }
     },
   },
   watch: {
@@ -292,10 +166,9 @@ export default {
   justify-content: center;
   align-items: center;
   transition: all 0.1s ease-in-out;
-  border: 1px solid rgba(255, 255, 255, 0.303);
-  background: rgba(255, 255, 255, 0.15);
+  /* border: 1px solid rgba(255, 255, 255, 0.303);
+  background: rgba(255, 255, 255, 0.15); */
 }
-
 .playerBox__item:hover {
   display: flex;
   border: 1px solid rgba(255, 255, 255, 0.303);
