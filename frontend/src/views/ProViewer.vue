@@ -1,6 +1,6 @@
 <template>
   <div id="layout">
-    <img class="background-image" src="@/assets/background_pro.png" />
+    <img class="background-image" src="@/assets/background_pro2.png" />
     <draggable class="contents-container" v-model="components">
       <Video ref="videoRef"></Video>
       <div
