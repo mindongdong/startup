@@ -12,6 +12,7 @@
         /> -->
         <ul class="components_list" :class="{ show: isComponentsListVisible }">
           <li
+            class="components_list--li"
             v-for="(item, idx) in componentList"
             :key="idx"
             @click="toggleComponent(item)"
@@ -53,8 +54,8 @@
           v-bind="{
             class: { icon_on: this.$store.getters.getToggleList['components'] },
           }"
-          class="icon white"
-          src="@/assets/icons/components.png"
+          class="icon"
+          src="@/assets/icons/components2.png"
           @click="
             toggleManage('components');
             toggleComponentsList();
@@ -123,7 +124,7 @@ export default {
   computed: {
     rangeStyle() {
       let progress = this.percent;
-      let color1 = "#FF0000"; // color for the completed part
+      let color1 = "#FFFFFF"; // color for the completed part
       let color2 = "#D3D3D3"; // color for the uncompleted part
       return `background: linear-gradient(90deg, ${color1} ${progress}%, ${color2} ${progress}%);`;
     },
@@ -353,16 +354,14 @@ div {
   position: absolute;
   top: 3rem;
   left: calc(50% + 2.2rem);
-  /* top: 4rem; */
   width: 10rem;
-  height: 1rem;
   display: flex;
   align-items: center;
   z-index: 9999;
 }
 
 .components_list {
-  top: 0rem;
+  top: 1.4rem;
   width: 6rem;
   height: 9rem;
   display: none;
@@ -377,13 +376,18 @@ div {
   padding: 0.8rem;
   flex-direction: column;
   background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  /* box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); */
+  box-shadow: 0px 2px 8px -1px rgba(0, 0, 0, 1);
   backdrop-filter: blur(10px);
   border-radius: 0.5rem;
+  transition: all 0.3s ease;
 }
 
 .components_list.show {
   display: flex;
+}
+.components_list--li:hover {
+  font-size: 1.11rem;
 }
 
 /* 승률 모달 */
@@ -484,60 +488,37 @@ div {
   -webkit-appearance: none;
   border-radius: 5px;
   margin-bottom: 2px;
+  background: #ffffff;
 }
 
 .video-control__range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 20px;
+  width: 10px;
   height: 20px;
-  background: #ff0000;
-  border-radius: 50%;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  background: #ffffff;
+  /* box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5); */
+  box-shadow: 0px 2px 8px -1px rgba(0, 0, 0, 1);
+  border-radius: 3px;
+
   transition: background 0.3s;
 }
-
 .video-control__range::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: #ff0000;
-  border-radius: 50%;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
-  transition: background 0.3s;
-}
-
-.video-control__range:hover::-webkit-slider-thumb {
-  background: #ff4500;
-}
-
-.video-control__range:hover::-moz-range-thumb {
-  background: #ff4500;
-}
-
-.video-control__range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 20px;
+  width: 10px;
   height: 20px;
-  background: #ff0000;
-  border-radius: 50%;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
-  transition: background 0.3s;
-}
+  background: #ffffff;
+  border-radius: 3px;
+  /* box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5); */
+  box-shadow: 0px 2px 8px -1px rgba(0, 0, 0, 1);
 
-.video-control__range::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: #ff0000;
-  border-radius: 50%;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   transition: background 0.3s;
 }
 
 .video-control__range:hover::-webkit-slider-thumb {
-  background: #ff4500;
+  background: #ffffff;
 }
-
 .video-control__range:hover::-moz-range-thumb {
-  background: #ff4500;
+  background: #ffffff;
 }
 
 /* 비디오 컨트롤 아이콘 */
@@ -554,20 +535,23 @@ div {
   top: 0.7rem;
   left: calc(50% - 8rem);
   width: 16rem;
-  height: 2rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   justify-content: space-around;
   z-index: 9999;
-  border-radius: 0.5rem;
+  border-radius: 1.5rem;
   /* background: rgba(67, 67, 67, 0.7); */
   background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  /* box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7); */
+  /* box-shadow: 0px 2px 8px -1px rgba(0, 0, 0, 1); */
   backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 }
-/* .video-tools__column:hover {
-  background: rgba(0, 0, 0, 0.3);
-} */
+.video-tools__column:hover {
+  /* background: rgba(0, 0, 0, 0.5); */
+  box-shadow: 0px 2px 8px -1px rgba(0, 0, 0, 1);
+}
 .video-tools__column:first-child {
   padding-right: 10px;
   border-right: 1px solid hsla(0, 0%, 100%, 0.5);
@@ -579,6 +563,7 @@ div {
   position: absolute;
   right: 10px;
 }
+
 .time-tooltip {
   position: absolute;
   padding: 5px 10px;
@@ -627,17 +612,22 @@ div {
 .icon {
   width: 1.6rem;
   height: 1.6rem;
-  border-radius: 10%;
   opacity: 0.5;
   cursor: pointer;
-  /* cursor: pointer;
-  width: 1.25rem;
-  height: 1.25rem;
-  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
-    contrast(103%); */
+  padding: 0.4rem;
+  border-radius: 1.2rem;
+  background: rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease; /* 애니메이션을 추가합니다. */
 }
 .icon:hover {
+  width: 2rem;
+  height: 2rem;
   opacity: 1;
+  padding: 0.2rem;
+  border-radius: 1rem;
+  background: rgba(33, 33, 33, 0.5);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 1);
+  object-fit: scale-down;
 }
 .icon_on {
   width: 1.6rem;
@@ -645,14 +635,15 @@ div {
   border-radius: 10%;
   opacity: 1;
   cursor: pointer;
-  /* cursor: pointer;
-  width: 1.25rem;
-  height: 1.25rem;
-  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
-    contrast(103%); */
+  padding: 0.4rem;
+  border-radius: 1.2rem;
+  background: rgba(0, 225, 255, 0.35);
+  transition: all 0.3s ease; /* 애니메이션을 추가합니다. */
 }
 .icon_on:hover {
   opacity: 1;
+  background: rgba(93, 236, 255, 0.35);
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 1);
 }
 .icon-large {
   width: 1.75rem;

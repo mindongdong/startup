@@ -1,6 +1,6 @@
 <template>
   <div id="layout">
-    <img class="background-image" src="@/assets/background_pro2.png" />
+    <img class="background-image" src="@/assets/background_pro5.png" />
     <div class="contents-container">
       <Video ref="videoRef"></Video>
       <div
@@ -214,9 +214,17 @@ div {
   padding-bottom: 54.5%;
   /* padding-bottom: 2rem; */
   border-radius: 1rem;
-  background: rgba(89, 89, 89, 0.3);
-  backdrop-filter: blur(5px);
-  box-shadow: 0px 0px 3px 2px rgba(255, 217, 244, 0.711);
+  background: rgba(60, 60, 60, 0.5);
+  /* backdrop-filter: blur(5px); */
+  /* box-shadow: 1px 1px 2px 2px rgba(100, 100, 100, 1),
+    0px 0px 1px 4px rgba(255, 217, 244, 0.711), 0px 1px 5px 3px rgba(0, 0, 0, 1); */
+  box-shadow: 0px 0px 1px 1px rgba(255, 217, 244, 0.711),
+    0px 1px 5px 1px rgba(0, 0, 0, 1);
+}
+.contents-container:hover {
+  background: rgba(71, 71, 71, 0.5);
+  box-shadow: 0px 0px 1px 1px rgba(255, 217, 244, 0.711),
+    0px 2px 8px 1px rgba(0, 0, 0, 1);
 }
 .view-mode {
   position: absolute;
@@ -276,10 +284,12 @@ div {
 .drag-content {
   width: 100%;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(10px);
-  box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
   border-radius: 1rem;
   height: 45%;
+}
+.drag-content:hover {
+  box-shadow: 0px 2px 6px -1px rgba(0, 0, 0, 1);
 }
 .flag {
   cursor: pointer;

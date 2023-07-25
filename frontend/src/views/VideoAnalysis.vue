@@ -299,7 +299,7 @@ div {
   background: rgba(0, 0, 0, 0.3);
 }
 /* .view-mode:hover {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
 } */
 .view-mode__info_off,
 .view-mode__chat_off {
@@ -628,7 +628,7 @@ div {
   height: 12rem;
   background: rgba(56, 56, 79, 0.365);
   border-radius: 1rem;
-  box-shadow: rgba(149, 149, 149, 0.24) 0px 3px 8px;
+  /* box-shadow: rgba(149, 149, 149, 0.24) 0px 3px 8px; */
   display: flex;
   flex-direction: column;
   align-items: center;
