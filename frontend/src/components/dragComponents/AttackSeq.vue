@@ -176,48 +176,34 @@ export default {
       let period = this.$store.getters.getCurrentTime < 2882 ? "1H" : "2H";
       // period가 1H일 때는 독일이 reverseX, reverseY 적용 한국은 reverseY만 적용
       // period가 2H일 때는 독일은 reverseY만 적용 한국은 reverseX, reverseY 적용
+      let first_idx = this.filteredIndexList[0];
 
       this.filteredIndexList.forEach((eventIndex) => {
-        let teamName = this.attackSeqData.team_name[eventIndex];
+        let teamName = this.attackSeqData.team_name[first_idx];
         console.log(period, teamName);
         let reverseBoolean =
           (teamName === "대한민국" && period === "1H") ||
           (teamName === "독일" && period === "2H")
             ? true
             : false;
-        let teamDiff =
-          teamName === this.attackSeqData.team_name[eventIndex - 1]
-            ? true
-            : false;
-        console.log(reverseBoolean && teamDiff);
-        // let circle_startX = reverseBoolean
-        //   ? this.reverseX(this.attackSeqData.start_x[eventIndex])
-        //   : this.scaleX(this.attackSeqData.start_x[eventIndex]);
         let circle_startX = reverseBoolean
           ? this.scaleX(this.attackSeqData.start_x[eventIndex])
           : this.reverseX(this.attackSeqData.start_x[eventIndex]);
         let circle_startY = reverseBoolean
           ? this.reverseY(this.attackSeqData.start_y[eventIndex])
           : this.scaleY(this.attackSeqData.start_y[eventIndex]);
-        let line_startX =
-          reverseBoolean && teamDiff
-            ? this.scaleX(this.attackSeqData.start_x[eventIndex - 1])
-            : this.reverseX(this.attackSeqData.start_x[eventIndex - 1]);
-        let line_startY =
-          reverseBoolean && teamDiff
-            ? this.reverseY(this.attackSeqData.start_y[eventIndex - 1])
-            : this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
-        // let line_endX = reverseBoolean
-        //   ? this.reverseX(this.attackSeqData.end_x[eventIndex - 1])
-        //   : this.scaleX(this.attackSeqData.end_x[eventIndex - 1]);
-        let line_endX =
-          reverseBoolean && teamDiff
-            ? this.scaleX(this.attackSeqData.end_x[eventIndex - 1])
-            : this.reverseX(this.attackSeqData.end_x[eventIndex - 1]);
-        let line_endY =
-          reverseBoolean && teamDiff
-            ? this.reverseY(this.attackSeqData.end_y[eventIndex - 1])
-            : this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
+        let line_startX = reverseBoolean
+          ? this.scaleX(this.attackSeqData.start_x[eventIndex - 1])
+          : this.reverseX(this.attackSeqData.start_x[eventIndex - 1]);
+        let line_startY = reverseBoolean
+          ? this.reverseY(this.attackSeqData.start_y[eventIndex - 1])
+          : this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
+        let line_endX = reverseBoolean
+          ? this.scaleX(this.attackSeqData.end_x[eventIndex - 1])
+          : this.reverseX(this.attackSeqData.end_x[eventIndex - 1]);
+        let line_endY = reverseBoolean
+          ? this.reverseY(this.attackSeqData.end_y[eventIndex - 1])
+          : this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
 
         // Draw circle at start position
         context.beginPath();
@@ -232,7 +218,7 @@ export default {
           context.moveTo(line_startX, line_startY);
           context.lineTo(line_endX, line_endY);
           context.strokeStyle =
-            this.colorDict[this.attackSeqData.team_name[eventIndex]];
+            this.colorDict[this.attackSeqData.team_name[eventIndex - 1]];
           context.stroke();
         }
       });
