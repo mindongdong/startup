@@ -80,7 +80,7 @@ export default {
       let context = canvas.getContext("2d");
 
       // Set pitch color
-      context.fillStyle = "#3e8e41"; // set as per your requirement
+      context.fillStyle = "rgba(0,0,0,0.3)"; // set as per your requirement
 
       // Draw the outer rectangle
       context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);

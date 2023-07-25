@@ -117,14 +117,7 @@ export default {
       mouseX: 0,
       tooltipHideTimeout: null,
       isComponentsListVisible: false,
-      componentList: [
-        "GroupStats",
-        "item 2",
-        "item 3",
-        "item 4",
-        "item 5",
-        "item 6",
-      ],
+      componentList: ["PlayerStats", "MatchStats", "AttackSeq", "item 3"],
     };
   },
   computed: {
@@ -188,7 +181,7 @@ export default {
 
           // Move to the items in items with index 1 or 2
           const targetComponent = this.components.find(
-            (component) => component.items.length < 3
+            (component) => component.items.length < 2
           );
 
           if (targetComponent) {
@@ -589,26 +582,26 @@ div {
 .time-tooltip {
   position: absolute;
   padding: 5px 10px;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.7);
+  color: black;
+  background-color: rgba(255, 255, 255, 0.7);
   border-radius: 2px;
   text-align: center;
   white-space: nowrap;
   font-size: 12px;
-  bottom: 1.5rem;
+  bottom: -2rem;
   transform: translateX(-50%);
 
   &:after {
     content: "";
     position: absolute;
-    top: 100%;
+    top: -25%;
     left: 50%;
     width: 0;
     height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid rgba(0, 0, 0, 0.7);
-    transform: translateX(-50%) rotate(180deg);
+    border-bottom: 5px solid rgba(255, 255, 255, 0.7);
+    transform: translateX(-50%);
   }
 }
 .timestamp {

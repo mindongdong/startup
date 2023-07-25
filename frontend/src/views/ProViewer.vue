@@ -1,7 +1,7 @@
 <template>
   <div id="layout">
-    <img class="background-image" src="@/assets/background_pro3.jpg" />
-    <draggable class="contents-container" v-model="components">
+    <img class="background-image" src="@/assets/background_pro2.png" />
+    <div class="contents-container">
       <Video ref="videoRef"></Video>
       <div
         class="info-container"
@@ -210,7 +210,7 @@ div {
   position: relative;
   width: calc(100% - 2rem);
   height: 0;
-  margin: 3rem;
+  margin: 4.5rem;
   padding-bottom: 54.5%;
   /* padding-bottom: 2rem; */
   border-radius: 1rem;
@@ -238,7 +238,7 @@ div {
 } */
 .info-container {
   position: absolute;
-  bottom: 4rem;
+  bottom: 6rem;
   left: calc(50% - 33rem);
   width: 66rem;
   height: calc(881px - 42.5rem);
@@ -253,14 +253,14 @@ div {
 .drag-area {
   position: absolute;
   top: 10rem;
-  left: 2rem;
-  width: calc((100% - 74rem) / 2);
+  left: -4rem;
+  width: calc((100% - 62rem) / 2);
   height: calc(100% - 20rem);
   cursor: pointer;
   z-index: 9999;
 }
 .drag-area:last-child {
-  left: calc(100% + 2rem - calc((100% - 74rem) / 2));
+  left: calc(100% + 4rem - calc((100% - 62rem) / 2));
 }
 .drag-component {
   width: 100%;
