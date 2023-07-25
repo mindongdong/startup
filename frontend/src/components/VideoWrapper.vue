@@ -5,12 +5,12 @@
         <div class="exit-button"></div>
       </router-link> -->
       <div class="components_control">
-        <img
+        <!-- <img
           class="icon"
           src="@/assets/icons/list.png"
           @click="toggleComponentsList"
-        />
-        <ul class="components_list" :class="{show: isComponentsListVisible}">
+        /> -->
+        <ul class="components_list" :class="{ show: isComponentsListVisible }">
           <li
             v-for="(item, idx) in componentList"
             :key="idx"
@@ -18,6 +18,8 @@
           >
             {{ item }}
           </li>
+          <!-- <li></li> -->
+          <!-- <li @click="toggleComponentsList">Close</li> -->
         </ul>
       </div>
       <div class="video-tools__column">
@@ -42,18 +44,21 @@
           @click="toggleManage('mute')"
         />
         <img
-          v-bind:class="{icon_on: this.$store.getters.getToggleList['info']}"
+          v-bind:class="{ icon_on: this.$store.getters.getToggleList['info'] }"
           class="icon"
           src="@/assets/icons/showinfo.png"
           @click="toggleManage('info')"
         />
         <img
           v-bind="{
-            class: {icon_on: this.$store.getters.getToggleList['components']},
+            class: { icon_on: this.$store.getters.getToggleList['components'] },
           }"
           class="icon white"
           src="@/assets/icons/components.png"
-          @click="toggleManage('components')"
+          @click="
+            toggleManage('components');
+            toggleComponentsList();
+          "
         />
       </div>
     </div>
@@ -73,7 +78,7 @@
       />
       <div
         v-if="showTooltip"
-        :style="{left: `${mouseX}px`}"
+        :style="{ left: `${mouseX}px` }"
         class="time-tooltip"
       >
         {{ tooltipTime }}
@@ -84,7 +89,7 @@
 
 <script>
 import Hls from "hls.js";
-import {mapGetters, mapMutations} from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "VideoWrapper",
   props: {
@@ -163,7 +168,7 @@ export default {
       // Search for the item in active components
       for (let component of this.components) {
         const index = component.items.findIndex(
-          item => item.title === itemTitle,
+          (item) => item.title === itemTitle
         );
         if (index !== -1) {
           const [item] = component.items.splice(index, 1);
@@ -176,14 +181,14 @@ export default {
       // If not found in active components, search in inactive components
       if (!found) {
         const index = this.unactivate_components.findIndex(
-          item => item.title === itemTitle,
+          (item) => item.title === itemTitle
         );
         if (index !== -1) {
           const [item] = this.unactivate_components.splice(index, 1);
 
           // Move to the items in items with index 1 or 2
           const targetComponent = this.components.find(
-            component => component.items.length < 3,
+            (component) => component.items.length < 3
           );
 
           if (targetComponent) {
@@ -353,23 +358,35 @@ div {
 .components_control {
   cursor: pointer;
   position: absolute;
-  left: 1rem;
-  top: 2rem;
+  top: 3rem;
+  left: calc(50% + 2.2rem);
+  /* top: 4rem; */
   width: 10rem;
   height: 1rem;
   display: flex;
   align-items: center;
+  z-index: 9999;
 }
 
 .components_list {
-  width: 100%;
-  height: 100%;
+  top: 0rem;
+  width: 6rem;
+  height: 9rem;
   display: none;
   align-items: center;
   justify-content: space-between;
-  font-size: 2rem;
+  font-size: 1.1rem;
+  font-weight: 400;
   position: absolute;
-  left: 2.5rem;
+  /* text-decoration: underline; */
+
+  /* left: 2.5rem; */
+  padding: 0.8rem;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 0.5rem;
 }
 
 .components_list.show {
@@ -541,6 +558,7 @@ div {
 }
 .video-tools__column {
   position: absolute;
+  top: 0.7rem;
   left: calc(50% - 8rem);
   width: 16rem;
   height: 2rem;
@@ -548,8 +566,11 @@ div {
   align-items: center;
   justify-content: space-around;
   z-index: 9999;
-  border-radius: 1rem;
-  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0.5rem;
+  /* background: rgba(67, 67, 67, 0.7); */
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
 }
 /* .video-tools__column:hover {
   background: rgba(0, 0, 0, 0.3);
@@ -611,8 +632,8 @@ div {
   object-fit: cover;
 }
 .icon {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border-radius: 10%;
   opacity: 0.5;
   cursor: pointer;
@@ -626,10 +647,10 @@ div {
   opacity: 1;
 }
 .icon_on {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border-radius: 10%;
-  opacity: 0.8;
+  opacity: 1;
   cursor: pointer;
   /* cursor: pointer;
   width: 1.25rem;

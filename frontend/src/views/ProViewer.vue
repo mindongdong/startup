@@ -1,7 +1,7 @@
 <template>
   <div id="layout">
-    <img class="background-image" src="@/assets/background.png" />
-    <div class="contents-container" v-model="components">
+    <img class="background-image" src="@/assets/background_pro3.jpg" />
+    <draggable class="contents-container" v-model="components">
       <Video ref="videoRef"></Video>
       <div
         class="info-container"
@@ -200,15 +200,21 @@ div {
   position: absolute;
   width: 100%;
   height: 100%;
+  /* filter: blur(5px); */
+
   object-fit: cover;
 }
 .contents-container {
   position: relative;
   width: calc(100% - 2rem);
   height: 0;
-  padding-bottom: 56.25%;
-  background: rgba(255, 255, 255, 0.224);
+  margin: 3rem;
+  padding-bottom: 54.5%;
+  /* padding-bottom: 2rem; */
   border-radius: 1rem;
+  background: rgba(89, 89, 89, 0.3);
+  backdrop-filter: blur(5px);
+  box-shadow: 0px 0px 3px 2px rgba(255, 217, 244, 0.711);
 }
 .view-mode {
   position: absolute;
@@ -252,7 +258,7 @@ div {
   z-index: 9999;
 }
 .drag-area:last-child {
-  left: calc(100% - 2rem - calc((100% - 74rem) / 2));
+  left: calc(100% + 2rem - calc((100% - 74rem) / 2));
 }
 .drag-component {
   width: 100%;
@@ -267,8 +273,11 @@ div {
 }
 .drag-content {
   width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.3);
+  border-radius: 1rem;
   height: 45%;
-  background: rgba(0, 0, 0, 0.353);
 }
 .flag {
   cursor: pointer;
