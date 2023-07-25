@@ -40,23 +40,25 @@
         <p class="playerInfo__name">{{ player }}</p>
         <div class="playerInfo__detail">
           <div class="playerInfo__detail--col">
-            <p class="playerInfo__detailInfo">아스톤 빌라(Aston Villa)</p>
+            <p class="playerInfo__detailInfo">
+              {{ players[player].belong }}
+            </p>
             <p class="playerInfo__detailInfo">{{ home_teamName }}</p>
-            <p class="playerInfo__detailInfo">1992년 9월 2일</p>
-            <p class="playerInfo__detailInfo">골키퍼(GK)</p>
+            <p class="playerInfo__detailInfo">{{ players[player].birth }}</p>
+            <p class="playerInfo__detailInfo">{{ players[player].position }}</p>
           </div>
           <div class="playerInfo__detail--icons">
             <img
               class="playerInfo__icon"
-              src="@/assets/playerIcons/GK 능숙한 펀칭.png"
+              :src="require(`@/assets/playerIcons/${specsList[idx][0]}.png`)"
             />
             <img
               class="playerInfo__icon"
-              src="@/assets/playerIcons/GK 적극적 크로스 수비.png"
+              :src="require(`@/assets/playerIcons/${specsList[idx][1]}.png`)"
             />
             <img
               class="playerInfo__icon"
-              src="@/assets/playerIcons/스피드 드리블러.png"
+              :src="require(`@/assets/playerIcons/${specsList[idx][2]}.png`)"
             />
           </div>
         </div>
@@ -78,23 +80,29 @@
         <p class="playerInfo__name">{{ player }}</p>
         <div class="playerInfo__detail">
           <div class="playerInfo__detail--col">
-            <p class="playerInfo__detailInfo">아스톤 빌라(Aston Villa)</p>
+            <p class="playerInfo__detailInfo">{{ players[player].belong }}</p>
             <p class="playerInfo__detailInfo">{{ away_teamName }}</p>
-            <p class="playerInfo__detailInfo">1992년 9월 2일</p>
-            <p class="playerInfo__detailInfo">골키퍼(GK)</p>
+            <p class="playerInfo__detailInfo">{{ players[player].birth }}</p>
+            <p class="playerInfo__detailInfo">{{ players[player].position }}</p>
           </div>
           <div class="playerInfo__detail--icons">
             <img
               class="playerInfo__icon"
-              src="@/assets/playerIcons/GK 능숙한 펀칭.png"
+              :src="
+                require(`@/assets/playerIcons/${specsList[idx + 11][0]}.png`)
+              "
             />
             <img
               class="playerInfo__icon"
-              src="@/assets/playerIcons/GK 적극적 크로스 수비.png"
+              :src="
+                require(`@/assets/playerIcons/${specsList[idx + 11][1]}.png`)
+              "
             />
             <img
               class="playerInfo__icon"
-              src="@/assets/playerIcons/스피드 드리블러.png"
+              :src="
+                require(`@/assets/playerIcons/${specsList[idx + 11][2]}.png`)
+              "
             />
           </div>
         </div>
@@ -157,6 +165,172 @@ export default {
       away_teamName: "",
       home_lineup: [],
       away_lineup: [],
+      specsList: [
+        ["GK 능숙한 펀칭", "GK 적극적 크로스 수비", "GK 침착한 일대일 수비"],
+        ["강철몸", "슬라이딩 태클 선호", "아웃사이드 슈팅.크로스"],
+        ["리더십", "장거리 스로인", "팀 플레이어"],
+        ["긴 패스 선호", "주발 선호", "패스 마스터"],
+        ["예리한 감아차기", "중거리 슛 선호", "칩슛 선호"],
+        ["선호 포지션 고집", "테크니컬 드리블러", "화려한 개인기"],
+        ["유리몸", "플레이 메이커", "승부욕"],
+        ["스위퍼 키퍼", "얼리 크로스 선호", "패스 마스터"],
+        ["개인 플레이 선호", "테크니컬 드리블러", "아웃사이드 슈팅.크로스"],
+        ["강철몸", "주발 선호", "중거리 슛 선호"],
+        ["화려한 개인기", "스피드 드리블러", "패스 마스터"],
+        ["GK 능숙한 펀칭", "GK 적극적 크로스 수비", "GK 침착한 일대일 수비"],
+        ["슬라이딩 태클 선호", "리더십", "강철몸"],
+        ["패스 마스터", "강철몸", "슬라이딩 태클 선호"],
+        ["장거리 스로인", "팀 플레이어", "긴 패스 선호"],
+        ["스위퍼 키퍼", "장거리 스로인", "강철몸"],
+        ["리더십", "팀 플레이어", "플레이 메이커"],
+        ["긴 패스 선호", "선호 포지션 고집", "승부욕"],
+        ["스피드 드리블러", "화려한 개인기", "중거리 슛 선호"],
+        ["개인 플레이 선호", "예리한 감아차기", "패스 마스터"],
+        ["스피드 드리블러", "아웃사이드 슈팅.크로스", "화려한 개인기"],
+        ["파워 헤더", "트러블 메이커", "초 장거리 스로인"],
+      ],
+      players: {
+        조현우: {
+          belong: "대구 FC",
+          birth: "1991년 9월 2일",
+          position: "골키퍼(GK)",
+        },
+        이용: {
+          belong: "경남 FC",
+          birth: "1986년 3월 24일",
+          position: "수비수(DF)",
+        },
+        윤영선: {
+          belong: "성남 FC",
+          birth: "1988년 10월 4일",
+          position: "수비수(DF)",
+        },
+        김영권: {
+          belong: "강원 FC",
+          birth: "1989년 4월 27일",
+          position: "수비수(DF)",
+        },
+        홍철: {
+          belong: "수원 삼성",
+          birth: "1989년 2월 17일",
+          position: "수비수(DF)",
+        },
+        이재성: {
+          belong: "홀스타인 킬",
+          birth: "1992년 8월 10일",
+          position: "미드필더(MF)",
+        },
+        정우영: {
+          belong: "바이에른 뮌헨",
+          birth: "1999년 9월 20일",
+          position: "미드필더(MF)",
+        },
+        장현수: {
+          belong: "포항 스틸러스",
+          birth: "1991년 6월 28일",
+          position: "수비수(DF)",
+        },
+        문선민: {
+          belong: "인천 유나이티드",
+          birth: "1992년 4월 12일",
+          position: "공격수(FW)",
+        },
+        주세종: {
+          belong: "아산 무궁화",
+          birth: "1990년 4월 22일",
+          position: "미드필더(MF)",
+        },
+        구자철: {
+          belong: "아우크스부르크",
+          birth: "1990년 2월 10일",
+          position: "미드필더(MF)",
+        },
+        황희찬: {
+          belong: "잘츠부르크",
+          birth: "1996년 1월 26일",
+          position: "공격수(FW)",
+        },
+        고요한: {
+          belong: "경남 FC",
+          birth: "1988년 1월 25일",
+          position: "수비수(DF)",
+        },
+        손흥민: {
+          belong: "토트넘 핫스퍼",
+          birth: "1992년 7월 8일",
+          position: "공격수(FW)",
+        },
+        "M. 노이어": {
+          belong: "바이에른 뮌헨",
+          birth: "1986년 3월 27일",
+          position: "골키퍼(GK)",
+        },
+        "J. 키미히": {
+          belong: "바이에른 뮌헨",
+          birth: "1995년 2월 8일",
+          position: "수비수(DF)",
+        },
+        "M. 훔멜스": {
+          belong: "바이에른 뮌헨",
+          birth: "1988년 12월 16일",
+          position: "수비수(DF)",
+        },
+        "N. 슐레": {
+          belong: "바이에른 뮌헨",
+          birth: "1991년 8월 31일",
+          position: "수비수(DF)",
+        },
+        "J. 헥터": {
+          belong: "FC 쾰른",
+          birth: "1990년 5월 21일",
+          position: "수비수(DF)",
+        },
+        "J. 브란트": {
+          belong: "보루시아 도르트문트",
+          birth: "1996년 5월 31일",
+          position: "미드필더(MF)",
+        },
+        "S. 케디라": {
+          belong: "유벤투스",
+          birth: "1987년 4월 16일",
+          position: "미드필더(MF)",
+        },
+        "M. 고메스": {
+          belong: "바이에른 뮌헨",
+          birth: "1995년 5월 6일",
+          position: "미드필더(MF)",
+        },
+        "T. 뮐러": {
+          belong: "바이에른 뮌헨",
+          birth: "1989년 9월 13일",
+          position: "공격수(FW)",
+        },
+        "T. 크로스": {
+          belong: "레알 마드리드",
+          birth: "1990년 1월 4일",
+          position: "미드필더(MF)",
+        },
+        "L. 고레츠카": {
+          belong: "바이에른 뮌헨",
+          birth: "1995년 2월 6일",
+          position: "미드필더(MF)",
+        },
+        "M. 외질": {
+          belong: "아스널",
+          birth: "1988년 10월 15일",
+          position: "미드필더(MF)",
+        },
+        "M. 로이스": {
+          belong: "보루시아 도르트문트",
+          birth: "1989년 5월 31일",
+          position: "공격수(FW)",
+        },
+        "T. 베르너": {
+          belong: "첼시 FC",
+          birth: "1996년 3월 6일",
+          position: "공격수(FW)",
+        },
+      },
     };
   },
   async mounted() {
@@ -284,6 +458,12 @@ export default {
   object-position: center;
   object-fit: contain;
   opacity: 0.9;
+  transition: all 0.3s ease;
+}
+.playerInfo__img:hover {
+  width: 12rem;
+  height: 16.5rem;
+  opacity: 1;
 }
 
 .team__icon {
