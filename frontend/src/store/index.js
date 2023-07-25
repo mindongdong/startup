@@ -12,10 +12,10 @@ export default new Vuex.Store({
     currentFrame: 0,
     currentSwapCount: 0,
     toggleList: {
-      info: false,
+      info: true,
       mute: false,
       change: false,
-      components: false,
+      components: true,
     },
     components: [
       {
@@ -36,7 +36,7 @@ export default new Vuex.Store({
             title: "AttackSeq",
           },
           {
-            title: "item 3",
+            title: "ShotStats",
           },
         ],
       },

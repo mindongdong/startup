@@ -2,31 +2,6 @@
   <div class="layout">
     <h1 class="title">공격 시퀀스</h1>
     <canvas ref="soccerCanvas" :width="canvasWidth" :height="canvasHeight">
-      <!-- <svg v-if="attackSeqData">
-        <g
-          v-for="(eventIndex, i) in Object.keys(attackSeqData.start_x)"
-          :key="i"
-        >
-          <circle
-            :cx="scaleX(attackSeqData.start_x[eventIndex])"
-            :cy="scaleY(attackSeqData.start_y[eventIndex])"
-            r="5"
-            :fill="colorDict[attackSeqData.team_name[eventIndex]]"
-          />
-          <line
-            v-if="attackSeqData.end_x[eventIndex]"
-            v-bind="{
-              x1: scaleX(attackSeqData.start_x[eventIndex]),
-              y1: scaleY(attackSeqData.start_y[eventIndex]),
-              x2: scaleX(attackSeqData.end_x[eventIndex]),
-              y2: scaleY(attackSeqData.end_y[eventIndex]),
-            }"
-            stroke="blue"
-            stroke-width="2"
-            marker-end="url(#arrow)"
-          />
-        </g>
-      </svg> -->
     </canvas>
   </div>
 </template>
@@ -42,6 +17,7 @@ export default {
       timeInterval: null,
       attackSeqData: null,
       currentIndex: 0,
+      indexList: [],
     };
   },
   computed: {
@@ -71,7 +47,11 @@ export default {
       );
       this.attackSeqData = response.data.attack_sequence;
       this.currentIndex = response.data.index;
-      console.log(this.attackSeqData);
+      this.indexList = Object.keys(response.data.attack_sequence.start_x);
+      this.filteredIndexList = this.indexList.filter(
+        (index) => index <= this.currentIndex
+      );
+      // console.log(this.indexList);
     }, 1000);
   },
   methods: {
@@ -80,7 +60,7 @@ export default {
       let context = canvas.getContext("2d");
 
       // Set pitch color
-      context.fillStyle = "#3e8e41"; // set as per your requirement
+      context.fillStyle = "rgba(0,0,0,0.3)"; // set as per your requirement
 
       // Draw the outer rectangle
       context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -151,15 +131,6 @@ export default {
         100 / 3,
         180 / 3
       );
-
-      // Draw penalty spots
-      this.drawCircle(
-        context,
-        this.canvasWidth - 230 / 3,
-        this.canvasHeight / 2,
-        2
-      );
-      this.drawCircle(context, 230 / 3, this.canvasHeight / 2, 2);
     },
     drawRectangle(context, x, y, width, height) {
       context.beginPath();
@@ -175,62 +146,87 @@ export default {
       // Transform x from the event's coordinate system to SVG's coordinate system.
       // This function depends on the actual size of your SVG and your event's coordinate system.
       // Here we simply use x as is.
+      const calX = this.canvasWidth / 104;
+      x = x * calX;
       return x;
     },
     scaleY(y) {
       // Transform y from the event's coordinate system to SVG's coordinate system.
-      // This function depends on the actual size of your SVG and your event's coordinate system.
-      // Here we simply use y as is.
+      const calY = this.canvasHeight / 68;
+      y = y * calY;
+      return y;
+    },
+    reverseX(x) {
+      const calX = this.canvasWidth / 104;
+      x = (104 - x) * calX; // Subtract x from the maximum X value (104)
+      return x;
+    },
+    reverseY(y) {
+      const calY = this.canvasHeight / 68;
+      y = (68 - y) * calY; // Subtract y from the maximum Y value (68)
       return y;
     },
     drawSequenceData() {
       let canvas = this.$refs.soccerCanvas;
       let context = canvas.getContext("2d");
 
-      // Loop over the attack sequence data
-      for (let eventIndex in this.attackSeqData.start_x) {
-        // Extract start and end positions
-        let adjust_start_x,
-          adjust_start_y = this.adjustCoordinates(
-            this.attackSeqData.start_x[eventIndex],
-            this.attackSeqData.start_y[eventIndex]
-          );
-        let adjust_end_x,
-          adjust_end_y = this.adjustCoordinates(
-            this.attackSeqData.end_x[eventIndex],
-            this.attackSeqData.end_y[eventIndex]
-          );
-        let startX = this.scaleX(adjust_start_x);
-        let startY = this.scaleY(adjust_start_y);
-        let endX = this.scaleX(adjust_end_x);
-        let endY = this.scaleY(adjust_end_y);
+      context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+      this.drawPitch();
+
+      let period = this.$store.getters.getCurrentTime < 2882 ? "1H" : "2H";
+      // period가 1H일 때는 독일이 reverseX, reverseY 적용 한국은 reverseY만 적용
+      // period가 2H일 때는 독일은 reverseY만 적용 한국은 reverseX, reverseY 적용
+
+      this.filteredIndexList.forEach((eventIndex) => {
+        let teamName = this.attackSeqData.team_name[eventIndex];
+        console.log(period, teamName);
+        let reverseBoolean =
+          (teamName === "대한민국" && period === "1H") ||
+          (teamName === "독일" && period === "2H")
+            ? true
+            : false;
+        // let circle_startX = reverseBoolean
+        //   ? this.reverseX(this.attackSeqData.start_x[eventIndex])
+        //   : this.scaleX(this.attackSeqData.start_x[eventIndex]);
+        let circle_startX = reverseBoolean
+          ? this.scaleX(this.attackSeqData.start_x[eventIndex])
+          : this.reverseX(this.attackSeqData.start_x[eventIndex]);
+        let circle_startY = reverseBoolean
+          ? this.reverseY(this.attackSeqData.start_y[eventIndex])
+          : this.scaleY(this.attackSeqData.start_y[eventIndex]);
+        let line_startX = reverseBoolean
+          ? this.scaleX(this.attackSeqData.start_x[eventIndex - 1])
+          : this.reverseX(this.attackSeqData.start_x[eventIndex - 1]);
+        let line_startY = reverseBoolean
+          ? this.reverseY(this.attackSeqData.start_y[eventIndex - 1])
+          : this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
+        // let line_endX = reverseBoolean
+        //   ? this.reverseX(this.attackSeqData.end_x[eventIndex - 1])
+        //   : this.scaleX(this.attackSeqData.end_x[eventIndex - 1]);
+        let line_endX = reverseBoolean
+          ? this.scaleX(this.attackSeqData.end_x[eventIndex - 1])
+          : this.reverseX(this.attackSeqData.end_x[eventIndex - 1]);
+        let line_endY = reverseBoolean
+          ? this.reverseY(this.attackSeqData.end_y[eventIndex - 1])
+          : this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
 
         // Draw circle at start position
         context.beginPath();
-        context.arc(adjust_start_x, adjust_start_y, 5, 0, 2 * Math.PI, false);
+        context.arc(circle_startX, circle_startY, 5, 0, 2 * Math.PI, false);
         context.fillStyle =
           this.colorDict[this.attackSeqData.team_name[eventIndex]];
         context.fill();
 
         // Draw line to end position, if it exists
-        if (this.attackSeqData.end_x[eventIndex]) {
+        if (this.attackSeqData.end_x[eventIndex - 1]) {
           context.beginPath();
-          context.moveTo(startX, startY);
-          context.lineTo(endX, endY);
-          context.strokeStyle = "blue";
+          context.moveTo(line_startX, line_startY);
+          context.lineTo(line_endX, line_endY);
+          context.strokeStyle =
+            this.colorDict[this.attackSeqData.team_name[eventIndex]];
           context.stroke();
         }
-      }
-    },
-    adjustCoordinates(x, y) {
-      const originalWidth = 104;
-      const originalHeight = 68;
-      const scale_x = this.canvasWidth / originalWidth;
-      const scale_y = this.canvasHeight / originalHeight;
-      const adjustedStartX = x * scale_x;
-      const adjustedStartY = y * scale_y;
-      console.log(adjustedStartX, adjustedStartY);
-      return adjustedStartX, adjustedStartY;
+      });
     },
   },
   beforeDestroy() {
