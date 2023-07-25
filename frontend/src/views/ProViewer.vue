@@ -39,6 +39,7 @@ import TeamInfo from "@/components/TeamInfo.vue";
 import PlayerStats from "@/components/dragComponents/PlayerStats.vue";
 import MatchStats from "@/components/dragComponents/MatchStats.vue";
 import AttackSeq from "@/components/dragComponents/AttackSeq.vue";
+import ShotStats from "@/components/dragComponents/ShotStats.vue";
 import draggable from "vuedraggable";
 import {mapGetters} from "vuex";
 
@@ -50,6 +51,7 @@ export default {
     PlayerStats,
     MatchStats,
     AttackSeq,
+    ShotStats,
   },
   data() {
     return {

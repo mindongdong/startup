@@ -579,18 +579,22 @@ def read_sequence(current_time: float):
 
 # 기대득점 데이터 반환
 @router.get("/shots/{current_time}")
-async def get_match_shots(current_time: int):
+async def get_match_shots(current_time: float):
     # Process the data
-    match_shots = filter_by_time(match_shots, end_time=current_time)
+    match_shot_data = filter_by_time(match_shots, end_time=current_time)
 
-    match_shots_failed = match_shots[match_shots['tags'].apply(lambda x: 'Goal' not in x)]
-    team1_name, team2_name = match_shots['team_name'].unique()
+    team1_name, team2_name = match_shot_data['team_name'].unique()
 
-    team1_shots = match_shots[match_shots['team_name'] == team1_name]
-    team2_shots = match_shots[match_shots['team_name'] == team2_name]
+    team1_shots = match_shot_data[match_shot_data['team_name'] == team1_name]
+    team2_shots = match_shot_data[match_shot_data['team_name'] == team2_name]
 
-    team1_goals = team1_shots[team1_shots['tags'].apply(lambda x: 'Goal' in x)]
-    team2_goals = team2_shots[team2_shots['tags'].apply(lambda x: 'Goal' in x)]
+    team1_goals = team1_shots[team1_shots['tags'].apply(lambda x: x.count('Goal') == 2)]
+    team2_goals = team2_shots[team2_shots['tags'].apply(lambda x: x.count('Goal') == 2)]
+
+    match_shots_failed = match_shot_data[
+        ~match_shot_data.index.isin(team1_goals.index) &
+        ~match_shot_data.index.isin(team2_goals.index)
+    ]
 
     # Create the JSON response
     response = {
@@ -604,7 +608,7 @@ async def get_match_shots(current_time: int):
             "goals": team2_goals[['x', 'y', 'display_name', 'xg', 'freekick']].to_dict(orient='records'),
             "xg": team2_shots['xg'].sum().round(2)
         },
-        "failed_shots": match_shots_failed[['x', 'y', 'display_name', 'xg', 'freekick']].to_dict(orient='records')
+        "failed_shots": match_shots_failed[['team_name', 'x', 'y', 'display_name', 'xg', 'freekick']].to_dict(orient='records')
     }
 
     return response

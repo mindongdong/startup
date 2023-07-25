@@ -33,11 +33,11 @@ function getAttackSequence(current_time) {
 }
 
 function getMatchShots(current_time) {
-  return instance.get(`/routes/matches/shots${current_time}`);
+  return instance.get(`/routes/matches/shots/${current_time}`);
 }
 
 function getMatchSetPieces(current_time) {
-  return instance.get(`/routes/matches/setpieces${current_time}`);
+  return instance.get(`/routes/matches/setpieces/${current_time}`);
 }
 
 export {

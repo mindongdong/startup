@@ -1,13 +1,13 @@
 <template>
   <div class="layout">
-    <h1 class="title">공격 시퀀스</h1>
+    <h1 class="title">슈팅 데이터</h1>
     <canvas ref="soccerCanvas" :width="canvasWidth" :height="canvasHeight">
     </canvas>
   </div>
 </template>
 
 <script>
-import { getAttackSequence } from "@/api/index.js";
+import {getMatchShots} from "@/api/index.js";
 export default {
   name: "AttackSeq",
   data() {
@@ -15,44 +15,37 @@ export default {
       canvasWidth: 350, // adjust based on your need
       canvasHeight: 228.846153846, // adjust based on your need
       timeInterval: null,
-      attackSeqData: null,
-      currentIndex: 0,
-      indexList: [],
+      shotData: null,
+      team1Goals: null,
+      team2Goals: null,
+      failedShots: null,
     };
   },
   computed: {
-    colorDict() {
+    goalColorDict() {
       return {
         독일: "blue",
         대한민국: "red",
       };
     },
-  },
-  watch: {
-    attackSeqData: {
-      handler() {
-        this.$nextTick(() => {
-          // The DOM is updated. Now you can perform any post-update operations.
-          this.drawSequenceData();
-        });
-      },
-      deep: true,
+    shotColorDict() {
+      return {
+        독일: "#38F4BB",
+        대한민국: "#FE6666",
+      };
     },
   },
-  mounted() {
+  async mounted() {
     this.drawPitch();
     this.timeInterval = setInterval(async () => {
-      const response = await getAttackSequence(
-        this.$store.getters.getCurrentTime
-      );
-      this.attackSeqData = response.data.attack_sequence;
-      this.currentIndex = response.data.index;
-      this.indexList = Object.keys(response.data.attack_sequence.start_x);
-      this.filteredIndexList = this.indexList.filter(
-        (index) => index <= this.currentIndex
-      );
-      console.log(this.indexList);
-    }, 1000);
+      const response = await getMatchShots(this.$store.getters.getCurrentTime);
+      this.team1Goals = response.data.team1;
+      this.team2Goals = response.data.team2;
+      this.failedShots = response.data.failed_shots;
+      this.drawShotData(this.team1Goals);
+      this.drawShotData(this.team2Goals);
+      this.drawShotData(this.failedShots);
+    }, 2000);
   },
   methods: {
     drawPitch() {
@@ -85,7 +78,7 @@ export default {
         this.canvasHeight / 2,
         26.6666666667,
         0,
-        2 * Math.PI
+        2 * Math.PI,
       );
       context.stroke();
 
@@ -96,7 +89,7 @@ export default {
         this.canvasHeight / 2,
         2,
         0,
-        2 * Math.PI
+        2 * Math.PI,
       );
       context.fill();
 
@@ -106,14 +99,14 @@ export default {
         this.canvasWidth - 200 / 3,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3
+        440 / 3,
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3
+        440 / 3,
       );
 
       // Draw goal areas
@@ -122,14 +115,14 @@ export default {
         this.canvasWidth - 100 / 3,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3
+        180 / 3,
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3
+        180 / 3,
       );
 
       // Draw penalty spots
@@ -137,7 +130,7 @@ export default {
         context,
         this.canvasWidth - 230 / 3,
         this.canvasHeight / 2,
-        2
+        2,
       );
       this.drawCircle(context, 230 / 3, this.canvasHeight / 2, 2);
     },
@@ -150,6 +143,57 @@ export default {
       context.beginPath();
       context.arc(x, y, radius, 0, 2 * Math.PI);
       context.fill();
+    },
+    drawShotData(shotData) {
+      let canvas = this.$refs.soccerCanvas;
+      let context = canvas.getContext("2d");
+
+      if (shotData === this.failedShots) {
+        shotData.forEach(shot => {
+          let x = shot.x;
+          let y = shot.y;
+          let canvasX = this.scaleX(x);
+          let canvasY = this.scaleY(y);
+          context.beginPath();
+          context.arc(
+            canvasX,
+            canvasY,
+            Math.sqrt(shot.xg) * 35,
+            0,
+            Math.PI * 2,
+            false,
+          ); // size is now related to xg
+          context.fillStyle = this.shotColorDict[shot.team_name];
+          context.fill();
+        });
+      } else {
+        const goals = shotData.goals;
+        const teamName = shotData.name;
+        // Prepare for drawing. As an example, we'll draw team1Goals here.
+        goals.forEach(goal => {
+          let x = goal.x;
+          let y = goal.y;
+
+          // Transform x and y from the event's coordinate system to SVG's coordinate system.
+          // This function depends on the actual size of your SVG and your event's coordinate system.
+          // Here we simply use x and y as is.
+          let canvasX = this.scaleX(x);
+          let canvasY = this.scaleY(y);
+
+          // Example drawing: draw a red circle for each goal
+          context.beginPath();
+          context.arc(
+            canvasX,
+            canvasY,
+            Math.sqrt(goal.xg) * 35,
+            0,
+            Math.PI * 2,
+            false,
+          ); // size is now related to xg
+          context.fillStyle = this.goalColorDict[teamName];
+          context.fill();
+        });
+      }
     },
     scaleX(x) {
       // Transform x from the event's coordinate system to SVG's coordinate system.
@@ -166,59 +210,6 @@ export default {
       const calY = this.canvasHeight / 68;
       y = y * calY;
       return y;
-    },
-    drawSequenceData() {
-      let canvas = this.$refs.soccerCanvas;
-      let context = canvas.getContext("2d");
-
-      context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-      this.drawPitch();
-
-      this.filteredIndexList.forEach((eventIndex) => {
-        // Extract start and end positions
-        // let adjust_start_x,
-        //   adjust_start_y = this.adjustCoordinates(
-        //     this.attackSeqData.start_x[eventIndex],
-        //     this.attackSeqData.start_y[eventIndex]
-        //   );
-        // let adjust_end_x,
-        //   adjust_end_y = this.adjustCoordinates(
-        //     this.attackSeqData.end_x[eventIndex],
-        //     this.attackSeqData.end_y[eventIndex]
-        //   );
-        let startX = this.scaleX(this.attackSeqData.start_x[eventIndex]);
-        let startY = this.scaleY(this.attackSeqData.start_y[eventIndex]);
-        // Draw circle at start position
-        context.beginPath();
-        context.arc(startX, startY, 5, 0, 2 * Math.PI, false);
-        context.fillStyle =
-          this.colorDict[this.attackSeqData.team_name[eventIndex]];
-        context.fill();
-
-        // Draw line to end position, if it exists
-        if (this.attackSeqData.end_x[eventIndex - 1]) {
-          let startX = this.scaleX(this.attackSeqData.start_x[eventIndex - 1]);
-          let startY = this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
-          let endX = this.scaleX(this.attackSeqData.end_x[eventIndex - 1]);
-          let endY = this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
-          context.beginPath();
-          context.moveTo(startX, startY);
-          context.lineTo(endX, endY);
-          context.strokeStyle =
-            this.colorDict[this.attackSeqData.team_name[eventIndex]];
-          context.stroke();
-        }
-      });
-    },
-    adjustCoordinates(x, y) {
-      const originalWidth = 104 * 3;
-      const originalHeight = 68 * 3;
-      const scale_x = this.canvasWidth / originalWidth;
-      const scale_y = this.canvasHeight / originalHeight;
-      const adjustedStartX = x * scale_x;
-      const adjustedStartY = y * scale_y;
-      console.log(adjustedStartX, adjustedStartY);
-      return adjustedStartX, adjustedStartY;
     },
   },
   beforeDestroy() {

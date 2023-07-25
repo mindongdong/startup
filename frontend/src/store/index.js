@@ -36,7 +36,7 @@ export default new Vuex.Store({
             title: "AttackSeq",
           },
           {
-            title: "item 3",
+            title: "ShotStats",
           },
         ],
       },
