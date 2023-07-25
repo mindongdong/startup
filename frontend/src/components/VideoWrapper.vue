@@ -12,8 +12,7 @@
         /> -->
         <ul class="components_list" :class="{ show: isComponentsListVisible }">
           <li
-            class="components_list--li"
-            v-for="(item, idx) in componentList"
+            v-for="(item, idx) in Object.keys(componentList)"
             :key="idx"
             @click="toggleComponent(item)"
           >
@@ -54,12 +53,9 @@
           v-bind="{
             class: { icon_on: this.$store.getters.getToggleList['components'] },
           }"
-          class="icon"
-          src="@/assets/icons/components2.png"
-          @click="
-            toggleManage('components');
-            toggleComponentsList();
-          "
+          class="icon white"
+          src="@/assets/icons/components.png"
+          @click="toggleComponentsList()"
         />
       </div>
     </div>
@@ -118,7 +114,12 @@ export default {
       mouseX: 0,
       tooltipHideTimeout: null,
       isComponentsListVisible: false,
-      componentList: ["PlayerStats", "MatchStats", "AttackSeq", "item 3"],
+      componentList: {
+        "선수 기록": "PlayerStats",
+        "실시간 기록": "MatchStats",
+        "공격 시퀀스": "AttackSeq",
+        "슈팅 기록": "ShotStats",
+      },
     };
   },
   computed: {
@@ -162,7 +163,7 @@ export default {
       // Search for the item in active components
       for (let component of this.components) {
         const index = component.items.findIndex(
-          (item) => item.title === itemTitle
+          (item) => item.title === this.componentList[itemTitle]
         );
         if (index !== -1) {
           const [item] = component.items.splice(index, 1);
@@ -175,7 +176,7 @@ export default {
       // If not found in active components, search in inactive components
       if (!found) {
         const index = this.unactivate_components.findIndex(
-          (item) => item.title === itemTitle
+          (item) => item.title === this.componentList[itemTitle]
         );
         if (index !== -1) {
           const [item] = this.unactivate_components.splice(index, 1);
