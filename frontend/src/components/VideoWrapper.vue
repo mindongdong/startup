@@ -358,31 +358,34 @@ div {
 .components_control {
   cursor: pointer;
   position: absolute;
-  top: 0.7rem;
-  left: calc(50% + 9rem);
+  top: 3rem;
+  left: calc(50% + 2.2rem);
   /* top: 4rem; */
   width: 10rem;
   height: 1rem;
   display: flex;
   align-items: center;
+  z-index: 9999;
 }
 
 .components_list {
   top: 0rem;
   width: 6rem;
-  height: 8rem;
+  height: 9rem;
   display: none;
   align-items: center;
   justify-content: space-between;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 400;
   position: absolute;
   /* text-decoration: underline; */
 
   /* left: 2.5rem; */
-  padding: 0.3rem;
+  padding: 0.8rem;
   flex-direction: column;
-  background: rgba(0, 4, 25, 0.7);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
   border-radius: 0.5rem;
 }
 
@@ -564,7 +567,10 @@ div {
   justify-content: space-around;
   z-index: 9999;
   border-radius: 0.5rem;
-  background: rgba(0, 4, 25, 0.7);
+  /* background: rgba(67, 67, 67, 0.7); */
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
 }
 /* .video-tools__column:hover {
   background: rgba(0, 0, 0, 0.3);

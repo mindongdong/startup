@@ -47,18 +47,20 @@
             <p class="playerInfo__detailInfo">1992년 9월 2일</p>
             <p class="playerInfo__detailInfo">골키퍼(GK)</p>
           </div>
-          <img
-            class="playerInfo__icon"
-            src="@/assets/playerIcons/GK 능숙한 펀칭.png"
-          />
-          <img
-            class="playerInfo__icon"
-            src="@/assets/playerIcons/GK 적극적 크로스 수비.png"
-          />
-          <img
-            class="playerInfo__icon"
-            src="@/assets/playerIcons/스피드 드리블러.png"
-          />
+          <div class="playerInfo__detail--icons">
+            <img
+              class="playerInfo__icon"
+              src="@/assets/playerIcons/GK 능숙한 펀칭.png"
+            />
+            <img
+              class="playerInfo__icon"
+              src="@/assets/playerIcons/GK 적극적 크로스 수비.png"
+            />
+            <img
+              class="playerInfo__icon"
+              src="@/assets/playerIcons/스피드 드리블러.png"
+            />
+          </div>
         </div>
         <img
           class="playerInfo__img"
@@ -83,18 +85,20 @@
             <p class="playerInfo__detailInfo">1992년 9월 2일</p>
             <p class="playerInfo__detailInfo">골키퍼(GK)</p>
           </div>
-          <img
-            class="playerInfo__icon"
-            src="@/assets/playerIcons/GK 능숙한 펀칭.png"
-          />
-          <img
-            class="playerInfo__icon"
-            src="@/assets/playerIcons/GK 적극적 크로스 수비.png"
-          />
-          <img
-            class="playerInfo__icon"
-            src="@/assets/playerIcons/스피드 드리블러.png"
-          />
+          <div class="playerInfo__detail--icons">
+            <img
+              class="playerInfo__icon"
+              src="@/assets/playerIcons/GK 능숙한 펀칭.png"
+            />
+            <img
+              class="playerInfo__icon"
+              src="@/assets/playerIcons/GK 적극적 크로스 수비.png"
+            />
+            <img
+              class="playerInfo__icon"
+              src="@/assets/playerIcons/스피드 드리블러.png"
+            />
+          </div>
         </div>
         <img
           class="playerInfo__img"
@@ -229,11 +233,13 @@ export default {
   height: 100%;
   display: flex;
   align-items: center;
-  background: rgba(0, 4, 25, 0.7);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.3);
   border-radius: 1rem;
   z-index: 9998;
   color: rgb(218, 222, 218);
-  font-weight: 300;
+  font-weight: 400;
 }
 .team-selector {
   display: flex;
@@ -258,7 +264,9 @@ export default {
 .team__playerInfo {
   width: 100%;
   height: 90%;
-  background: rgba(17, 17, 33, 0.55);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  /* backdrop-filter: blur(10px); */
   border-radius: 1rem;
   position: relative;
 }
@@ -273,8 +281,10 @@ export default {
   height: calc(100% - 3.5rem);
   margin-left: 0.8rem;
   padding-left: 0.5rem;
-  background: rgba(58, 65, 123, 0.378);
-  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  border-radius: 0.5rem;
+  /* backdrop-filter: blur(10px);  border-radius: 1rem; */
   display: flex;
   align-items: center;
   justify-items: space-evenly;
@@ -290,9 +300,12 @@ export default {
   margin-left: 0.4rem;
   font-size: 0.8rem;
 }
+.playerInfo__detail--icons {
+  flex-direction: column;
+}
 .playerInfo__icon {
-  width: 5rem;
-  height: 5rem;
+  width: 2rem;
+  height: 2rem;
   margin: 0.2rem;
 }
 .playerInfo__img {
@@ -304,13 +317,15 @@ export default {
   cursor: pointer;
   object-position: center;
   object-fit: contain;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 .team__icon {
   width: 5rem;
   height: 5rem;
-  border-radius: 1rem;
-  background: rgba(0, 4, 25, 0.7);
+  border-radius: 1.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  /* backdrop-filter: blur(10px); */
   margin: 0 1rem;
   display: flex;
   flex-direction: column;
@@ -320,7 +335,7 @@ export default {
 .team__icon--img {
   width: 2rem;
   height: 2rem;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 .team__playerList {
   width: 89%;
@@ -333,7 +348,9 @@ export default {
 .playerList__player {
   width: 7rem;
   height: 10.5rem;
-  background: rgba(0, 4, 25, 0.7);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
+  /* backdrop-filter: blur(10px); */
   margin-left: 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
@@ -361,7 +378,7 @@ export default {
   bottom: 0;
   object-position: center;
   object-fit: contain;
-  opacity: 0.8;
+  opacity: 1;
 }
 /* Customize the scrollbar background and thickness */
 .team__playerList::-webkit-scrollbar {
