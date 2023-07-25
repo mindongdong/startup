@@ -12,7 +12,7 @@
         /> -->
         <ul class="components_list" :class="{ show: isComponentsListVisible }">
           <li
-            v-for="(item, idx) in componentList"
+            v-for="(item, idx) in Object.keys(componentList)"
             :key="idx"
             @click="toggleComponent(item)"
           >
@@ -55,10 +55,7 @@
           }"
           class="icon white"
           src="@/assets/icons/components.png"
-          @click="
-            toggleManage('components');
-            toggleComponentsList();
-          "
+          @click="toggleComponentsList()"
         />
       </div>
     </div>
@@ -117,14 +114,12 @@ export default {
       mouseX: 0,
       tooltipHideTimeout: null,
       isComponentsListVisible: false,
-      componentList: [
-        "GroupStats",
-        "item 2",
-        "item 3",
-        "item 4",
-        "item 5",
-        "item 6",
-      ],
+      componentList: {
+        "선수 기록": "PlayerStats",
+        "실시간 기록": "MatchStats",
+        "공격 시퀀스": "AttackSeq",
+        "슈팅 기록": "ShotStats",
+      },
     };
   },
   computed: {
@@ -168,7 +163,7 @@ export default {
       // Search for the item in active components
       for (let component of this.components) {
         const index = component.items.findIndex(
-          (item) => item.title === itemTitle
+          (item) => item.title === this.componentList[itemTitle]
         );
         if (index !== -1) {
           const [item] = component.items.splice(index, 1);
@@ -181,14 +176,14 @@ export default {
       // If not found in active components, search in inactive components
       if (!found) {
         const index = this.unactivate_components.findIndex(
-          (item) => item.title === itemTitle
+          (item) => item.title === this.componentList[itemTitle]
         );
         if (index !== -1) {
           const [item] = this.unactivate_components.splice(index, 1);
 
           // Move to the items in items with index 1 or 2
           const targetComponent = this.components.find(
-            (component) => component.items.length < 3
+            (component) => component.items.length < 2
           );
 
           if (targetComponent) {

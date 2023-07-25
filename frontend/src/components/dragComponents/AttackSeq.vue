@@ -42,6 +42,7 @@ export default {
       timeInterval: null,
       attackSeqData: null,
       currentIndex: 0,
+      indexList: [],
     };
   },
   computed: {
@@ -71,7 +72,11 @@ export default {
       );
       this.attackSeqData = response.data.attack_sequence;
       this.currentIndex = response.data.index;
-      console.log(this.attackSeqData);
+      this.indexList = Object.keys(response.data.attack_sequence.start_x);
+      this.filteredIndexList = this.indexList.filter(
+        (index) => index <= this.currentIndex
+      );
+      console.log(this.indexList);
     }, 1000);
   },
   methods: {
@@ -80,7 +85,7 @@ export default {
       let context = canvas.getContext("2d");
 
       // Set pitch color
-      context.fillStyle = "#3e8e41"; // set as per your requirement
+      context.fillStyle = "rgba(0,0,0,0.3)"; // set as per your requirement
 
       // Draw the outer rectangle
       context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -175,56 +180,65 @@ export default {
       // Transform x from the event's coordinate system to SVG's coordinate system.
       // This function depends on the actual size of your SVG and your event's coordinate system.
       // Here we simply use x as is.
+      const calX = this.canvasWidth / 104;
+      x = x * calX;
       return x;
     },
     scaleY(y) {
       // Transform y from the event's coordinate system to SVG's coordinate system.
       // This function depends on the actual size of your SVG and your event's coordinate system.
       // Here we simply use y as is.
+      const calY = this.canvasHeight / 68;
+      y = y * calY;
       return y;
     },
     drawSequenceData() {
       let canvas = this.$refs.soccerCanvas;
       let context = canvas.getContext("2d");
 
-      // Loop over the attack sequence data
-      for (let eventIndex in this.attackSeqData.start_x) {
+      context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+      this.drawPitch();
+
+      this.filteredIndexList.forEach((eventIndex) => {
         // Extract start and end positions
-        let adjust_start_x,
-          adjust_start_y = this.adjustCoordinates(
-            this.attackSeqData.start_x[eventIndex],
-            this.attackSeqData.start_y[eventIndex]
-          );
-        let adjust_end_x,
-          adjust_end_y = this.adjustCoordinates(
-            this.attackSeqData.end_x[eventIndex],
-            this.attackSeqData.end_y[eventIndex]
-          );
-        let startX = this.scaleX(adjust_start_x);
-        let startY = this.scaleY(adjust_start_y);
-        let endX = this.scaleX(adjust_end_x);
-        let endY = this.scaleY(adjust_end_y);
+        // let adjust_start_x,
+        //   adjust_start_y = this.adjustCoordinates(
+        //     this.attackSeqData.start_x[eventIndex],
+        //     this.attackSeqData.start_y[eventIndex]
+        //   );
+        // let adjust_end_x,
+        //   adjust_end_y = this.adjustCoordinates(
+        //     this.attackSeqData.end_x[eventIndex],
+        //     this.attackSeqData.end_y[eventIndex]
+        //   );
+        let startX = this.scaleX(this.attackSeqData.start_x[eventIndex]);
+        let startY = this.scaleY(this.attackSeqData.start_y[eventIndex]);
 
         // Draw circle at start position
         context.beginPath();
-        context.arc(adjust_start_x, adjust_start_y, 5, 0, 2 * Math.PI, false);
+        context.arc(startX, startY, 5, 0, 2 * Math.PI, false);
         context.fillStyle =
           this.colorDict[this.attackSeqData.team_name[eventIndex]];
         context.fill();
 
         // Draw line to end position, if it exists
-        if (this.attackSeqData.end_x[eventIndex]) {
+        if (this.attackSeqData.end_x[eventIndex - 1]) {
+          let startX = this.scaleX(this.attackSeqData.start_x[eventIndex - 1]);
+          let startY = this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
+          let endX = this.scaleX(this.attackSeqData.end_x[eventIndex - 1]);
+          let endY = this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
           context.beginPath();
           context.moveTo(startX, startY);
           context.lineTo(endX, endY);
-          context.strokeStyle = "blue";
+          context.strokeStyle =
+            this.colorDict[this.attackSeqData.team_name[eventIndex]];
           context.stroke();
         }
-      }
+      });
     },
     adjustCoordinates(x, y) {
-      const originalWidth = 104;
-      const originalHeight = 68;
+      const originalWidth = 104 * 3;
+      const originalHeight = 68 * 3;
       const scale_x = this.canvasWidth / originalWidth;
       const scale_y = this.canvasHeight / originalHeight;
       const adjustedStartX = x * scale_x;

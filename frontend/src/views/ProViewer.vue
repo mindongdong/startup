@@ -1,7 +1,7 @@
 <template>
   <div id="layout">
     <img class="background-image" src="@/assets/background_pro3.jpg" />
-    <draggable class="contents-container" v-model="components">
+    <div class="contents-container">
       <Video ref="videoRef"></Video>
       <div
         class="info-container"
@@ -18,7 +18,7 @@
         <draggable
           class="drag-component"
           :list="component.items"
-          :group="{ name: 'component' }"
+          :group="{name: 'component'}"
         >
           <div
             class="drag-content"
@@ -40,7 +40,7 @@ import PlayerStats from "@/components/dragComponents/PlayerStats.vue";
 import MatchStats from "@/components/dragComponents/MatchStats.vue";
 import AttackSeq from "@/components/dragComponents/AttackSeq.vue";
 import draggable from "vuedraggable";
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   components: {
@@ -65,7 +65,7 @@ export default {
   async mounted() {
     const video = document.querySelector("Video");
 
-    video.addEventListener("ended", (ev) => {
+    video.addEventListener("ended", ev => {
       // console.log(ev);
       this.playToggle = false;
     });
