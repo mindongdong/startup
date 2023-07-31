@@ -441,7 +441,8 @@ export default {
   font-size: 0.8rem;
 }
 .playerInfo__detail--icons {
-  flex-direction: column;
+  display: flex;
+  margin-right: 0.5rem;
 }
 .playerInfo__icon {
   width: 2rem;

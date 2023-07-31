@@ -9,7 +9,7 @@
     ></canvas>
     <div
       v-if="tooltipVisible"
-      :style="{top: tooltipY - 12 + 'px', left: tooltipX + 'px'}"
+      :style="{ top: tooltipY - 12 + 'px', left: tooltipX + 'px' }"
       class="tooltip"
     >
       {{ tooltipText }}
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {getMatchShots} from "@/api/index.js";
+import { getMatchShots } from "@/api/index.js";
 export default {
   name: "AttackSeq",
   data() {
@@ -40,8 +40,8 @@ export default {
   computed: {
     goalColorDict() {
       return {
-        독일: "blue",
-        대한민국: "red",
+        독일: "rgba(255,150,180,1)",
+        대한민국: "rgba(255,150,180,1)",
       };
     },
     shotColorDict() {
@@ -58,6 +58,7 @@ export default {
       this.team1Goals = response.data.team1;
       this.team2Goals = response.data.team2;
       this.failedShots = response.data.failed_shots;
+      console.log(this.team2Goals);
       this.drawShotData(this.team1Goals);
       this.drawShotData(this.team2Goals);
       this.drawShotData(this.failedShots);
@@ -94,7 +95,7 @@ export default {
         this.canvasHeight / 2,
         26.6666666667,
         0,
-        2 * Math.PI,
+        2 * Math.PI
       );
       context.stroke();
 
@@ -105,7 +106,7 @@ export default {
         this.canvasHeight / 2,
         2,
         0,
-        2 * Math.PI,
+        2 * Math.PI
       );
       context.fill();
 
@@ -115,14 +116,14 @@ export default {
         this.canvasWidth - 200 / 3,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3,
+        440 / 3
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3,
+        440 / 3
       );
 
       // Draw goal areas
@@ -131,14 +132,14 @@ export default {
         this.canvasWidth - 100 / 3,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3,
+        180 / 3
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3,
+        180 / 3
       );
     },
     drawRectangle(context, x, y, width, height) {
@@ -159,7 +160,7 @@ export default {
       this.drawPitch();
 
       if (shotData === this.failedShots) {
-        shotData.forEach(shot => {
+        shotData.forEach((shot) => {
           let x = shot.x;
           let y = shot.y;
           let canvasX = this.scaleX(x);
@@ -168,10 +169,10 @@ export default {
           context.arc(
             canvasX,
             canvasY,
-            Math.sqrt(shot.xg) * 35,
+            Math.sqrt(shot.xg) * 20,
             0,
             Math.PI * 2,
-            false,
+            false
           ); // size is now related to xg
           context.fillStyle = this.shotColorDict[shot.team_name];
           context.fill();
@@ -179,15 +180,17 @@ export default {
           this.circles.push({
             x: canvasX,
             y: canvasY,
-            radius: Math.sqrt(shot.xg) * 35,
+            radius: Math.sqrt(shot.xg) * 20,
             text: shot.display_name,
           });
         });
       } else {
         const goals = shotData.goals;
         const teamName = shotData.name;
+        console.log(goals);
         // Prepare for drawing. As an example, we'll draw team1Goals here.
-        goals.forEach(goal => {
+        goals.forEach((goal) => {
+          console.log(goal);
           let x = goal.x;
           let y = goal.y;
 
@@ -205,9 +208,9 @@ export default {
             Math.sqrt(goal.xg) * 20,
             0,
             Math.PI * 2,
-            false,
+            false
           ); // size is now related to xg
-          context.fillStyle = this.goalColorDict[teamName];
+          context.fillStyle = this.goalColorDict["대한민국"];
           context.fill();
 
           this.circles.push({
@@ -215,7 +218,6 @@ export default {
             y: canvasY,
             radius: Math.sqrt(goal.xg) * 20,
             text: goal.display_name,
-            hovered: false, // Add this line
           });
         });
       }

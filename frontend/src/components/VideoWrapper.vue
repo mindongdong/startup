@@ -28,16 +28,10 @@
           @click="setupPlayer(videoStatus.name)"
         />
         <img
-          v-if="this.$store.getters.getToggleList['mute']"
-          class="icon"
-          src="@/assets/icons/mute.png"
-          @click="toggleManage('mute')"
-        />
-        <img
-          v-else
+          v-bind:class="{ icon_on: this.$store.getters.getToggleList['mute'] }"
           class="icon"
           src="@/assets/icons/sound.png"
-          @click="toggleManage('mute')"
+          @click="volumeControl"
         />
         <img
           v-bind:class="{ icon_on: this.$store.getters.getToggleList['info'] }"
@@ -52,6 +46,15 @@
           class="icon"
           src="@/assets/icons/components2.png"
           @click="toggleComponentsList()"
+        />
+      </div>
+      <div v-if="volumeBarVisible" class="volume-bar">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          v-model="volume"
+          @input="setVolume(volume)"
         />
       </div>
     </div>
@@ -132,6 +135,8 @@ export default {
           status: false,
         },
       ],
+      volumeBarVisible: false,
+      volume: 50,
     };
   },
   computed: {
@@ -262,6 +267,15 @@ export default {
       } else {
         video.pause();
       }
+    },
+    volumeControl() {
+      this.volumeBarVisible = !this.volumeBarVisible;
+      this.toggleManage("mute");
+    },
+    setVolume(volume) {
+      this.volume = volume;
+      const video = this.$store.getters.getCurrentVideo;
+      video.volume = volume / 100;
     },
     setupPlayer(name) {
       this.videoStatusList.forEach((videoStatus, idx) => {
@@ -609,6 +623,21 @@ div {
   text-align: center;
   font-size: 1rem;
 }
+.volume-bar {
+  position: absolute;
+  top: 4rem;
+  left: calc(50% - 6.5rem);
+  width: 9rem;
+  height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  border-radius: 1.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
 .button-wrapper {
   width: 1.8rem;
   height: 1.8rem;
@@ -681,5 +710,9 @@ div {
 .white {
   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
     contrast(103%);
+}
+.unactivate_components {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
 }
 </style>

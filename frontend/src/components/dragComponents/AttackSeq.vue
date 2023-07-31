@@ -52,7 +52,7 @@ export default {
         (index) => index <= this.currentIndex
       );
       // console.log(this.indexList);
-    }, 1000);
+    }, 500);
   },
   methods: {
     drawPitch() {

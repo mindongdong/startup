@@ -1,17 +1,17 @@
 <template>
   <ul class="playerBox__list" ref="playerBox">
     <li
-      class="playerBox__item"
+      class="playerBox__item home"
       v-for="(player, index) in home_lineup"
       :key="player"
       @click="boxClick(index)"
       @mouseover="showCompoenets"
       @mouseleave="hideCompoenets"
     >
-      <div class="playerBox__name">{{ player }}</div>
+      <div class="playerBox__name away">{{ player }}</div>
     </li>
     <li
-      class="playerBox__item"
+      class="playerBox__item away"
       v-for="(player, index) in away_lineup"
       :key="player"
       @click="boxClick(index + 11)"
@@ -174,6 +174,14 @@ export default {
   border: 1px solid rgba(255, 255, 255, 0.303);
   background: rgba(255, 255, 255, 0.15);
   z-index: 9998;
+}
+.home:hover {
+  border: 1px solid rgba(255, 99, 132, 1);
+  background: rgba(255, 99, 132, 0.2);
+}
+.away:hover {
+  border: 1px solid rgba(150, 230, 180, 1);
+  background: rgba(150, 230, 180, 0.2);
 }
 .select {
   display: flex;
