@@ -104,10 +104,12 @@ export default {
       sourceToggle: false,
       currentData: 0,
       percent: 0,
-      videoSource_default_m3u8: "http://localhost:3000/video/video.m3u8",
+      videoSource_default_m3u8:
+        "https://d3qay1g4np21qm.cloudfront.net/output/video_4k.m3u8",
       videoSource_voronoi_m3u8:
-        "http://localhost:3000/video/video_voronoi.m3u8",
-      videoSource_pass_m3u8: "http://localhost:3000/video/video_passroot.m3u8",
+        "https://d3qay1g4np21qm.cloudfront.net/output_voronoi/video_voronoi_4k.m3u8",
+      videoSource_pass_m3u8:
+        "https://d3qay1g4np21qm.cloudfront.net/output_passroot/video_passroot_4k.m3u8",
       showTooltip: false,
       tooltipTime: "",
       tooltipStyle: {},

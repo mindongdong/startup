@@ -158,7 +158,7 @@ export default {
       // console.log(this.selectedTeam, this.selectedRecord);
       if (this.selectedRecord) {
         const response = await getMatchStats(
-          this.$store.getters.getCurrentTime
+          this.$store.getters.getCurrentTime + 4653.0
         );
         this.matchStats = response.data;
 
@@ -180,7 +180,9 @@ export default {
     this.selectedRecord = Object.values(this.recordDict)[0];
   },
   async mounted() {
-    const lineup = await getMatchLineup(this.$store.getters.getCurrentTime);
+    const lineup = await getMatchLineup(
+      this.$store.getters.getCurrentTime + 4653.0
+    );
     console.log(lineup.data);
     const team_list = Object.keys(lineup.data);
     this.home_teamName = team_list[0];
@@ -188,7 +190,9 @@ export default {
     this.home_lineup = lineup.data[team_list[0]];
     this.away_lineup = lineup.data[team_list[1]];
     this.timeInterval = setInterval(async () => {
-      const response = await getMatchStats(this.$store.getters.getCurrentTime);
+      const response = await getMatchStats(
+        this.$store.getters.getCurrentTime + 4653.0
+      );
       this.matchStats = response.data;
       this.filteredStats = this.matchStats
         .filter(

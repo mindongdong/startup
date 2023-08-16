@@ -82,9 +82,9 @@ export default {
       //   this.predictionList = response.data;
       // }
       const video = this.$store.getters.getCurrentVideo;
-      const videoTime = video.currentTime;
-      console.log(videoTime);
-      const frame = parseInt(videoTime * 29.970156368607);
+      const videoTime = parseFloat(video.currentTime) + 4653.0;
+      console.log("video time: " + videoTime);
+      const frame = parseInt(videoTime * 29.970156368607) + 14;
       console.log(frame);
       const response = await getTrackingInfo(frame);
       this.predictionList = response.data;

@@ -23,9 +23,8 @@ export default {
   name: "Stream",
   data() {
     return {
-      videoSource_m3u8: "http://localhost:3000/video/video.m3u8",
-      // videoSource_m3u8:
-      //   "https://d3qay1g4np21qm.cloudfront.net/output/video_4k.m3u8",
+      videoSource_m3u8:
+        "https://d3qay1g4np21qm.cloudfront.net/output/video_4k.m3u8",
       hls: null,
     };
   },
@@ -76,7 +75,7 @@ export default {
         this.$refs.videoPlayer.duration
       );
       this.$store.commit("setCurrentTime", this.$refs.videoPlayer.currentTime);
-      console.log(this.hls.levels, this.hls.currentLevel);
+      // console.log(this.hls.levels, this.hls.currentLevel);
       // console.log(this.$refs.videoPlayer.currentTime);
     },
     pause() {

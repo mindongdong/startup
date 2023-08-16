@@ -42,8 +42,9 @@ export default {
   mounted() {
     this.drawPitch();
     this.timeInterval = setInterval(async () => {
+      // console.log(this.$store.getters.getCurrentTime + 4653.0);
       const response = await getAttackSequence(
-        this.$store.getters.getCurrentTime
+        this.$store.getters.getCurrentTime + 4653.0
       );
       this.attackSeqData = response.data.attack_sequence;
       this.currentIndex = response.data.index;
@@ -173,7 +174,7 @@ export default {
       context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
       this.drawPitch();
 
-      let period = this.$store.getters.getCurrentTime < 2882 ? "1H" : "2H";
+      let period = "2H";
       // period가 1H일 때는 독일이 reverseX, reverseY 적용 한국은 reverseY만 적용
       // period가 2H일 때는 독일은 reverseY만 적용 한국은 reverseX, reverseY 적용
       let first_idx = this.filteredIndexList[0];
@@ -237,7 +238,6 @@ export default {
   font-size: 1rem;
   text-align: center;
   padding: 0.5rem;
-  margin-bottom: 0.5rem;
   border-bottom: 2px solid rgba(0, 0, 0, 0.3);
 }
 .layout {
@@ -245,7 +245,6 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 canvas {
   border: 1px solid #000;

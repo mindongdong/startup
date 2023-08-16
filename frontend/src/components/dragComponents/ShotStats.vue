@@ -54,7 +54,9 @@ export default {
   async mounted() {
     this.drawPitch();
     this.timeInterval = setInterval(async () => {
-      const response = await getMatchShots(this.$store.getters.getCurrentTime);
+      const response = await getMatchShots(
+        this.$store.getters.getCurrentTime + 4653.0
+      );
       this.team1Goals = response.data.team1;
       this.team2Goals = response.data.team2;
       this.failedShots = response.data.failed_shots;
@@ -283,7 +285,6 @@ export default {
   font-size: 1rem;
   text-align: center;
   padding: 0.5rem;
-  margin-bottom: 0.5rem;
   border-bottom: 2px solid rgba(0, 0, 0, 0.3);
 }
 .layout {
@@ -291,7 +292,6 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 canvas {
   border: 1px solid #000;

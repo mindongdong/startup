@@ -143,7 +143,7 @@ export default {
             angleLines: {
               color: "rgba(255, 255, 255, 0.8)",
               lineWidth: 0.5,
-            }
+            },
           },
         },
       };
@@ -173,7 +173,9 @@ export default {
     this.selectedRecord = Object.values(this.recordDict)[0];
   },
   async mounted() {
-    const lineup = await getMatchLineup(this.$store.getters.getCurrentTime);
+    const lineup = await getMatchLineup(
+      this.$store.getters.getCurrentTime + 4653.0
+    );
     console.log(lineup.data);
     const team_list = Object.keys(lineup.data);
     this.home_teamName = team_list[0];
@@ -191,9 +193,6 @@ export default {
 .layout {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 .title {
   color: white;
