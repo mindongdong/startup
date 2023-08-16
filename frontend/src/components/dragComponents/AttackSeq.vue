@@ -12,8 +12,8 @@ export default {
   name: "AttackSeq",
   data() {
     return {
-      canvasWidth: 350, // adjust based on your need
-      canvasHeight: 228.846153846, // adjust based on your need
+      canvasWidth: 330, // adjust based on your need
+      canvasHeight: (330 * 228.846153846) / 350, // adjust based on your need
       timeInterval: null,
       attackSeqData: null,
       currentIndex: 0,

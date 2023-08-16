@@ -1,6 +1,6 @@
 <template>
   <div id="layout">
-    <img class="background-image" src="@/assets/background_pro5 2.png" />
+    <img class="background-image" src="@/assets/background_pro.png" />
     <div class="contents-container">
       <Video ref="videoRef"></Video>
       <div

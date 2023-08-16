@@ -3,4 +3,7 @@ module.exports = {
   //     overlay: false,
   //   },
   lintOnSave: false,
+  devServer: {
+    allowedHosts: "all",
+  },
 };

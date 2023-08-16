@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+    
+  socket-backend:
+    build:
+      context: ./socket-backend
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./socket-backend:/app/socket-backend
+
+  vue-frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend:/app/frontend
