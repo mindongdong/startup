@@ -10,8 +10,8 @@
       autoplay
       @loadeddata="videoData"
       @timeupdate="timeUpdate"
-      @pause="pause"
       @seeking="timeUpdate"
+      @ended="videoChange"
     ></video>
   </div>
 </template>
@@ -78,12 +78,13 @@ export default {
       // console.log(this.hls.levels, this.hls.currentLevel);
       // console.log(this.$refs.videoPlayer.currentTime);
     },
-    pause() {
-      this.$refs.audioPlayer1.pause();
-    },
     audioData(ev) {
       console.log(ev);
       this.$store.commit("setCurrentAudio", ev.target);
+    },
+    videoChange() {
+      this.$parent.videoChange();
+      console.log("videoChange");
     },
   },
 };
