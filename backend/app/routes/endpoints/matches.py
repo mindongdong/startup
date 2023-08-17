@@ -51,6 +51,9 @@ def detect_attack_sequences(match_events, first_idx, last_idx):
     match_events = match_events[match_events['event_type'] != 'Substitution'][cols]
 
     seq_events = match_events.loc[first_idx:last_idx].copy()
+    seq_events[['end_x', 'end_y']] = seq_events[['end_x', 'end_y']].fillna(0)
+
+    print(seq_events)
 
     return seq_events
 

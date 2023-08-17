@@ -23,8 +23,8 @@ export default {
   name: "AttackSeq",
   data() {
     return {
-      canvasWidth: 330, // adjust based on your need
-      canvasHeight: (330 * 228.846153846) / 350, // adjust based on your need
+      canvasWidth: 600, // adjust based on your need
+      canvasHeight: (600 * 228.846153846) / 350, // adjust based on your need
       timeInterval: null,
       shotData: null,
       team1Goals: null,
@@ -278,7 +278,7 @@ export default {
 
 <style scoped>
 .title {
-  width: 95%;
+  width: 97%;
   color: white;
   font-size: 1rem;
   text-align: center;

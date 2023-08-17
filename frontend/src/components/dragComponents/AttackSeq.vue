@@ -12,8 +12,8 @@ export default {
   name: "AttackSeq",
   data() {
     return {
-      canvasWidth: 330, // adjust based on your need
-      canvasHeight: (330 * 228.846153846) / 350, // adjust based on your need
+      canvasWidth: 600, // adjust based on your need
+      canvasHeight: (600 * 228.846153846) / 350, // adjust based on your need
       timeInterval: null,
       attackSeqData: null,
       currentIndex: 0,
@@ -178,14 +178,18 @@ export default {
       // period가 2H일 때는 독일은 reverseY만 적용 한국은 reverseX, reverseY 적용
       let first_idx = this.filteredIndexList[0];
 
-      this.filteredIndexList.forEach((eventIndex) => {
+      let team_list = Object.values(this.attackSeqData.team_name);
+      let diff_team_list = team_list.map((team) => team === team_list[0]);
+      console.log(diff_team_list);
+
+      this.filteredIndexList.forEach((eventIndex, idx) => {
         let teamName = this.attackSeqData.team_name[first_idx];
-        console.log(period, teamName);
         let reverseBoolean =
           (teamName === "대한민국" && period === "1H") ||
           (teamName === "독일" && period === "2H")
             ? true
             : false;
+
         let circle_startX = reverseBoolean
           ? this.scaleX(this.attackSeqData.start_x[eventIndex])
           : this.reverseX(this.attackSeqData.start_x[eventIndex]);
@@ -205,6 +209,41 @@ export default {
           ? this.reverseY(this.attackSeqData.end_y[eventIndex - 1])
           : this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
 
+        // 중간에 껴있는 다른 팀에 대한 경합은 위치를 다시 바꿔준다.
+        if (!diff_team_list[idx]) {
+          circle_startX =
+            circle_startX ===
+            this.scaleX(this.attackSeqData.start_x[eventIndex])
+              ? this.reverseX(this.attackSeqData.start_x[eventIndex])
+              : this.scaleX(this.attackSeqData.start_x[eventIndex]);
+          circle_startY =
+            circle_startY ===
+            this.scaleY(this.attackSeqData.start_y[eventIndex])
+              ? this.reverseY(this.attackSeqData.start_y[eventIndex])
+              : this.scaleY(this.attackSeqData.start_y[eventIndex]);
+        }
+
+        if (!diff_team_list[idx - 1]) {
+          line_startX =
+            line_startX ===
+            this.scaleX(this.attackSeqData.start_x[eventIndex - 1])
+              ? this.reverseX(this.attackSeqData.start_x[eventIndex - 1])
+              : this.scaleX(this.attackSeqData.start_x[eventIndex - 1]);
+          line_startY =
+            line_startY ===
+            this.scaleY(this.attackSeqData.start_y[eventIndex - 1])
+              ? this.reverseY(this.attackSeqData.start_y[eventIndex - 1])
+              : this.scaleY(this.attackSeqData.start_y[eventIndex - 1]);
+          line_endX =
+            line_endX === this.scaleX(this.attackSeqData.end_x[eventIndex - 1])
+              ? this.reverseX(this.attackSeqData.end_x[eventIndex - 1])
+              : this.scaleX(this.attackSeqData.end_x[eventIndex - 1]);
+          line_endY =
+            line_endY === this.scaleY(this.attackSeqData.end_y[eventIndex - 1])
+              ? this.reverseY(this.attackSeqData.end_y[eventIndex - 1])
+              : this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
+        }
+
         // Draw circle at start position
         context.beginPath();
         context.arc(circle_startX, circle_startY, 5, 0, 2 * Math.PI, false);
@@ -221,6 +260,24 @@ export default {
             this.colorDict[this.attackSeqData.team_name[eventIndex - 1]];
           context.stroke();
         }
+
+        console.log(idx, Object.keys(this.attackSeqData.player_name).length);
+
+        // 만약, 마지막 인덱스라면 eventIndex - 1이 아닌 eventIndex로 라인을 그려준다.
+        if (idx === Object.keys(this.attackSeqData.player_name).length - 1) {
+          const last_line_endX = reverseBoolean
+            ? this.scaleX(this.attackSeqData.end_x[eventIndex])
+            : this.reverseX(this.attackSeqData.end_x[eventIndex]);
+          const last_line_endY = reverseBoolean
+            ? this.reverseY(this.attackSeqData.end_y[eventIndex])
+            : this.scaleY(this.attackSeqData.end_y[eventIndex]);
+          context.beginPath();
+          context.moveTo(circle_startX, circle_startY);
+          context.lineTo(last_line_endX, last_line_endY);
+          context.strokeStyle =
+            this.colorDict[this.attackSeqData.team_name[eventIndex]];
+          context.stroke();
+        }
       });
     },
   },
@@ -232,7 +289,7 @@ export default {
 
 <style scoped>
 .title {
-  width: 95%;
+  width: 97%;
   color: white;
   font-size: 1rem;
   text-align: center;
@@ -249,5 +306,6 @@ export default {
 }
 canvas {
   border: 1px solid #000;
+  position: relative;
 }
 </style>
