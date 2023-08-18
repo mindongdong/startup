@@ -169,7 +169,7 @@ export default {
           context.arc(
             canvasX,
             canvasY,
-            Math.sqrt(shot.xg) * 20,
+            Math.sqrt(shot.xg) * 30,
             0,
             Math.PI * 2,
             false

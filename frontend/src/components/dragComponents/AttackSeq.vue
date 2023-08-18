@@ -23,8 +23,8 @@ export default {
   computed: {
     colorDict() {
       return {
-        독일: "rgba(150, 230, 180, 1)",
-        대한민국: "rgba(255,99,132,1)",
+        독일: "rgba(150, 230, 180, 0.8)",
+        대한민국: "rgba(255, 99, 132, 0.8)",
       };
     },
   },
@@ -166,6 +166,67 @@ export default {
       y = (68 - y) * calY; // Subtract y from the maximum Y value (68)
       return y;
     },
+    determineLineOrientation(start_x, start_y, end_x, end_y) {
+      let dx = end_x - start_x;
+      let dy = end_y - start_y;
+
+      if (Math.abs(dx) > Math.abs(dy)) {
+        return true;
+      } else if (Math.abs(dy) > Math.abs(dx)) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    determineLineDirection(start_x, start_y, end_x, end_y) {
+      let dx = end_x - start_x;
+      let dy = end_y - start_y;
+
+      let xDirection = dx > 0 ? "right" : "left";
+      let yDirection = dy > 0 ? "up" : "down";
+
+      console.log(dx, xDirection);
+      console.log(dy, yDirection);
+
+      return {
+        xDirection: xDirection,
+        yDirection: yDirection,
+      };
+    },
+    drawArrow(context, fromx, fromy, tox, toy, color) {
+      const headLength = 10; // length of the arrowhead
+
+      // Draw main line
+      context.moveTo(fromx, fromy);
+      context.lineTo(tox, toy);
+      context.strokeStyle = color;
+      context.stroke();
+
+      // Calculate angle of the line
+      const angle = Math.atan2(toy - fromy, tox - fromx);
+
+      // Draw arrowhead
+      context.moveTo(tox, toy);
+      context.lineTo(
+        tox - headLength * Math.cos(angle - Math.PI / 6),
+        toy - headLength * Math.sin(angle - Math.PI / 6)
+      );
+      context.lineTo(
+        tox - headLength * Math.cos(angle + Math.PI / 6),
+        toy - headLength * Math.sin(angle + Math.PI / 6)
+      );
+      context.lineTo(tox, toy);
+      context.lineTo(
+        tox - headLength * Math.cos(angle - Math.PI / 6),
+        toy - headLength * Math.sin(angle - Math.PI / 6)
+      );
+      // Line added to close the path for the arrowhead (this ensures filling works correctly)
+
+      context.fillStyle = color;
+      context.fill(); // This will fill the arrowhead
+      context.stroke(); // This will outline the arrowhead
+    },
+
     drawSequenceData() {
       let canvas = this.$refs.soccerCanvas;
       let context = canvas.getContext("2d");
@@ -244,24 +305,71 @@ export default {
               : this.scaleY(this.attackSeqData.end_y[eventIndex - 1]);
         }
 
+        // let booleanAxis = this.determineLineOrientation(
+        //   this.attackSeqData.start_x[eventIndex - 1],
+        //   this.attackSeqData.start_y[eventIndex - 1],
+        //   this.attackSeqData.end_x[eventIndex - 1],
+        //   this.attackSeqData.end_y[eventIndex - 1]
+        // );
+
+        // let direction = this.determineLineDirection(
+        //   this.attackSeqData.start_x[eventIndex - 1],
+        //   this.attackSeqData.start_y[eventIndex - 1],
+        //   this.attackSeqData.end_x[eventIndex - 1],
+        //   this.attackSeqData.end_y[eventIndex - 1]
+        // );
+
+        // if (booleanAxis) {
+        //   // Horizontal line
+        //   if (direction.xDirection === "right") {
+        //     line_startX = line_startX + 12;
+        //   } else if (direction.xDirection === "left") {
+        //     line_startX = line_startX - 12;
+        //   } else {
+        //     line_startX = line_startX + 12;
+        //   }
+        // } else {
+        //   // Vertical line
+        //   if (direction.yDirection === "up") {
+        //     line_startY = line_startY + 12;
+        //   } else if (direction.yDirection === "down") {
+        //     line_startY = line_startY - 12;
+        //   } else {
+        //     line_startY = line_startY + 12;
+        //   }
+        // }
+
         // Draw circle at start position
         context.beginPath();
-        context.arc(circle_startX, circle_startY, 5, 0, 2 * Math.PI, false);
-        context.fillStyle =
-          this.colorDict[this.attackSeqData.team_name[eventIndex]];
+        context.arc(circle_startX, circle_startY, 12, 0, 2 * Math.PI, false);
+        context.fillStyle = "rgba(255, 255, 255, 1)";
         context.fill();
+
+        // Add border to circle
+        context.lineWidth = 3; // Adjust this value for desired border thickness
+        context.strokeStyle =
+          this.colorDict[this.attackSeqData.team_name[eventIndex]]; // Or any desired color
+        context.stroke();
 
         // Draw line to end position, if it exists
         if (this.attackSeqData.end_x[eventIndex - 1]) {
           context.beginPath();
-          context.moveTo(line_startX, line_startY);
-          context.lineTo(line_endX, line_endY);
-          context.strokeStyle =
-            this.colorDict[this.attackSeqData.team_name[eventIndex - 1]];
-          context.stroke();
+          this.drawArrow(
+            context,
+            line_startX,
+            line_startY,
+            line_endX,
+            line_endY,
+            this.colorDict[this.attackSeqData.team_name[eventIndex - 1]]
+          );
         }
 
-        console.log(idx, Object.keys(this.attackSeqData.player_name).length);
+        // Draw the event index modulo 100 as the number
+        context.font = "14px Arial";
+        context.fillStyle = "black";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText(String(idx % 100), circle_startX, circle_startY);
 
         // 만약, 마지막 인덱스라면 eventIndex - 1이 아닌 eventIndex로 라인을 그려준다.
         if (idx === Object.keys(this.attackSeqData.player_name).length - 1) {
@@ -272,11 +380,14 @@ export default {
             ? this.reverseY(this.attackSeqData.end_y[eventIndex])
             : this.scaleY(this.attackSeqData.end_y[eventIndex]);
           context.beginPath();
-          context.moveTo(circle_startX, circle_startY);
-          context.lineTo(last_line_endX, last_line_endY);
-          context.strokeStyle =
-            this.colorDict[this.attackSeqData.team_name[eventIndex]];
-          context.stroke();
+          this.drawArrow(
+            context,
+            circle_startX,
+            circle_startY,
+            last_line_endX,
+            last_line_endY,
+            this.colorDict[this.attackSeqData.team_name[eventIndex]]
+          );
         }
       });
     },
