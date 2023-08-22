@@ -104,7 +104,13 @@ export default {
           {
             label: this.selectedRecord,
             data: sortedData.map((item) => item[this.selectedRecord]),
-            backgroundColor: "rgba(255,99,132,1)",
+            //backgroundColor를 지정할건데, item.team_name을 기준으로 색을 지정하고 싶다.
+            //item.team_name이 독일이면 빨간색, 대한민국이면 초록색으로 지정하고 싶다.
+            backgroundColor: sortedData.map((item) =>
+              item.team_name === "독일"
+                ? "rgba(150, 230, 180, 0.8)"
+                : "rgba(255,99,132,0.8)"
+            ),
           },
         ],
       };
@@ -172,7 +178,7 @@ export default {
             team_name: item.team_name,
             [this.selectedRecord]: item[this.selectedRecord],
           }));
-        // console.log(this.filteredStats);
+        console.log(this.filteredStats);
       }
     },
   },
@@ -193,6 +199,7 @@ export default {
       const response = await getMatchStats(
         this.$store.getters.getCurrentTime + 4653.0
       );
+      console.log(response.data);
       this.matchStats = response.data;
       this.filteredStats = this.matchStats
         .filter(
@@ -277,7 +284,7 @@ export default {
 
 .chart {
   width: 100%;
-  height: 70%;
+  height: 75%;
   display: flex;
   align-items: center;
   justify-content: center;

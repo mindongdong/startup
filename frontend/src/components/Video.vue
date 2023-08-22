@@ -32,64 +32,15 @@ export default {
   },
   methods: {
     timeUpdate(currentTime, duration) {
-      // let seconds = Math.floor(currentTime % 60);
-      // let minutes = Math.floor((currentTime / 60) % 60);
-      // let hours = Math.floor(currentTime / 3600);
-
-      // if (seconds < 10) {
-      //   seconds = "0" + seconds;
-      // }
-      // if (minutes < 10) {
-      //   minutes = "0" + minutes;
-      // }
-      // if (hours < 10) {
-      //   hours = "0" + hours;
-      // }
-
-      // let durationHours = Math.floor(duration / 3600);
-      // let durationMinutes = Math.floor((duration / 60) % 60);
-      // let durationSeconds = Math.floor(duration % 60);
-
-      // if (durationHours < 10) {
-      //   durationHours = "0" + durationHours;
-      // }
-      // if (durationMinutes < 10) {
-      //   durationMinutes = "0" + durationMinutes;
-      // }
-      // if (durationSeconds < 10) {
-      //   durationSeconds = "0" + durationSeconds;
-      // }
-
       this.currentTime = currentTime;
       this.totalTime = duration;
     },
     async getPrediction() {
-      // const video = this.$store.getters.getCurrentVideo;
-      // const currentFrame = this.$store.getters.getCurrentFrame;
-      // if (swapCount === 0) {
-      //   const frame = {
-      //     frame: video.webkitDecodedFrameCount,
-      //   };
-      //   //프레임 store에 저장
-      //   this.$store.commit("setCurrentFrame", frame.frame + 3);
-      //   console.log(video.webkitDecodedFrameCount, currentFrame, frame.frame);
-      //   const response = await getTrackingInfo(frame);
-      //   this.predictionList = response.data;
-      // } else {
-      //   const frame = {
-      //     frame: currentFrame,
-      //   };
-      //   //프레임 store에 저장
-      //   this.$store.commit("setCurrentFrame", frame.frame + 3);
-      //   console.log(video.webkitDecodedFrameCount, currentFrame, frame.frame);
-      //   const response = await getTrackingInfo(frame);
-      //   this.predictionList = response.data;
-      // }
       const video = this.$store.getters.getCurrentVideo;
       const videoTime = parseFloat(video.currentTime) + 4653.0;
-      console.log("video time: " + videoTime);
+      // console.log("video time: " + videoTime);
       const frame = parseInt(videoTime * 29.970156368607) + 14;
-      console.log(frame);
+      // console.log(frame);
       const response = await getTrackingInfo(frame);
       this.predictionList = response.data;
     },

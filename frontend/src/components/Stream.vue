@@ -45,19 +45,6 @@ export default {
   },
   methods: {
     videoData(ev) {
-      //프레임 정상화
-      // const currentFrame = this.$store.getters.getCurrentFrame;
-      // const swapCount = this.$store.getters.getSwapCount;
-      // console.log(ev.target.webkitDecodedFrameCount, currentFrame);
-      // console.log(swapCount);
-      // if (currentFrame === 0) {
-      //   this.$store.commit("setCurrentFrame", -2);
-      // } else {
-      //   this.$store.commit(
-      //     "setCurrentFrame",
-      //     -ev.target.webkitDecodedFrameCount + currentFrame - 1 - swapCount,
-      //   );
-      // }
       this.$store.commit("setCurrentVideo", ev.target);
 
       const interval = setInterval(() => {
@@ -68,6 +55,9 @@ export default {
       const width = videoElement.videoWidth;
       const height = videoElement.videoHeight;
       console.log(`Actual video resolution: ${width}x${height}`);
+
+      //전시용 시간 조정
+      ev.target.currentTime = 600;
     },
     timeUpdate() {
       this.$parent.timeUpdate(

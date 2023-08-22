@@ -47,7 +47,7 @@
             <p class="playerInfo__detailInfo">{{ players[player].birth }}</p>
             <p class="playerInfo__detailInfo">{{ players[player].position }}</p>
           </div>
-          <div class="playerInfo__detail--icons">
+          <!-- <div class="playerInfo__detail--icons">
             <img
               class="playerInfo__icon"
               :src="require(`@/assets/playerIcons/${specsList[idx][0]}.png`)"
@@ -60,7 +60,7 @@
               class="playerInfo__icon"
               :src="require(`@/assets/playerIcons/${specsList[idx][2]}.png`)"
             />
-          </div>
+          </div> -->
         </div>
         <img
           class="playerInfo__img"
@@ -86,7 +86,7 @@
             <p class="playerInfo__detailInfo">{{ players[player].position }}</p>
           </div>
           <div class="playerInfo__detail--icons">
-            <img
+            <!-- <img
               class="playerInfo__icon"
               :src="
                 require(`@/assets/playerIcons/${specsList[idx + 11][0]}.png`)
@@ -103,7 +103,7 @@
               :src="
                 require(`@/assets/playerIcons/${specsList[idx + 11][2]}.png`)
               "
-            />
+            /> -->
           </div>
         </div>
         <img

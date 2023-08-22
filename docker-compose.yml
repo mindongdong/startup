@@ -3,24 +3,20 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend
+      context: ./backend # Assuming backend Dockerfile is located inside a 'backend' directory
+      dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "10002:8000"
+    environment:
+      - ENVIRONMENT_VARIABLE_NAME=VALUE # You can add any environment variables needed for your backend here
     volumes:
-      - ./backend:/app/backend
-    
-  socket-backend:
-    build:
-      context: ./socket-backend
-    ports:
-      - "5001:5000"
-    volumes:
-      - ./socket-backend:/app/socket-backend
+      - ./backend:/app # Maps the backend source code to the /app directory inside the container
 
-  vue-frontend:
+  frontend:
     build:
-      context: ./frontend
+      context: ./frontend # Assuming frontend Dockerfile is located inside a 'frontend' directory
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "10001:8080" # Assuming your frontend runs on port 3000. You should modify this if it runs on a different port
     volumes:
-      - ./frontend:/app/frontend
+      - ./frontend:/app # Maps the frontend source code to the /app directory inside the container

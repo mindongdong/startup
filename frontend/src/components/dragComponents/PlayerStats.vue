@@ -252,7 +252,7 @@ export default {
 
 .chart {
   width: 100%;
-  height: 70%;
+  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
