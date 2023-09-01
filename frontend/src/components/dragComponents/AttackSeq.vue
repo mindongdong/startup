@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getAttackSequence } from "@/api/index.js";
+import {getAttackSequence} from "@/api/index.js";
 export default {
   name: "AttackSeq",
   data() {
@@ -43,13 +43,13 @@ export default {
     this.drawPitch();
     this.timeInterval = setInterval(async () => {
       const response = await getAttackSequence(
-        this.$store.getters.getCurrentTime
+        this.$store.getters.getCurrentTime - 1.5,
       );
       this.attackSeqData = response.data.attack_sequence;
       this.currentIndex = response.data.index;
       this.indexList = Object.keys(response.data.attack_sequence.start_x);
       this.filteredIndexList = this.indexList.filter(
-        (index) => index <= this.currentIndex
+        index => index <= this.currentIndex,
       );
       // console.log(this.indexList);
     }, 500);
@@ -85,7 +85,7 @@ export default {
         this.canvasHeight / 2,
         26.6666666667,
         0,
-        2 * Math.PI
+        2 * Math.PI,
       );
       context.stroke();
 
@@ -96,7 +96,7 @@ export default {
         this.canvasHeight / 2,
         2,
         0,
-        2 * Math.PI
+        2 * Math.PI,
       );
       context.fill();
 
@@ -106,14 +106,14 @@ export default {
         this.canvasWidth - 200 / 3,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3
+        440 / 3,
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 440 / 3) / 2,
         200 / 3,
-        440 / 3
+        440 / 3,
       );
 
       // Draw goal areas
@@ -122,14 +122,14 @@ export default {
         this.canvasWidth - 100 / 3,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3
+        180 / 3,
       );
       this.drawRectangle(
         context,
         0,
         (this.canvasHeight - 180 / 3) / 2,
         100 / 3,
-        180 / 3
+        180 / 3,
       );
     },
     drawRectangle(context, x, y, width, height) {
@@ -209,16 +209,16 @@ export default {
       context.moveTo(tox, toy);
       context.lineTo(
         tox - headLength * Math.cos(angle - Math.PI / 6),
-        toy - headLength * Math.sin(angle - Math.PI / 6)
+        toy - headLength * Math.sin(angle - Math.PI / 6),
       );
       context.lineTo(
         tox - headLength * Math.cos(angle + Math.PI / 6),
-        toy - headLength * Math.sin(angle + Math.PI / 6)
+        toy - headLength * Math.sin(angle + Math.PI / 6),
       );
       context.lineTo(tox, toy);
       context.lineTo(
         tox - headLength * Math.cos(angle - Math.PI / 6),
-        toy - headLength * Math.sin(angle - Math.PI / 6)
+        toy - headLength * Math.sin(angle - Math.PI / 6),
       );
       // Line added to close the path for the arrowhead (this ensures filling works correctly)
 
@@ -240,7 +240,7 @@ export default {
       let first_idx = this.filteredIndexList[0];
 
       let team_list = Object.values(this.attackSeqData.team_name);
-      let diff_team_list = team_list.map((team) => team === team_list[0]);
+      let diff_team_list = team_list.map(team => team === team_list[0]);
       console.log(diff_team_list);
 
       this.filteredIndexList.forEach((eventIndex, idx) => {
@@ -360,7 +360,7 @@ export default {
             line_startY,
             line_endX,
             line_endY,
-            this.colorDict[this.attackSeqData.team_name[eventIndex - 1]]
+            this.colorDict[this.attackSeqData.team_name[eventIndex - 1]],
           );
         }
 
@@ -386,7 +386,7 @@ export default {
             circle_startY,
             last_line_endX,
             last_line_endY,
-            this.colorDict[this.attackSeqData.team_name[eventIndex]]
+            this.colorDict[this.attackSeqData.team_name[eventIndex]],
           );
         }
       });
