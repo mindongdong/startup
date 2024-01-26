@@ -7,7 +7,7 @@
           src="@/assets/icons/list.png"
           @click="toggleComponentsList"
         /> -->
-        <ul class="components_list" :class="{ show: isComponentsListVisible }">
+        <ul class="components_list" :class="{show: isComponentsListVisible}">
           <li
             v-for="(item, idx) in Object.keys(componentList)"
             :key="idx"
@@ -20,7 +20,7 @@
       <div class="video-tools__column">
         <img
           class="icon"
-          v-bind:class="{ icon_on: videoStatus.name !== 'default' }"
+          v-bind:class="{icon_on: videoStatus.name !== 'default'}"
           v-for="(videoStatus, idx) in videoStatusList"
           :key="idx"
           v-if="videoStatus.status"
@@ -34,14 +34,14 @@
           @click="volumeControl"
         />
         <img
-          v-bind:class="{ icon_on: this.$store.getters.getToggleList['info'] }"
+          v-bind:class="{icon_on: this.$store.getters.getToggleList['info']}"
           class="icon"
           src="@/assets/icons/showinfo.png"
           @click="toggleManage('info')"
         />
         <img
           v-bind="{
-            class: { icon_on: this.$store.getters.getToggleList['components'] },
+            class: {icon_on: this.$store.getters.getToggleList['components']},
           }"
           class="icon"
           src="@/assets/icons/components2.png"
@@ -74,7 +74,7 @@
       />
       <div
         v-if="showTooltip"
-        :style="{ left: `${mouseX}px` }"
+        :style="{left: `${mouseX}px`}"
         class="time-tooltip"
       >
         {{ tooltipTime }}
@@ -85,7 +85,7 @@
 
 <script>
 import Hls from "hls.js";
-import { mapGetters, mapMutations } from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 export default {
   name: "VideoWrapper",
   props: {
@@ -143,7 +143,7 @@ export default {
     rangeStyle() {
       let progress = this.percent;
       let color1 = "#FFFFFF"; // color for the completed part
-      let color2 = "#00000077"; // color for the uncompleted part
+      let color2 = "#D3D3D3"; // color for the uncompleted part
       return `background: linear-gradient(90deg, ${color1} ${progress}%, ${color2} ${progress}%);`;
     },
     ...mapGetters(["getComponents", "getUnactivateComponents"]),
@@ -180,7 +180,7 @@ export default {
       // Search for the item in active components
       for (let component of this.components) {
         const index = component.items.findIndex(
-          (item) => item.title === this.componentList[itemTitle]
+          item => item.title === this.componentList[itemTitle],
         );
         if (index !== -1) {
           const [item] = component.items.splice(index, 1);
@@ -193,14 +193,14 @@ export default {
       // If not found in active components, search in inactive components
       if (!found) {
         const index = this.unactivate_components.findIndex(
-          (item) => item.title === this.componentList[itemTitle]
+          item => item.title === this.componentList[itemTitle],
         );
         if (index !== -1) {
           const [item] = this.unactivate_components.splice(index, 1);
 
           // Move to the items in items with index 1 or 2
           const targetComponent = this.components.find(
-            (component) => component.items.length < 2
+            component => component.items.length < 2,
           );
 
           if (targetComponent) {
@@ -300,7 +300,7 @@ export default {
       clearInterval(this.$store.getters.getCurrentInterval);
 
       const nextVideoName = this.videoStatusList.find(
-        (videoStatus) => videoStatus.status
+        videoStatus => videoStatus.status,
       ).name;
 
       if (Hls.isSupported()) {
@@ -514,7 +514,7 @@ div {
 }
 .video-control__range {
   width: 99%;
-  height: 7px;
+  height: 5px;
   -webkit-appearance: none;
   border-radius: 5px;
   margin-bottom: 2px;
@@ -523,7 +523,7 @@ div {
 
 .video-control__range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 7px;
+  width: 10px;
   height: 20px;
   background: #ffffff;
   /* box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5); */
@@ -534,7 +534,7 @@ div {
 }
 .video-control__range::-moz-range-thumb {
   -webkit-appearance: none;
-  width: 7px;
+  width: 10px;
   height: 20px;
   background: #ffffff;
   border-radius: 3px;
@@ -596,15 +596,16 @@ div {
 
 .time-tooltip {
   position: absolute;
-  padding: 10px 10px;
-  color: white;
-  background-color: rgba(5, 5, 5, 0.7);
-  border-radius: 20px;
+  padding: 5px 10px;
+  color: black;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
   text-align: center;
   white-space: nowrap;
   font-size: 12px;
   bottom: -2rem;
   transform: translateX(-50%);
+
   &:after {
     content: "";
     position: absolute;
